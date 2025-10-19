@@ -1,0 +1,153 @@
+.section-destinos-populares {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f9f9f9;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 40px;
+}
+
+/* --- Barra blanca superior tipo “Ficha de destino” --- */
+.barra-blanca {
+  display: flex;
+  justify-content: center; /* 🔹 centra el contenido horizontalmente */
+  align-items: center;
+  width: 100%;
+  background: #fff;
+  padding: 18px 32px;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.titulo-barra {
+  font-weight: 800;
+  font-size: 20px;
+  color: #06202b;
+  text-align: center;
+}
+
+/* si quieres mantener el texto “Actualizado por PerúGo” en la esquina derecha */
+.sub-barra {
+  position: absolute;
+  right: 32px;
+  color: var(--muted, #6c7a87);
+  font-size: 0.95em;
+}
+
+/* --- Tríptico visual --- */
+.triptico {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  gap: 0;
+  flex-wrap: wrap;
+  z-index: 1;
+}
+
+.tarjeta-triptico {
+  width: 420px;
+  height: 520px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px;
+  transition: all 0.35s ease;
+  position: relative;
+  cursor: pointer;
+  margin: 0 -90px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeInUp 1s ease forwards;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15); /* sombra gris suave */
+}
+
+/* --- Animación secuencial --- */
+.tarjeta-triptico:nth-child(1) {
+  animation-delay: 0.2s;
+}
+.tarjeta-triptico:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.tarjeta-triptico:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+/* Hover elegante */
+.tarjeta-triptico:hover {
+  transform: translateY(-15px) scale(1.04);
+  z-index: 3;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* --- Overlay inferior (sin sombra blanca ahora) --- */
+.tarjeta-triptico .overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 24px 12px 20px;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.88), transparent);
+  color: #111;
+  border-radius: 0 0 16px 16px;
+  text-shadow: none; /* se quitó la sombra blanca */
+}
+
+.tarjeta-triptico h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.tarjeta-triptico .ubicacion {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.tarjeta-triptico .ideal {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #555;
+}
+
+/* --- Animación de entrada --- */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Responsividad --- */
+@media (max-width: 1100px) {
+  .tarjeta-triptico {
+    width: 340px;
+    height: 440px;
+    margin: 0 -60px;
+  }
+}
+
+@media (max-width: 900px) {
+  .triptico {
+    flex-direction: column;
+  }
+
+  .tarjeta-triptico {
+    margin: 20px 0;
+    width: 90%;
+    height: 400px;
+  }
+
+  .barra-blanca {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}

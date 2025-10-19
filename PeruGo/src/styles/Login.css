@@ -1,0 +1,150 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css");
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Fondo con efecto de movimiento */
+.login-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(-45deg, #1f1f1f, #3a3a3a, #2b2b2b, #111);
+  background-size: 400% 400%;
+  animation: backgroundMove 10s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes backgroundMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Caja con efecto vidrio */
+.login-box {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 40px 35px;
+  width: 350px;
+  color: white;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.login-box:hover {
+  transform: scale(1.02);
+}
+
+/* Icono de usuario */
+.login-icon {
+  background: rgba(255, 255, 255, 0.15);
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+}
+
+/* Inputs */
+.input-group {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+.input-group i {
+  color: #ddd;
+  margin-right: 10px;
+}
+
+.input-group input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: white;
+  outline: none;
+  font-size: 14px;
+}
+
+/* Opciones */
+.options {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #ccc;
+  margin-bottom: 15px;
+}
+
+.options a {
+  color: #9acd32;
+  text-decoration: none;
+}
+
+/* Botón */
+.login-btn {
+  width: 100%;
+  background-color: #1f1f1f;
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background-color: #333;
+}
+.link-button {
+  background: none;
+  border: none;
+  color: #88c0d0; /* azul claro */
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 0.9rem;
+  padding: 0;
+}
+
+.link-button:hover {
+  color: #a3d2d5;
+}
+.password-group {
+  position: relative;
+}
+
+.password-group i.fa-eye,
+.password-group i.fa-eye-slash {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #888;
+}
+
+.password-group i.fa-eye:hover,
+.password-group i.fa-eye-slash:hover {
+  color: #ccc;
+}

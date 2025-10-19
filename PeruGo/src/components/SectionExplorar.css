@@ -1,0 +1,152 @@
+/* ================================
+   🎨 ESTILOS DE SECTION EXPLORAR
+   ================================ */
+
+/* Estructura general */
+.layout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+/* Header */
+.explorar-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.explorar-titulo {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Main (tarjetas) */
+.resultados {
+  flex: 3;
+}
+
+.resultados-info {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+/* Grid de tarjetas */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Tarjeta individual */
+.card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* 🌟 Efecto al pasar el mouse */
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* Imagen */
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+/* Contenido de la tarjeta */
+.card-content {
+  padding: 1rem;
+}
+
+.card-content h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-content p {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.4rem;
+}
+
+/* Duración */
+.dias {
+  font-weight: 600;
+  color: #007bff;
+}
+
+/* Footer de la tarjeta */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.8rem;
+}
+
+.precio {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Botón "Ver" */
+.btn-ver {
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+
+.btn-ver:hover {
+  background: #0056b3;
+}
+
+/* ASIDE - filtros */
+.filtros {
+  flex: 1;
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.filtros h3 {
+  margin-bottom: 1rem;
+}
+
+.bloque-filtro {
+  margin-bottom: 1.5rem;
+}
+
+.presupuesto-botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.presupuesto-botones .ghost {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: transparent;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.presupuesto-botones .ghost.active {
+  border-color: #007bff;
+  background: #007bff;
+  color: #fff;
+}
+
+.presupuesto-botones .ghost:hover {
+  border-color: #007bff;
+}

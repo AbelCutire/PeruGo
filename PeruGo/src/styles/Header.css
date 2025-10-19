@@ -1,0 +1,234 @@
+/* --- Header fijo (ajustado centro + gris oscuro) --- */
+.header-fijo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: #2b2b2b; /* gris oscuro */
+  color: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  z-index: 9999;
+  backdrop-filter: blur(6px);
+}
+
+
+.header-contenido {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Variante para contenido más ancho (aplicar clase header-contenido-amplio al contenedor interno) */
+.header-contenido-amplio {
+  max-width: 1400px;   /* más ancho que antes */
+  padding: 0 2.5rem;   /* más espacio lateral */
+}
+
+/* Logo */
+.logo-header {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+}
+.logo-principal {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+}
+.logo-secundario {
+  font-size: 0.75rem;
+  color: #ddd;
+}
+
+/* Navegación derecha */
+.nav-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 44px;
+}
+
+/* Botones de icono (estilo consolidado) */
+.btn-icono {
+  background: none;
+  border: none;
+  color: #eaeaea;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.12s, transform 0.12s, color 0.12s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+/* Hover / focus */
+.btn-icono:hover,
+.btn-icono:focus {
+  background: rgba(255,255,255,0.04);
+  transform: translateY(-2px);
+  color: #ffcc00; /* color hover para destacar */
+  outline: none;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+}
+
+/* Focus visible para accesibilidad */
+.btn-icono:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255,204,51,0.14);
+  border-radius: 8px;
+}
+
+/* Botón de texto (si necesitas mostrar Iniciar/Registrar cuando no logueado) */
+.btn-texto {
+  background: #007bff;
+  border: none;
+  color: white;
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.12s;
+}
+.btn-texto:hover,
+.btn-texto:focus {
+  background: #005ecb;
+  transform: translateY(-2px);
+}
+
+/* Perfil: menú flotante (oscuro para encajar) */
+.profile-wrapper {
+  position: relative;
+}
+.profile-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: 220px;
+  max-width: 90vw;
+  background: #333333;
+  color: #f1f1f1;
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+  padding: 10px;
+  z-index: 100000; /* mayor que header si fuera necesario */
+  animation: fadeInDown 160ms ease;
+  transform-origin: top right;
+}
+
+/* Evitar que el menú se corte en pantallas pequeñas: si está cerca del borde, moverlo */
+@media (max-width: 420px) {
+  .profile-menu {
+    right: 8px;
+    left: 8px;
+    width: auto;
+  }
+}
+
+.profile-info {
+  padding: 6px 4px;
+}
+.profile-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+}
+.profile-email {
+  font-size: 0.8rem;
+  color: #cfcfcf;
+  margin-top: 4px;
+}
+.profile-separator {
+  border: none;
+  height: 1px;
+  background: rgba(255,255,255,0.04);
+  margin: 8px 0;
+}
+.profile-logout {
+  width: 100%;
+  padding: 8px 10px;
+  background: #ff6b6b;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+.profile-logout:hover,
+.profile-logout:focus {
+  background: #e05555;
+}
+
+/* Micrófono elegante: tamaño mayor, borde sutil y efecto glow cuando está activo */
+/* Si quieres que mic use btn-icono, añade ambas clases: class="btn-icono mic-btn" */
+.mic-btn {
+  width: 44px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  transition: all 0.16s ease;
+  border: 1px solid transparent;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  color: #eaeaea;
+}
+.mic-btn:hover,
+.mic-btn:focus {
+  transform: translateY(-3px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+.mic-btn.mic-active {
+  border-color: rgba(255, 220, 120, 0.18);
+  box-shadow: 0 6px 20px rgba(255,220,120,0.06), 0 0 8px rgba(255,220,120,0.03) inset;
+  color: #ffd27a;
+}
+
+/* Ajuste para que los iconos queden más espaciados cuando el header es más ancho */
+.nav-header { gap: 1rem; }
+
+/* Unificar padding para iconos */
+.btn-icono { padding: 10px; border-radius: 10px; }
+
+/* Mantener compatibilidad con resto del CSS (perfil/menu) - sin cambios necesarios */
+
+/* Animación */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Respectar usuarios que prefieren reducir animaciones */
+@media (prefers-reduced-motion: reduce) {
+  .profile-menu,
+  .btn-icono,
+  .mic-btn {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Ajustes responsive */
+@media (max-width: 700px) {
+  .header-contenido { padding: 0 0.8rem; }
+  .logo-principal { font-size: 1.05rem; }
+  .nav-header { gap: 0.4rem; }
+  .btn-icono { padding: 6px; }
+}

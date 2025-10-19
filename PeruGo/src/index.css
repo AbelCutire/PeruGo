@@ -1,0 +1,587 @@
+
+  /*Definen colores, medidas y recursos reutilizables.*/
+:root{
+  /* Imagen de fondo global (Machu Picchu) */
+  --bg-img: url('https://upload.wikimedia.org/wikipedia/commons/e/e3/Machu_Picchu%2C_Peru.jpg');
+
+  /* Colores principales / acentos */
+  --accent: #06b6d4;    /* acento principal (azul) */
+  --accent2: #ff6b6b;   /* acento secundario (salmon) */
+
+  /* Texto y tarjetas */
+  --muted: #6b7280;     /* color de texto secundario / muted */
+  --card: #ffffff;      /* color base de tarjetas */
+
+  /* Medidas y sombras */
+  --radius: 12px;       /* radio de bordes por defecto */
+  --maxw: 1200px;       /* ancho máximo del contenedor principal */
+  --shadow: 0 18px 60px rgba(2,6,23,0.18); /* sombra principal */
+}
+
+/* -------------------------
+   Reset / Box model
+   ------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* -------------------------
+   HTML / BODY — fondo y tipografía
+   ------------------------- */
+html, body {
+  height: 100%;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  color: #06202b;
+  /* gradiente ligero + imagen de fondo */
+  background: linear-gradient(180deg, rgba(8,18,24,0.45), rgba(8,18,24,0.3)), var(--bg-img);
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+/* -------------------------
+   Header principal (barra superior)
+   ------------------------- */
+header {
+  background: rgba(255,255,255,0.9);               /* fondo translúcido */
+  backdrop-filter: blur(6px);                      /* desenfoque detrás */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 28px;
+  max-width: var(--maxw);
+  margin: 18px auto;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: var(--shadow);
+}
+
+/* -------------------------
+   Logo y marca dentro del header
+   ------------------------- */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 800;
+  font-size: 20px;
+  color: #07202a;
+}
+
+/* Pequeña marca visual (PG) */
+.mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 900;
+}
+
+/* -------------------------
+   Navegación principal (en header)
+   ------------------------- */
+nav {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+nav a {
+  padding: 8px 12px;
+  border-radius: 10px;
+  color: #07343f;
+  font-weight: 700;
+}
+
+/* -------------------------
+   Hero / sección principal de introducción
+   ------------------------- */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 72vh;
+  padding: 36px 22px;
+  max-width: var(--maxw);
+  margin: 20px auto;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.9));
+  box-shadow: 0 30px 80px rgba(2,6,12,0.22);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.6);
+}
+
+/* Contenedor interno del hero (alineación de columnas) */
+.hero-inner {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px;
+}
+
+/* Lado izquierdo del hero (texto / input) */
+.hero-left {
+  flex: 1;
+  text-align: left;
+  padding-left: 8px;
+}
+
+/* Lado derecho del hero (tarjetas / ofertas) */
+.hero-right {
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+/* Tipografía del hero */
+.hero h1 {
+  font-size: clamp(26px, 3.6vw, 44px);
+  color: #04212a;
+  margin-bottom: 8px;
+}
+
+.hero p {
+  color: var(--muted);
+  margin-bottom: 18px;
+  font-size: 16px;
+}
+
+/* -------------------------
+   Caja del asistente (input rápido)
+   ------------------------- */
+.assistant-box {
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,250,0.98));
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(2,6,12,0.08);
+  max-width: 720px;
+  width: 92%;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+/* Column izquierda dentro de assistant-box */
+.assistant-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Estilo del input de texto dentro de assistant-box */
+.assistant-box input[type="text"] {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #e6eef3;
+  font-size: 15px;
+  outline: none;
+}
+
+/* Controles / botones a la derecha del assistant-box */
+.assistant-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+/* Botón principal del assistant-box (microfono / enviar) */
+.assistant-box button {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border: none;
+  color: white;
+  padding: 12px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+/* Chips de sugerencias debajo del input */
+.chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.chip {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #f8fafc;
+  border: 1px solid rgba(2,6,23,0.03);
+  font-weight: 700;
+  color: #0b2b2a;
+  cursor: pointer;
+}
+
+/* -------------------------
+   Secciones principales (contenedores blancos)
+   ------------------------- */
+section {
+  font-family: Arial, sans-serif;
+  padding: 28px;
+  background: #fff;
+  margin: 20px auto;
+  max-width: var(--maxw);
+  border-radius: 12px;
+}
+
+/* Layout general con aside + main */
+.layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* Aside (barra lateral de filtros u opciones) */
+aside {
+  width: 260px;
+  background: #fbfdff;
+  padding: 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(2,6,23,0.03);
+}
+
+/* Main flexible (contenido principal) */
+main {
+  flex: 1;
+}
+
+/* -------------------------
+   Grid de tarjetas (cards) — exploración / experiencias
+   ------------------------- */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+/* Estilo genérico de cada tarjeta */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 8px 30px rgba(2,6,12,0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card img {
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.card h3 {
+  margin: 8px 0 6px;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* -------------------------
+   Botones principales / secundarios reutilizables
+   ------------------------- */
+.primary {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(90deg, var(--accent), #0ea5a1); /* nota: conserva color original */
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.ghost {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #e6eef3;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* -------------------------
+   Chat persistente en esquina inferior derecha
+   ------------------------- */
+#chat {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 380px;
+  max-width: calc(100% - 40px);
+  height: 540px;
+  border-radius: 14px;
+  box-shadow: 0 30px 80px rgba(2,6,12,0.32);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #ffffff, #fbfdff);
+  z-index: 80;
+}
+
+/* Header del panel de chat (barra superior del widget) */
+#chat header {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: white;
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Contenedor de mensajes dentro del chat (scrollable) */
+#chat .messages {
+  flex: 1;
+  overflow: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+}
+
+/* Burbuja / fila de mensaje (genérico) */
+.msg {
+  max-width: 78%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  line-height: 1.4;
+  box-shadow: 0 8px 26px rgba(2,6,12,0.06);
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+/* Mensajes del usuario (alineados a la derecha) */
+.msg.user {
+  align-self: flex-end;
+  background: linear-gradient(90deg, var(--accent), #00cfe8);
+  color: #fff;
+  border-bottom-right-radius: 3px;
+  justify-content: flex-end;
+}
+
+/* Mensajes del asistente (alineados a la izquierda) */
+.msg.assistant {
+  align-self: flex-start;
+  background: #fff;
+  color: #06202b;
+  border-bottom-left-radius: 3px;
+}
+
+/* Avatar circular junto a los mensajes */
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Burbuja interna (contenido textual del mensaje) */
+.bubble {
+  padding: 8px 10px;
+  border-radius: 8px;
+  max-width: calc(100% - 46px);
+}
+
+.bubble.user {
+  background: transparent;
+  color: inherit;
+}
+
+.bubble.assistant {
+  background: transparent;
+  color: inherit;
+}
+
+/* Pie / input del chat (zona de envío) */
+#chat .input {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid #eef6fb;
+  background: linear-gradient(180deg, #fff, #f7fbff);
+}
+
+#chat .input input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #eef6fb;
+}
+
+#chat .input button {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* -------------------------
+   Responsive: ajustes para pantallas medianas / pequeñas
+   ------------------------- */
+@media (max-width: 1000px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .layout {
+    flex-direction: column;
+  }
+  aside {
+    width: 100%;
+  }
+  #chat {
+    right: 12px;
+    bottom: 12px;
+    width: 320px;
+    height: 460px;
+  }
+}
+
+@media (max-width: 640px) {
+  header {
+    margin: 8px;
+  }
+  .hero {
+    margin: 12px;
+    padding: 18px;
+  }
+  /* Oculta el chat en pantallas muy pequeñas para no tapar contenido */
+  #chat {
+    display: none;
+  }
+}
+/* ==== Chat flotante ==== */
+#chat {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 320px;
+  height: 420px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, sans-serif;
+  overflow: hidden;
+  z-index: 999;
+}
+
+/* Header */
+#chat header {
+  background: #4b6cb7;
+  color: #fff;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+#chat header button.ghost {
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  transition: opacity 0.2s;
+}
+#chat header button.ghost:hover {
+  opacity: 0.7;
+}
+
+/* Mensajes */
+#chat .messages {
+  flex: 1;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  background: #f9f9f9;
+}
+
+#chat .msg {
+  max-width: 80%;
+  display: flex;
+}
+
+#chat .msg.user {
+  justify-content: flex-end;
+}
+
+#chat .bubble {
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: #e5e5ea;
+  color: #000;
+  font-size: 14px;
+}
+
+#chat .msg.user .bubble {
+  background: #4b6cb7;
+  color: #fff;
+}
+
+/* Input */
+#chat .input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  background: #fff;
+  gap: 8px;
+}
+
+#chat .input input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+#chat .input button.primary {
+  background: #4b6cb7;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#chat .input button.primary:hover {
+  background: #395591;
+}
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #f2f2f2;
+}

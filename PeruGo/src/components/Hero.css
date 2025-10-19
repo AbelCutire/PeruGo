@@ -1,0 +1,200 @@
+.hero {
+  height: calc(100vh - 84px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: linear-gradient(to bottom right, #f7f7f7, #ebebeb);
+  text-align: center;
+  padding: 2rem;
+}
+
+.hero-title {
+  font-size: 3.8rem;
+  font-weight: 900;
+  color: #000;
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  color: #555;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Contenedor del input + micro */
+.hero-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+/* Input moderno */
+.hero-input {
+  width: 320px;
+  max-width: 80vw;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.hero-input:focus {
+  border-color: #000;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+/* Micrófono elegante y más pequeño */
+.hero-mic-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(180deg, #111, #000);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-mic-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55);
+}
+
+/* Micrófono activo */
+.hero-mic-btn.mic-active {
+  background: linear-gradient(180deg, #000, #111);
+  box-shadow: 0 10px 25px rgba(255, 200, 80, 0.25);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 3rem;
+  }
+  .hero-input {
+    width: 260px;
+  }
+}
+.hero {
+  height: calc(100vh - 84px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: linear-gradient(to bottom right, #f7f7f7, #ebebeb);
+  text-align: center;
+  padding: 2rem;
+}
+
+.hero-title {
+  font-size: 3.8rem;
+  font-weight: 900;
+  color: #000;
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: #555;
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Contenedor del input + micro + submit */
+.hero-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+/* Input moderno */
+.hero-input {
+  width: 360px;
+  max-width: 75vw;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 1px solid #d0d0d0;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  transition: all 0.18s ease;
+  outline: none;
+}
+
+.hero-input:focus {
+  border-color: #000;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+/* Micrófono pequeño, elegante */
+.hero-mic-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(180deg, #111, #000);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+}
+
+.hero-mic-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.55);
+}
+
+/* Estado activo (visual) */
+.hero-mic-btn.mic-active {
+  background: linear-gradient(180deg, #000, #0b0b0b);
+  box-shadow: 0 18px 44px rgba(255,200,80,0.07);
+  color: #ffd27a;
+}
+
+/* Botón Buscar */
+.hero-submit-btn {
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.14s ease, background 0.14s;
+}
+.hero-submit-btn:hover {
+  transform: translateY(-3px);
+  background: #000;
+}
+
+/* Estado (texto para screen readers) */
+.hero-status {
+  margin-top: 8px;
+  min-height: 20px;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .hero-title { font-size: 2.8rem; }
+  .hero-input { width: 220px; }
+  .hero-mic-btn { width: 42px; height: 42px; }
+}
