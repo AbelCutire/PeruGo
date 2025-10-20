@@ -1,144 +1,174 @@
-// src/data/destinos.js
-
 export const destinos = [
   {
-    id: "machu-picchu",
-    nombre: "Machu Picchu - Cusco",
-    descripcion:
-      "Una de las siete maravillas del mundo moderno. Ideal para amantes de la historia, la fotografía y caminatas entre paisajes andinos.",
-    precio: "1200",
-    duracion: "4-7 días",
-    tipo: "Cultural",
-    presupuesto: "Alto",
-    imagen:
-      "https://whatatrip.pe/wp-content/uploads/2023/02/Machu-Picchu-reopen-1536x864.jpg",
-    gastos: {
-      transporte: 25,
-      comidas: 15,
-      guia: 10,
-      hospedaje: 30,
-      entradas: 10,
-      otros: 10,
-    },
-  },
-  {
-    id: "lima",
-    nombre: "Lima Gastronómica",
-    descripcion:
-      "Saborea los mejores platillos del Perú en un recorrido por Miraflores, Barranco y el centro histórico.",
-    precio: "450",
-    duracion: "1-3 días",
-    tipo: "Gastronómico",
+    id: "cusco",
+    nombre: "Cusco",
+    ubicacion: "Cusco, Perú",
+    tipo: "Cultural / Aventura",
+    precio: 500,
+    duracion: "4 días / 3 noches",
     presupuesto: "Medio",
     imagen:
-      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1400&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1603899122634-b2a3a3d2a1c1?q=80&w=1200&auto=format&fit=crop",
+    descripcion:
+      "La antigua capital del Imperio Inca, Cusco, combina historia, cultura y paisajes andinos únicos. Es el punto de partida ideal para visitar Machu Picchu y el Valle Sagrado.",
     gastos: {
-      transporte: 20,
-      comidas: 35,
-      guia: 5,
-      hospedaje: 25,
-      entradas: 10,
-      otros: 5,
+      alojamiento: 200,
+      transporte: 100,
+      alimentacion: 120,
+      entradas: 80,
     },
+    tours: [
+      {
+        nombre: "Tour clásico Machu Picchu",
+        descripcion:
+          "Incluye tren, guía y entrada al santuario histórico de Machu Picchu. Perfecto para quienes desean vivir la experiencia tradicional sin complicaciones.",
+        precio: 580,
+        incluye: ["Tren turístico", "Guía profesional", "Entrada a Machu Picchu"],
+        gastos: {
+          alojamiento: 180,
+          transporte: 200,
+          alimentacion: 100,
+          entradas: 100,
+        },
+      },
+      {
+        nombre: "Tour Aventura Valle Sagrado",
+        descripcion:
+          "Explora Pisac, Ollantaytambo y Moray. Disfruta actividades al aire libre y paisajes impresionantes en los Andes peruanos.",
+        precio: 620,
+        incluye: ["Transporte", "Almuerzo buffet", "Actividades de aventura"],
+        gastos: {
+          alojamiento: 150,
+          transporte: 250,
+          alimentacion: 120,
+          entradas: 100,
+        },
+      },
+      {
+        nombre: "Tour Cusco Gastronómico",
+        descripcion:
+          "Descubre los sabores andinos con un recorrido por los mejores restaurantes y mercados locales.",
+        precio: 560,
+        incluye: ["Degustaciones", "Chef guía", "Transporte local"],
+        gastos: {
+          alojamiento: 140,
+          transporte: 120,
+          alimentacion: 250,
+          entradas: 50,
+        },
+      },
+    ],
+  },
+  {
+    id: "paracas",
+    nombre: "Paracas",
+    ubicacion: "Ica, Perú",
+    tipo: "Playa / Naturaleza",
+    precio: 350,
+    duracion: "2 días / 1 noche",
+    presupuesto: "Económico",
+    imagen:
+      "https://images.unsplash.com/photo-1612128475857-7b7b3a3b6f59?q=80&w=1200&auto=format&fit=crop",
+    descripcion:
+      "Paracas ofrece playas hermosas, fauna marina y las impresionantes Islas Ballestas. Un destino ideal para relajarse y disfrutar del océano Pacífico.",
+    gastos: {
+      alojamiento: 150,
+      transporte: 100,
+      alimentacion: 70,
+      entradas: 30,
+    },
+    tours: [
+      {
+        nombre: "Tour Islas Ballestas",
+        descripcion:
+          "Paseo en lancha donde podrás observar lobos marinos, pingüinos de Humboldt y el famoso geoglifo del Candelabro.",
+        precio: 380,
+        incluye: ["Paseo en lancha", "Guía local", "Chaleco salvavidas"],
+        gastos: {
+          alojamiento: 120,
+          transporte: 150,
+          alimentacion: 70,
+          entradas: 40,
+        },
+      },
+      {
+        nombre: "Tour Reserva Nacional de Paracas",
+        descripcion:
+          "Explora el desierto costero, las playas rojas y la biodiversidad marina única de la reserva.",
+        precio: 400,
+        incluye: ["Transporte 4x4", "Guía", "Entrada a la reserva"],
+        gastos: {
+          alojamiento: 130,
+          transporte: 160,
+          alimentacion: 80,
+          entradas: 30,
+        },
+      },
+      {
+        nombre: "Tour Paracas Full Experiencia",
+        descripcion:
+          "Una experiencia completa con actividades acuáticas, visita al museo de sitio y degustación gastronómica.",
+        precio: 450,
+        incluye: [
+          "Kayak o paddle",
+          "Museo de Paracas",
+          "Almuerzo marino",
+          "Guía bilingüe",
+        ],
+        gastos: {
+          alojamiento: 140,
+          transporte: 170,
+          alimentacion: 100,
+          entradas: 40,
+        },
+      },
+    ],
   },
   {
     id: "arequipa",
     nombre: "Arequipa y Cañón del Colca",
-    descripcion:
-      "Explora la ‘Ciudad Blanca’ y contempla el vuelo del cóndor en el Cañón del Colca.",
-    precio: "800",
-    duracion: "4-7 días",
-    tipo: "Aventura",
+    ubicacion: "Arequipa, Perú",
+    tipo: "Aventura / Cultura",
+    precio: 420,
+    duracion: "3 días / 2 noches",
     presupuesto: "Medio",
     imagen:
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1400&auto=format&fit=crop",
-    gastos: {
-      transporte: 20,
-      comidas: 15,
-      guia: 10,
-      hospedaje: 25,
-      entradas: 20,
-      otros: 10,
-    },
-  },
-  {
-    id: "puno",
-    nombre: "Lago Titicaca - Puno",
+      "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=1200&auto=format&fit=crop",
     descripcion:
-      "Visita las islas flotantes de los Uros y Taquile; vive la cultura local en el lago navegable más alto del mundo.",
-    precio: "750",
-    duracion: "4-7 días",
-    tipo: "Cultural",
-    presupuesto: "Medio",
-    imagen:
-      "https://www.meteorologiaenred.com/wp-content/uploads/2022/01/lago-titicaca.jpg",
+      "Explora la ‘Ciudad Blanca’ y contempla el vuelo del cóndor en el Cañón del Colca. Un destino que combina arquitectura colonial, naturaleza y tradición.",
     gastos: {
-      transporte: 30,
-      comidas: 15,
-      guia: 10,
-      hospedaje: 25,
-      entradas: 10,
-      otros: 10,
+      alojamiento: 160,
+      transporte: 120,
+      alimentacion: 100,
+      entradas: 40,
     },
-  },
-  {
-    id: "huaraz",
-    nombre: "Cordillera Blanca - Huaraz",
-    descripcion:
-      "Senderismo épico: Laguna 69, nevado Pastoruri y paisajes andinos para trekking avanzado y fotografía.",
-    precio: "680",
-    duracion: "4-7 días",
-    tipo: "Aventura",
-    presupuesto: "Medio",
-    imagen:
-      "https://www.southamerica.travel/wp-content/uploads/2019/08/cordillera-lake-gallery.jpg",
-    gastos: {
-      transporte: 30,
-      comidas: 10,
-      guia: 15,
-      hospedaje: 25,
-      entradas: 10,
-      otros: 10,
-    },
-  },
-  {
-    id: "trujillo",
-    nombre: "Trujillo Colonial y Chan Chan",
-    descripcion:
-      "Herencia Moche y Chimú en Chan Chan, además de plazas coloniales y playas cercanas.",
-    precio: "500",
-    duracion: "1-3 días",
-    tipo: "Cultural",
-    presupuesto: "Económico",
-    imagen:
-      "https://detrujillo.com/wp-content/uploads/2012/04/chan-chan-peru-de-trujillo-com.jpg",
-    gastos: {
-      transporte: 25,
-      comidas: 20,
-      guia: 10,
-      hospedaje: 20,
-      entradas: 15,
-      otros: 10,
-    },
-  },
-  {
-    id: "tarapoto",
-    nombre: "Tarapoto - Selva Alta",
-    descripcion:
-      "Cataratas, naturaleza y experiencias artesanales en un clima tropical agradable.",
-    precio: "650",
-    duracion: "4-7 días",
-    tipo: "Relax",
-    presupuesto: "Medio",
-    imagen:
-      "https://aventuras.pe/blog/wp-content/uploads/2023/11/mirador-de-ahuashiyacu-24c0051149.jpg",
-    gastos: {
-      transporte: 25,
-      comidas: 20,
-      guia: 5,
-      hospedaje: 30,
-      entradas: 10,
-      otros: 10,
-    },
+    tours: [
+      {
+        nombre: "Tour Cañón del Colca",
+        descripcion:
+          "Observa el vuelo del cóndor y disfruta de los baños termales en Chivay.",
+        precio: 460,
+        incluye: ["Transporte", "Guía", "Almuerzo", "Entradas a termales"],
+        gastos: {
+          alojamiento: 130,
+          transporte: 150,
+          alimentacion: 120,
+          entradas: 60,
+        },
+      },
+      {
+        nombre: "Tour Ciudad Blanca",
+        descripcion:
+          "Recorrido histórico por los puntos más emblemáticos de Arequipa.",
+        precio: 430,
+        incluye: ["Guía local", "Transporte", "Entradas a museos"],
+        gastos: {
+          alojamiento: 120,
+          transporte: 100,
+          alimentacion: 100,
+          entradas: 50,
+        },
+      },
+    ],
   },
 ];
