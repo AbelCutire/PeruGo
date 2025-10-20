@@ -18,8 +18,35 @@ export default function Chat() {
     setMessages((prev) => [...prev, { sender, text, time: Date.now() }]);
   }, []);
 
+    // ✅ nueva función que llama al backend Flask
+  const fetchReplyFromBackend = useCallback(async (text) => {
+    try {
+      const res = await fetch("http://localhost:5000/process", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+      const data = await res.json();
+
+      // texto del asistente
+      const reply = data.text_response || "No se obtuvo respuesta.";
+
+      // si hay audio, reproducirlo
+      if (data.audio_base64) {
+        const audio = new Audio("data:audio/mp3;base64," + data.audio_base64);
+        audio.play();
+      }
+
+      return reply;
+    } catch (err) {
+      console.error("Error comunicando con backend:", err);
+      return "Error al conectar con el servidor.";
+    }
+  }, []);
+
+
   // --- generar respuesta automática ---
-  const generateReply = useCallback((inputText) => {
+  /*const generateReply = useCallback((inputText) => {
     const text = String(inputText || "").toLowerCase();
     if (!text) return "¿En qué puedo ayudarte?";
     if (text.includes("hotel") || text.includes("alojamiento"))
@@ -37,11 +64,10 @@ export default function Chat() {
     if (text.includes("mostrar") || text.includes("opciones"))
       return "Aquí te muestro algunas opciones simuladas.";
     return "Entiendo. ¿Qué quieres hacer primero: buscar hoteles, ver itinerarios o estimar precios?";
-  }, []);
+  }, []); */
 
-  // --- respuesta del asistente ---
   const assistantReply = useCallback(
-    (toText) => {
+    async (toText) => {
       if (typingRef.current) return;
       typingRef.current = true;
 
@@ -51,12 +77,12 @@ export default function Chat() {
         { sender: "assistant", text: "Escribiendo…", time: Date.now() },
       ]);
 
-      const delay = 600 + Math.random() * 900;
-      setTimeout(() => {
-        const reply = generateReply(toText);
+      try {
+        const reply = await fetchReplyFromBackend(toText);
+
         setMessages((prev) => {
           const copy = [...prev];
-          // Eliminar "Escribiendo..."
+          // eliminar "Escribiendo..."
           for (let i = copy.length - 1; i >= 0; i--) {
             if (copy[i].sender === "assistant" && copy[i].text === "Escribiendo…") {
               copy.splice(i, 1);
@@ -66,11 +92,13 @@ export default function Chat() {
           copy.push({ sender: "assistant", text: String(reply), time: Date.now() });
           return copy;
         });
+      } finally {
         typingRef.current = false;
-      }, delay);
+      }
     },
-    [generateReply]
+    [fetchReplyFromBackend]
   );
+
 
   // --- enviar mensaje del usuario ---
   const handleSend = useCallback(
@@ -83,6 +111,7 @@ export default function Chat() {
     },
     [input, pushChat, assistantReply]
   );
+
 
   // --- reproducir último mensaje del asistente ---
   const handleSpeak = useCallback(async () => {
