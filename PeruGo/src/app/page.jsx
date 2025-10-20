@@ -110,7 +110,6 @@ export default function Page() {
           <section id="explorar">
             <SectionExplorar />
           </section>
-          <SectionPlanificador />
           <SectionPerfil />
           <Chat />
         </>
