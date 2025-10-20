@@ -13,12 +13,27 @@ export default function SectionExplorar() {
     presupuesto: "",
   });
 
-  // 🔹 Lógica de filtrado
+  // 🔹 Nueva lógica de filtrado compatible con tus datos
   const destinosFiltrados = destinos.filter((d) => {
-    const tipoOK = filtros.tipo.length === 0 || filtros.tipo.includes(d.tipo);
-    const duracionOK = !filtros.duracion || d.duracion === filtros.duracion;
+    // ✅ tipo: busca coincidencia parcial (ej. "Cultural / Aventura" contiene "Aventura")
+    const tipoOK =
+      filtros.tipo.length === 0 ||
+      filtros.tipo.some((t) => d.tipo.toLowerCase().includes(t.toLowerCase()));
+
+    // ✅ duracion: convierte el texto ("4 días / 3 noches") a rango numérico aproximado
+    const duracionNum = parseInt(d.duracion); // toma el primer número (ej. "4")
+    const duracionOK =
+      !filtros.duracion ||
+      (filtros.duracion === "1-3 días" && duracionNum <= 3) ||
+      (filtros.duracion === "4-7 días" &&
+        duracionNum >= 4 &&
+        duracionNum <= 7) ||
+      (filtros.duracion === "8+ días" && duracionNum >= 8);
+
+    // ✅ presupuesto: comparación directa
     const presupuestoOK =
       !filtros.presupuesto || d.presupuesto === filtros.presupuesto;
+
     return tipoOK && duracionOK && presupuestoOK;
   });
 
@@ -31,7 +46,6 @@ export default function SectionExplorar() {
     }));
   };
 
-  // ✅ Guardar posición de scroll antes de navegar
   const handleVer = (id) => {
     if (typeof window !== "undefined") {
       sessionStorage.setItem("scrollPos", window.scrollY.toString());
@@ -85,11 +99,8 @@ export default function SectionExplorar() {
           <div className="bloque-filtro">
             <strong>Tipo</strong>
             <div className="lista-tipos">
-              {["Aventura", "Cultural", "Relax", "Gastronómico"].map((t) => (
-                <label
-                  key={t}
-                  style={{ display: "flex", alignItems: "center", gap: 8 }}
-                >
+              {["Aventura", "Cultural", "Naturaleza", "Playa", "Gastronómico"].map((t) => (
+                <label key={t} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <input
                     type="checkbox"
                     checked={filtros.tipo.includes(t)}
@@ -105,9 +116,7 @@ export default function SectionExplorar() {
             <strong>Duración</strong>
             <select
               value={filtros.duracion}
-              onChange={(e) =>
-                setFiltros({ ...filtros, duracion: e.target.value })
-              }
+              onChange={(e) => setFiltros({ ...filtros, duracion: e.target.value })}
             >
               <option value="">Todas</option>
               <option value="1-3 días">1-3 días</option>
@@ -122,9 +131,7 @@ export default function SectionExplorar() {
               {["Económico", "Medio", "Alto"].map((p) => (
                 <button
                   key={p}
-                  className={`ghost ${
-                    filtros.presupuesto === p ? "active" : ""
-                  }`}
+                  className={`ghost ${filtros.presupuesto === p ? "active" : ""}`}
                   onClick={() =>
                     setFiltros({
                       ...filtros,
