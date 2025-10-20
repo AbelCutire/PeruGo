@@ -6,6 +6,7 @@ import Hero from "@/components/Hero";
 import SectionExplorar from "@/components/SectionExplorar";
 import SectionDestinosPopulares from "@/components/SectionDestinosPopulares";
 import SectionDestino from "@/components/SectionDestino";
+import SectionPlanificador from "@/components/SectionPlanificador";
 import SectionReservas from "@/components/SectionReservas";
 import SectionPerfil from "@/components/SectionPerfil";
 import Chat from "@/components/Chat";
@@ -109,6 +110,7 @@ export default function Page() {
           <section id="explorar">
             <SectionExplorar />
           </section>
+          <SectionPlanificador />
           <SectionPerfil />
           <Chat />
         </>
