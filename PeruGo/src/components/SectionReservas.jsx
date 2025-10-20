@@ -18,10 +18,13 @@ export default function SectionReservas({ destinoSeleccionado }) {
   const destino =
     destinos.find((d) => d.nombre === destinoSeleccionado) || destinos[0];
 
+  // 🔹 Calcular gastos y total
   const gastos = Object.entries(destino.gastos).map(([name, value]) => ({
     name,
     value,
   }));
+
+  const totalGastos = gastos.reduce((acc, g) => acc + g.value, 0);
 
   // 🔹 Funciones de control
   const avanzar = () => {
@@ -105,7 +108,6 @@ export default function SectionReservas({ destinoSeleccionado }) {
 
   return (
     <section id="section-reservas">
-      {/* 🔹 Solo se cambió esta línea */}
       <h2>Reserva</h2>
 
       <div className="reservas-contenedor">
@@ -123,9 +125,15 @@ export default function SectionReservas({ destinoSeleccionado }) {
           </div>
         </div>
 
-        {/* 🟢 Gráfico circular a la derecha */}
+
         <div className="grafico-contenedor">
           <h3>Distribución de gastos: {destino.nombre}</h3>
+          
+    
+          <p className="gasto-total">
+             <strong>Gasto total:</strong> ${totalGastos}
+          </p>
+
           <div className="grafico">
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
@@ -154,7 +162,7 @@ export default function SectionReservas({ destinoSeleccionado }) {
                     className="color"
                     style={{ backgroundColor: COLORS[i % COLORS.length] }}
                   ></span>
-                  {g.name} — {g.value}%
+                  {g.name} — ${g.value}
                 </li>
               ))}
             </ul>

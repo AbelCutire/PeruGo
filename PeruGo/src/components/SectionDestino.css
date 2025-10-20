@@ -175,3 +175,107 @@
   background: #ea580c;
   transform: translateY(-2px);
 }
+/* === TOURS Y EXPERIENCIAS === */
+.experiencias-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-footer {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tour-botones {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.card.seleccionado {
+  border: 2px solid #f97316;
+  background: #fffaf4;
+}
+
+.tour-seleccionado {
+  background: #fff3e0;
+  border-left: 4px solid #f97316;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tour-seleccionado .precio {
+  font-weight: bold;
+  color: #d25a00;
+}
+
+/* === MODAL DETALLE TOUR === */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-tour {
+  background: #fff;
+  border-radius: 1rem;
+  max-width: 480px;
+  width: 90%;
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-tour h3 {
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+.modal-tour h4 {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.modal-tour ul {
+  list-style: disc;
+  margin: 0.5rem 0 1rem 1.5rem;
+}
+
+.modal-tour .precio {
+  margin: 1rem 0;
+  font-weight: bold;
+  color: #f97316;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
