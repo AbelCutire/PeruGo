@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import { destinos } from "@/data/destinos";
 import "@/components/SectionDestino.css";
@@ -8,6 +8,8 @@ import "@/components/SectionDestino.css";
 export default function PageDestino() {
   const { id } = useParams();
   const destino = destinos.find((d) => d.id === id);
+  const [tourSeleccionado, setTourSeleccionado] = useState(null);
+  const [tourActivo, setTourActivo] = useState(null);
 
   const handleVolver = () => {
     sessionStorage.setItem("returnFromFicha", "true");
@@ -15,29 +17,28 @@ export default function PageDestino() {
   };
 
   const handleAgregarPlan = () => {
-    // Leer planes guardados (usar la misma clave que MisPlanes.jsx)
     const reservasExistentes = JSON.parse(localStorage.getItem("reservas")) || [];
 
-    // Crear tarjeta personalizada del destino
     const nuevaReserva = {
-      id: destino.id,
+      id: `${destino.id}-${tourSeleccionado ? tourSeleccionado.nombre : "general"}`,
       destino: destino.nombre,
       ubicacion: destino.ubicacion,
       imagen: destino.imagen,
-      precio: destino.precio,
+      precio: tourSeleccionado ? tourSeleccionado.precio : destino.precio,
       tipo: destino.tipo,
+      tour: tourSeleccionado ? tourSeleccionado.nombre : null,
+      gastos: tourSeleccionado ? tourSeleccionado.gastos : destino.gastos,
       fechaCreacion: new Date().toLocaleDateString(),
       estado: "borrador",
     };
 
-    // Evitar duplicados
+    // Evita duplicados
     const existe = reservasExistentes.some((r) => r.id === nuevaReserva.id);
     if (!existe) {
       reservasExistentes.push(nuevaReserva);
       localStorage.setItem("reservas", JSON.stringify(reservasExistentes));
     }
 
-    // Redirigir a Mis Planes
     window.location.href = "/mis-planes";
   };
 
@@ -69,6 +70,14 @@ export default function PageDestino() {
           <img src={destino.imagen} alt={destino.nombre} />
           <h3>{destino.nombre}</h3>
           <div className="subinfo">Ideal para: {destino.tipo}</div>
+
+          {tourSeleccionado && (
+            <div className="tour-seleccionado">
+              <strong>Tour elegido:</strong>
+              <p>{tourSeleccionado.nombre}</p>
+              <p className="precio">S/ {tourSeleccionado.precio}</p>
+            </div>
+          )}
 
           <div className="botones-aside">
             <button className="primary" onClick={handleAgregarPlan}>
@@ -107,35 +116,81 @@ export default function PageDestino() {
             </div>
           </div>
 
-          <h3>Experiencias destacadas</h3>
-          <div className="experiencias-grid">
-            <div className="card">
-              <h4>Tour clásico</h4>
-              <p>Incluye guía, transporte y entradas.</p>
-              <div className="card-footer">
-                <span>S/ {parseInt(destino.precio) + 80}</span>
-                <button className="primary">Ver</button>
+          {/* ---------- TOURS DINÁMICOS ---------- */}
+          {destino.tours && destino.tours.length > 0 && (
+            <>
+              <h3>Experiencias destacadas</h3>
+              <div className="experiencias-grid">
+                {destino.tours.map((tour, index) => (
+                  <div
+                    key={index}
+                    className={`card ${
+                      tourSeleccionado?.nombre === tour.nombre ? "seleccionado" : ""
+                    }`}
+                  >
+                    <h4>{tour.nombre}</h4>
+                    <p>{tour.descripcion}</p>
+                    <div className="card-footer">
+                      <span>S/ {tour.precio}</span>
+                      <div className="tour-botones">
+                        <button
+                          className="secondary"
+                          onClick={() => setTourActivo(tour)}
+                        >
+                          Ver detalles
+                        </button>
+                        <button
+                          className="primary"
+                          onClick={() => setTourSeleccionado(tour)}
+                        >
+                          Elegir
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
+            </>
+          )}
 
-            <div className="card">
-              <h4>Fotografía y caminata</h4>
-              <p>Para amantes del paisaje y aventura.</p>
-              <div className="card-footer">
-                <span>S/ {parseInt(destino.precio) + 150}</span>
-                <button className="primary">Ver</button>
+          {/* ---------- MODAL DE TOUR DETALLE ---------- */}
+          {tourActivo && (
+            <div className="modal-overlay" onClick={() => setTourActivo(null)}>
+              <div
+                className="modal-tour"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <h3>{tourActivo.nombre}</h3>
+                <p>{tourActivo.descripcion}</p>
+                {tourActivo.incluye && (
+                  <>
+                    <h4>Incluye:</h4>
+                    <ul>
+                      {tourActivo.incluye.map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                <p className="precio">Precio: S/ {tourActivo.precio}</p>
+                <button
+                  className="primary"
+                  onClick={() => {
+                    setTourSeleccionado(tourActivo);
+                    setTourActivo(null);
+                  }}
+                >
+                  Elegir este tour
+                </button>
+                <button
+                  className="btn-volver-naranja"
+                  onClick={() => setTourActivo(null)}
+                >
+                  Cerrar
+                </button>
               </div>
             </div>
-
-            <div className="card">
-              <h4>Full experiencia local</h4>
-              <p>Incluye hospedaje y gastronomía regional.</p>
-              <div className="card-footer">
-                <span>S/ {parseInt(destino.precio) + 250}</span>
-                <button className="primary">Ver</button>
-              </div>
-            </div>
-          </div>
+          )}
         </main>
       </div>
     </section>
