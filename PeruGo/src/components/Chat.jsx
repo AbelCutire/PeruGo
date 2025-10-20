@@ -1,13 +1,15 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { speakText } from "@/functions/speakText"; // ✅ usamos tu TTS nativo
+import { speakText } from "@/functions/speakText"; // ✅ TTS nativo
+import { Volume2 } from "lucide-react"; // 🔊 icono de parlante
 
 const STORAGE_KEY = "perugo_chat";
 
 export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const typingRef = useRef(false);
   const scrollRef = useRef(null);
 
@@ -44,7 +46,10 @@ export default function Chat() {
       typingRef.current = true;
 
       // Mensaje temporal "Escribiendo..."
-      setMessages((prev) => [...prev, { sender: "assistant", text: "Escribiendo…", time: Date.now() }]);
+      setMessages((prev) => [
+        ...prev,
+        { sender: "assistant", text: "Escribiendo…", time: Date.now() },
+      ]);
 
       const delay = 600 + Math.random() * 900;
       setTimeout(() => {
@@ -58,10 +63,7 @@ export default function Chat() {
               break;
             }
           }
-          const newMsg = { sender: "assistant", text: String(reply), time: Date.now() };
-          copy.push(newMsg);
-          // 🗣️ Reproducir voz al responder
-          speakText(newMsg.text);
+          copy.push({ sender: "assistant", text: String(reply), time: Date.now() });
           return copy;
         });
         typingRef.current = false;
@@ -82,6 +84,23 @@ export default function Chat() {
     [input, pushChat, assistantReply]
   );
 
+  // --- reproducir último mensaje del asistente ---
+  const handleSpeak = useCallback(async () => {
+    const assistantMsgs = messages.filter(
+      (m) => m.sender === "assistant" && m.text !== "Escribiendo…"
+    );
+    if (assistantMsgs.length === 0) return;
+    const last = assistantMsgs[assistantMsgs.length - 1];
+    try {
+      setIsSpeaking(true);
+      await speakText(last.text);
+    } catch (e) {
+      console.error("Error reproduciendo mensaje:", e);
+    } finally {
+      setIsSpeaking(false);
+    }
+  }, [messages]);
+
   // --- cargar mensajes guardados ---
   useEffect(() => {
     try {
@@ -97,8 +116,6 @@ export default function Chat() {
         ];
         setMessages(welcome);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(welcome));
-        // 🗣️ voz inicial
-        speakText(welcome[0].text);
       }
     } catch (e) {
       console.error("Error leyendo chat:", e);
@@ -121,21 +138,22 @@ export default function Chat() {
       window.removeEventListener("perugo.quickSuggest", onQuickSuggest);
       try {
         if (window.suggest === suggestFn) delete window.suggest;
-      } catch (e) {}
+      } catch {}
     };
   }, [pushChat, assistantReply]);
 
-  // --- mensajes desde Hero ---
+  // --- 🔥 NUEVO: escuchar mensajes desde Hero o Header ---
   useEffect(() => {
-    const handleChatEvent = (e) => {
-      const message = e.detail.text;
-      if (message && typeof handleSend === "function") {
-        handleSend(message);
+    const onChatMessage = (e) => {
+      const txt = e?.detail?.text;
+      if (txt && txt.trim()) {
+        pushChat(txt, "user");
+        assistantReply(txt);
       }
     };
-    window.addEventListener("chatMessage", handleChatEvent);
-    return () => window.removeEventListener("chatMessage", handleChatEvent);
-  }, [handleSend]);
+    window.addEventListener("chatMessage", onChatMessage);
+    return () => window.removeEventListener("chatMessage", onChatMessage);
+  }, [pushChat, assistantReply]);
 
   // --- guardar historial ---
   useEffect(() => {
@@ -148,7 +166,8 @@ export default function Chat() {
 
   // --- autoscroll ---
   useEffect(() => {
-    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    if (scrollRef.current)
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messages]);
 
   // --- render ---
@@ -166,7 +185,11 @@ export default function Chat() {
         </div>
       </header>
 
-      <div className="messages" ref={scrollRef} style={{ flex: 1, overflow: "auto", padding: 12 }}>
+      <div
+        className="messages"
+        ref={scrollRef}
+        style={{ flex: 1, overflow: "auto", padding: 12 }}
+      >
         {messages.map((msg, i) => {
           const isUser = msg.sender === "user";
           return (
@@ -197,7 +220,11 @@ export default function Chat() {
                   <img
                     src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
                     alt="assistant"
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
                   />
                 </span>
               )}
@@ -211,9 +238,14 @@ export default function Chat() {
                     ? "linear-gradient(90deg,var(--accent),#00cfe8)"
                     : "#fff",
                   color: isUser ? "#fff" : "#06202b",
+                  boxShadow: isUser
+                    ? "0 2px 6px rgba(0,0,0,0.15)"
+                    : "0 1px 4px rgba(0,0,0,0.1)",
                 }}
               >
-                <div style={{ whiteSpace: "pre-wrap", fontSize: 14 }}>{msg.text}</div>
+                <div style={{ whiteSpace: "pre-wrap", fontSize: 14 }}>
+                  {msg.text}
+                </div>
               </div>
 
               {isUser && (
@@ -231,7 +263,11 @@ export default function Chat() {
                   <img
                     src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=400&auto=format&fit=crop"
                     alt="user"
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
                   />
                 </span>
               )}
@@ -266,10 +302,42 @@ export default function Chat() {
           }}
           aria-label="Entrada de chat"
         />
+
+        <button
+          onClick={handleSpeak}
+          title="Reproducir último mensaje"
+          style={{
+            padding: 10,
+            borderRadius: "50%",
+            background: isSpeaking
+              ? "linear-gradient(135deg,#34d399,#059669)"
+              : "linear-gradient(135deg,#3b82f6,#2563eb)",
+            border: "none",
+            color: "white",
+            boxShadow: isSpeaking
+              ? "0 0 12px rgba(52,211,153,0.8)"
+              : "0 0 10px rgba(59,130,246,0.6)",
+            cursor: "pointer",
+            transition: "all 0.2s ease-in-out",
+            transform: isSpeaking ? "scale(1.05)" : "scale(1)",
+          }}
+        >
+          <Volume2 size={20} />
+        </button>
+
         <button
           className="primary"
           onClick={() => handleSend()}
-          style={{ padding: "10px 14px", borderRadius: 10 }}
+          style={{
+            padding: "10px 14px",
+            borderRadius: 10,
+            background: "linear-gradient(90deg,var(--accent),#00cfe8)",
+            color: "#fff",
+            fontWeight: 600,
+            border: "none",
+            cursor: "pointer",
+            transition: "0.2s ease-in-out",
+          }}
         >
           Enviar
         </button>
