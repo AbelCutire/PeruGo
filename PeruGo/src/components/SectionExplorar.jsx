@@ -13,14 +13,13 @@ export default function SectionExplorar() {
     presupuesto: "",
   });
 
-  // 🔹 Nueva lógica de filtrado compatible con tus datos
+  // de filtrado compatible con tus datos
   const destinosFiltrados = destinos.filter((d) => {
-    // ✅ tipo: busca coincidencia parcial (ej. "Cultural / Aventura" contiene "Aventura")
     const tipoOK =
       filtros.tipo.length === 0 ||
       filtros.tipo.some((t) => d.tipo.toLowerCase().includes(t.toLowerCase()));
 
-    // ✅ duracion: convierte el texto ("4 días / 3 noches") a rango numérico aproximado
+    //  duracion: convierte el texto ("4 días / 3 noches") a rango numérico aproximado
     const duracionNum = parseInt(d.duracion); // toma el primer número (ej. "4")
     const duracionOK =
       !filtros.duracion ||
@@ -30,7 +29,7 @@ export default function SectionExplorar() {
         duracionNum <= 7) ||
       (filtros.duracion === "8+ días" && duracionNum >= 8);
 
-    // ✅ presupuesto: comparación directa
+    // presupuesto: comparación directa
     const presupuestoOK =
       !filtros.presupuesto || d.presupuesto === filtros.presupuesto;
 
@@ -149,3 +148,4 @@ export default function SectionExplorar() {
     </section>
   );
 }
+
