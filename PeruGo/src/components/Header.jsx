@@ -2,19 +2,32 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import useVoiceSearch from "@/components/funciones/VoiceSearch"; // ✅ ruta corregida
 import "./Header.css";
 
 export default function Header({
-  isLogged = true, // ✅ por defecto activado para pruebas
+  isLogged = true,
   onLogout = () => {},
   user = null,
   onOpenPerfil = () => {},
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [micActive, setMicActive] = useState(false);
   const menuRef = useRef(null);
   const router = useRouter();
 
+  // ✅ Integrar micrófono igual que en Hero
+  const { record, text, toggleRecord } = useVoiceSearch();
+
+  // 🔥 Cuando termina de grabar y hay texto, enviarlo al Chat
+  useEffect(() => {
+    if (!record && text && text.trim()) {
+      window.dispatchEvent(
+        new CustomEvent("chatMessage", { detail: { text } })
+      );
+    }
+  }, [record, text]);
+
+  // 🔒 Manejo del menú del perfil
   useEffect(() => {
     const onDocClick = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -83,33 +96,14 @@ export default function Header({
             </svg>
           </button>
 
-          {/* 🔹 Micrófono */}
+          {/* 🔹 Micrófono (igual que el del Hero) */}
           <button
-            className={`btn-icono mic-btn ${micActive ? "mic-active" : ""}`}
-            title="Micrófono"
+            className={`btn-icono mic-btn ${record ? "mic-active" : ""}`}
+            title="Hablar con el asistente"
             aria-label="Micrófono"
-            onClick={() => setMicActive((s) => !s)}
+            onClick={toggleRecord}
           >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden
-            >
-              <g
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect x="9" y="3" width="6" height="10" rx="3" />
-                <path d="M19 11v1a7 7 0 0 1-14 0v-1" />
-                <path d="M12 19v3" />
-                <circle cx="12" cy="14" r="0.5" fill="currentColor" />
-              </g>
-            </svg>
+            🎤
           </button>
 
           {/* 🔹 Configuración */}
