@@ -10,6 +10,7 @@ export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const typingRef = useRef(false);
   const scrollRef = useRef(null);
 
@@ -199,9 +200,36 @@ export default function Chat() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messages]);
 
-  // --- render ---
+  
+  // Mostrar/Ocultar chat
+  const toggleOpen = useCallback(() => setIsOpen(o => !o), []);
+// --- render ---
   return (
-    <div id="chat" role="dialog" aria-label="Asistente de viaje">
+    <>
+      <button
+        onClick={toggleOpen}
+        aria-label={isOpen ? "Ocultar chat" : "Abrir chat"}
+        style={{
+          position: "fixed",
+          right: 16,
+          bottom: 16,
+          zIndex: 9999,
+          width: 48,
+          height: 48,
+          borderRadius: "9999px",
+          border: "none",
+          boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
+          background: isOpen ? "linear-gradient(135deg,#ef4444,#dc2626)" : "linear-gradient(135deg,#10b981,#059669)",
+          color: "#fff",
+          fontWeight: 700,
+          cursor: "pointer"
+        }}
+        title={isOpen ? "Ocultar" : "Chat"}
+      >
+        {isOpen ? "–" : "💬"}
+      </button>
+
+      <div id="chat" role="dialog" aria-label="Asistente de viaje" style={isOpen ? {} : { display: "none" }}>
       <header>
         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
           <div style={{ fontWeight: 800 }}>PerúGo</div>
@@ -372,5 +400,6 @@ export default function Chat() {
         </button>
       </div>
     </div>
+    </>
   );
 }
