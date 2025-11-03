@@ -15,40 +15,62 @@ export default function SectionExplorar() {
     presupuesto: "",
   });
 
-  // 🔹 Obtener destinos desde la API
+  // 🔹 Obtener destinos desde la API o desde data/destinos.js (fallback)
   useEffect(() => {
     const fetchDestinos = async () => {
       try {
+        let data = [];
+
+        // 1️⃣ Intentar obtener desde la API
         const res = await fetch("/api/destinos");
-        if (!res.ok) throw new Error("Error al obtener destinos");
-        const data = await res.json();
+        if (res.ok) {
+          data = await res.json();
+        } else {
+          console.warn("⚠️ API no disponible, usando data local");
+          const mod = await import("@/data/destinos.js");
+          data = mod.destinos || [];
+        }
+
         setDestinos(data);
       } catch (error) {
-        console.error("❌ Error al cargar destinos:", error);
+        console.error("❌ Error al cargar destinos desde API:", error);
+        try {
+          // 2️⃣ Cargar desde data/destinos.js si falla la API
+          const mod = await import("@/data/destinos.js");
+          setDestinos(mod.destinos || []);
+        } catch (err) {
+          console.error("❌ Error cargando data local:", err);
+        }
       } finally {
         setLoading(false);
       }
     };
+
     fetchDestinos();
   }, []);
 
   if (loading) return <p>Cargando destinos...</p>;
 
-  // 🔹 Filtrado igual que antes
+  // 🔹 Filtro de búsqueda
   const destinosFiltrados = destinos.filter((d) => {
     const tipoOK =
       filtros.tipo.length === 0 ||
-      filtros.tipo.some((t) => d.tipo.toLowerCase().includes(t.toLowerCase()));
+      filtros.tipo.some((t) =>
+        d.tipo?.toLowerCase().includes(t.toLowerCase())
+      );
 
     const duracionNum = parseInt(d.duracion);
     const duracionOK =
       !filtros.duracion ||
       (filtros.duracion === "1-3 días" && duracionNum <= 3) ||
-      (filtros.duracion === "4-7 días" && duracionNum >= 4 && duracionNum <= 7) ||
+      (filtros.duracion === "4-7 días" &&
+        duracionNum >= 4 &&
+        duracionNum <= 7) ||
       (filtros.duracion === "8+ días" && duracionNum >= 8);
 
     const presupuestoOK =
-      !filtros.presupuesto || d.presupuesto === filtros.presupuesto;
+      !filtros.presupuesto ||
+      d.presupuesto?.toLowerCase() === filtros.presupuesto.toLowerCase();
 
     return tipoOK && duracionOK && presupuestoOK;
   });
@@ -62,19 +84,19 @@ export default function SectionExplorar() {
     }));
   };
 
-  const handleVer = (slug) => {
+  const handleVer = (id) => {
     if (typeof window !== "undefined") {
       sessionStorage.setItem("scrollPos", window.scrollY.toString());
     }
 
     try {
       if (router && typeof router.push === "function") {
-        router.push(`/destino/${slug}`);
+        router.push(`/destino/${id}`);
         return;
       }
     } catch (e) {}
 
-    window.location.href = `/destino/${slug}`;
+    window.location.href = `/destino/${id}`;
   };
 
   return (
@@ -96,11 +118,11 @@ export default function SectionExplorar() {
                 <div className="card-content">
                   <h3>{d.nombre}</h3>
                   <p>{d.descripcion}</p>
-                  <p className="dias">Duración: {d.duracion}</p>
+                  <p className="dias">{d.duracion}</p>
                   <div className="card-footer">
                     <div className="precio">Desde S/ {d.precio}</div>
 
-                    {/* 🔧 Cambio clave: usar d.id en lugar de d.slug */}
+                    {/* ✅ Usa d.id (por ejemplo: "cusco", "paracas", etc.) */}
                     <button className="btn-ver" onClick={() => handleVer(d.id)}>
                       Ver
                     </button>
@@ -117,8 +139,17 @@ export default function SectionExplorar() {
           <div className="bloque-filtro">
             <strong>Tipo</strong>
             <div className="lista-tipos">
-              {["Aventura", "Cultural", "Naturaleza", "Playa", "Gastronómico"].map((t) => (
-                <label key={t} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              {[
+                "Aventura",
+                "Cultural",
+                "Naturaleza",
+                "Playa",
+                "Gastronómico",
+              ].map((t) => (
+                <label
+                  key={t}
+                  style={{ display: "flex", alignItems: "center", gap: 8 }}
+                >
                   <input
                     type="checkbox"
                     checked={filtros.tipo.includes(t)}
@@ -134,7 +165,9 @@ export default function SectionExplorar() {
             <strong>Duración</strong>
             <select
               value={filtros.duracion}
-              onChange={(e) => setFiltros({ ...filtros, duracion: e.target.value })}
+              onChange={(e) =>
+                setFiltros({ ...filtros, duracion: e.target.value })
+              }
             >
               <option value="">Todas</option>
               <option value="1-3 días">1-3 días</option>
@@ -149,11 +182,14 @@ export default function SectionExplorar() {
               {["Económico", "Medio", "Alto"].map((p) => (
                 <button
                   key={p}
-                  className={`ghost ${filtros.presupuesto === p ? "active" : ""}`}
+                  className={`ghost ${
+                    filtros.presupuesto === p ? "active" : ""
+                  }`}
                   onClick={() =>
                     setFiltros({
                       ...filtros,
-                      presupuesto: filtros.presupuesto === p ? "" : p,
+                      presupuesto:
+                        filtros.presupuesto === p ? "" : p,
                     })
                   }
                 >
