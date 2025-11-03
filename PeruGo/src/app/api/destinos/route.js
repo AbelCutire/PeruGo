@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 
 export async function GET() {
   try {
@@ -8,7 +8,10 @@ export async function GET() {
     });
     return NextResponse.json(destinos);
   } catch (error) {
-    console.error('❌ Error al obtener destinos:', error);
-    return NextResponse.json({ error: 'Error al obtener destinos' }, { status: 500 });
+    console.error("Error al obtener destinos:", error);
+    return NextResponse.json(
+      { error: 'Error al obtener destinos' },
+      { status: 500 }
+    );
   }
 }
