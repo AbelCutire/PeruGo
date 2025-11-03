@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import requests
 import json
 import base64
+import time
 
 # --------------------------
 # Configuración base
@@ -155,21 +156,77 @@ Devuelve SOLO JSON con:
 # --------------------------
 def call_minimax_tts(text):
     """
-    Convierte texto a audio usando MiniMax Speech
+    Nueva versión asíncrona de TTS con MiniMax (t2a_async_v2)
+    Retorna bytes de audio MP3
     """
-    url = f"{MINIMAX_BASE}/speech:generate"
-    headers = {"Authorization": f"Bearer {MINIMAX_API_KEY}"}
+    api_key = MINIMAX_API_KEY
+    if not api_key:
+        print("⚠️ No se encontró MINIMAX_API_KEY en .env")
+        return None
+
+    # Paso 1️⃣ - Crear tarea de generación de voz
+    create_url = "https://api.minimax.io/v1/t2a_async_v2"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
     payload = {
+        "model": "speech-2.6-hd",
         "text": text,
-        "voice": "alloy",  # o "default" según las voces disponibles
-        "format": "mp3"
+        "language_boost": "auto",
+        "voice_setting": {
+            "voice_id": "English_expressive_narrator",  # cámbiala si necesitas voz española
+            "speed": 1,
+            "vol": 10,
+            "pitch": 1
+        },
+        "audio_setting": {
+            "audio_sample_rate": 32000,
+            "bitrate": 128000,
+            "format": "mp3",
+            "channel": 2
+        }
     }
 
     try:
-        r = requests.post(url, headers=headers, json=payload)
+        r = requests.post(create_url, headers=headers, json=payload)
         r.raise_for_status()
-        # La API devuelve bytes o un campo base64, depende de la versión
-        return r.content
+        result = r.json()
+        task_id = result.get("task_id")
+        if not task_id:
+            print("⚠️ No se recibió task_id de MiniMax.")
+            return None
+
+        # Paso 2️⃣ - Consultar progreso hasta que termine
+        status_url = f"https://api.minimax.io/v1/query/t2a_async_query_v2?task_id={task_id}"
+
+        for _ in range(10):  # hasta 10 intentos (~10 segundos)
+            time.sleep(1)
+            s = requests.get(status_url, headers=headers)
+            s.raise_for_status()
+            status_data = s.json()
+
+            if status_data.get("status") == "Success":
+                file_id = status_data.get("file_id")
+                if not file_id:
+                    print("⚠️ No se obtuvo file_id del resultado.")
+                    return None
+
+                # Paso 3️⃣ - Descargar el archivo de audio
+                file_url = f"https://api.minimax.io/v1/files/retrieve_content?file_id={file_id}"
+                audio_res = requests.get(file_url, headers=headers)
+                audio_res.raise_for_status()
+                return audio_res.content
+
+            elif status_data.get("status") in ["Running", "Pending"]:
+                continue
+            else:
+                print("⚠️ Estado inesperado:", status_data)
+                return None
+
+        print("⏰ Timeout: la tarea de TTS tardó demasiado.")
+        return None
+
     except Exception as e:
         print("Error en TTS:", e)
         return None
