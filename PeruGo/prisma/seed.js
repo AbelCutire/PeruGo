@@ -17,25 +17,20 @@ async function main() {
 
   // Insertar nuevos datos
   for (const d of destinos) {
-    // Generar slug válido automáticamente
-    const slug =
-      d.slug ||
-      d.id ||
-      (d.nombre
-        ? d.nombre
-            .toLowerCase()
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .replace(/\s+/g, '-')
-        : 'sin-slug');
-
-    // Omitir 'id' ya que Prisma lo genera automáticamente
-    const { id, ...dataSinId } = d;
-
     await prisma.destino.create({
       data: {
-        ...dataSinId,
-        slug,
+        id: d.id, // ahora es String
+        slug: d.slug || d.id, // usa el slug del data
+        nombre: d.nombre,
+        ubicacion: d.ubicacion,
+        tipo: d.tipo,
+        precio: d.precio,
+        duracion: d.duracion,
+        presupuesto: d.presupuesto,
+        imagen: d.imagen,
+        descripcion: d.descripcion,
+        gastos: d.gastos,
+        tours: d.tours,
       },
     });
   }
