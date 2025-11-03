@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import "./SectionReservas.css";
+import { destinos } from "@/data/destinos"; // ✅ importamos los datos locales
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
 const COLORS = ["#3b82f6", "#ef4444", "#22c55e", "#8b5cf6", "#f97316", "#9ca3af"];
@@ -12,18 +13,10 @@ export default function SectionReservas({ destinoSeleccionado }) {
   const [nivel, setNivel] = useState(0);
 
   useEffect(() => {
-    const fetchDestino = async () => {
-      try {
-        // Si se pasa un nombre o slug de destino, buscarlo
-        const slug = destinoSeleccionado?.toLowerCase() || "cusco";
-        const res = await fetch(`/api/destinos/${slug}`);
-        const data = await res.json();
-        setDestino(data);
-      } catch (error) {
-        console.error("Error al obtener destino:", error);
-      }
-    };
-    fetchDestino();
+    // ✅ Buscar el destino directamente en los datos locales
+    const slug = destinoSeleccionado?.toLowerCase() || "cusco";
+    const encontrado = destinos.find((d) => d.id === slug);
+    setDestino(encontrado || destinos[0]);
   }, [destinoSeleccionado]);
 
   if (!destino) return <p>Cargando destino...</p>;
@@ -120,7 +113,7 @@ export default function SectionReservas({ destinoSeleccionado }) {
           <h3>Distribución de gastos: {destino.nombre}</h3>
 
           <p className="gasto-total">
-            <strong>Gasto total:</strong> ${totalGastos}
+            <strong>Gasto total:</strong> S/ {totalGastos}
           </p>
 
           <div className="grafico">
@@ -142,7 +135,7 @@ export default function SectionReservas({ destinoSeleccionado }) {
                     className="color"
                     style={{ backgroundColor: COLORS[i % COLORS.length] }}
                   ></span>
-                  {g.name} — ${g.value}
+                  {g.name} — S/ {g.value}
                 </li>
               ))}
             </ul>
