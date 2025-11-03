@@ -1,41 +1,43 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./SectionReservas.css";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
-import { destinos } from "@/data/destinos";
 
-// 🎨 Colores para categorías de gasto
 const COLORS = ["#3b82f6", "#ef4444", "#22c55e", "#8b5cf6", "#f97316", "#9ca3af"];
-
-// 🧭 Etapas del proceso de reserva
 const ETAPAS = ["borrador", "confirmado", "pendiente", "pagado", "finalizado"];
 
 export default function SectionReservas({ destinoSeleccionado }) {
+  const [destino, setDestino] = useState(null);
   const [nivel, setNivel] = useState(0);
 
-  // ✅ Usa el destino recibido o uno por defecto
-  const destino =
-    destinos.find((d) => d.nombre === destinoSeleccionado) || destinos[0];
+  useEffect(() => {
+    const fetchDestino = async () => {
+      try {
+        // Si se pasa un nombre o slug de destino, buscarlo
+        const slug = destinoSeleccionado?.toLowerCase() || "cusco";
+        const res = await fetch(`/api/destinos/${slug}`);
+        const data = await res.json();
+        setDestino(data);
+      } catch (error) {
+        console.error("Error al obtener destino:", error);
+      }
+    };
+    fetchDestino();
+  }, [destinoSeleccionado]);
 
-  // 🔹 Calcular gastos y total
-  const gastos = Object.entries(destino.gastos).map(([name, value]) => ({
+  if (!destino) return <p>Cargando destino...</p>;
+
+  const gastos = Object.entries(destino.gastos || {}).map(([name, value]) => ({
     name,
     value,
   }));
 
   const totalGastos = gastos.reduce((acc, g) => acc + g.value, 0);
 
-  // 🔹 Funciones de control
-  const avanzar = () => {
-    if (nivel < ETAPAS.length - 1) setNivel(nivel + 1);
-  };
+  const avanzar = () => nivel < ETAPAS.length - 1 && setNivel(nivel + 1);
+  const retroceder = () => nivel > 0 && setNivel(nivel - 1);
 
-  const retroceder = () => {
-    if (nivel > 0) setNivel(nivel - 1);
-  };
-
-  // 🔸 Render de cada tarjeta
   const renderTarjeta = (etapa, index) => {
     const activa = index === nivel;
     const bloqueada = index > nivel;
@@ -64,13 +66,10 @@ export default function SectionReservas({ destinoSeleccionado }) {
           </div>
         </div>
 
-        {/* 💬 Burbuja "Estás aquí" */}
         {activa && <div className="burbuja">Estás aquí</div>}
 
-        {/* 🔘 Botones según etapa */}
         <div className="acciones">
           {etapa === "borrador" && <button onClick={avanzar}>Confirmar</button>}
-
           {etapa === "confirmado" && (
             <>
               <button onClick={() => alert("Ir a ficha técnica del destino")}>
@@ -79,27 +78,20 @@ export default function SectionReservas({ destinoSeleccionado }) {
               <button onClick={avanzar}>Seguir</button>
             </>
           )}
-
           {etapa === "pendiente" && (
             <>
               <button onClick={() => alert("Simular pago")}>Pagar</button>
               <button onClick={avanzar}>Confirmar pago</button>
             </>
           )}
-
           {etapa === "pagado" && (
             <>
-              <button onClick={() => alert("Reagendar destino")}>
-                Reagendar
-              </button>
+              <button onClick={() => alert("Reagendar destino")}>Reagendar</button>
               <button onClick={avanzar}>Seguir</button>
             </>
           )}
-
           {etapa === "finalizado" && (
-            <button onClick={() => alert("Escribir reseña")}>
-              Dejar reseña
-            </button>
+            <button onClick={() => alert("Escribir reseña")}>Dejar reseña</button>
           )}
         </div>
       </div>
@@ -111,7 +103,6 @@ export default function SectionReservas({ destinoSeleccionado }) {
       <h2>Reserva</h2>
 
       <div className="reservas-contenedor">
-        {/* 🧩 Tarjetas a la izquierda */}
         <div className="tarjetas-contenedor">
           {ETAPAS.map((etapa, index) => renderTarjeta(etapa, index))}
 
@@ -125,30 +116,19 @@ export default function SectionReservas({ destinoSeleccionado }) {
           </div>
         </div>
 
-
         <div className="grafico-contenedor">
           <h3>Distribución de gastos: {destino.nombre}</h3>
-          
-    
+
           <p className="gasto-total">
-             <strong>Gasto total:</strong> ${totalGastos}
+            <strong>Gasto total:</strong> ${totalGastos}
           </p>
 
           <div className="grafico">
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
-                <Pie
-                  data={gastos}
-                  dataKey="value"
-                  nameKey="name"
-                  outerRadius={100}
-                  label
-                >
+                <Pie data={gastos} dataKey="value" nameKey="name" outerRadius={100} label>
                   {gastos.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
                 <Tooltip />
