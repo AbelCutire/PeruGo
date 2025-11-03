@@ -6,12 +6,14 @@ import useVoiceSearch from "@/components/funciones/VoiceSearch"; // ✅ ruta cor
 import "./Header.css";
 
 export default function Header({
-  isLogged = true,
+  isLogged = false,
   onLogout = () => {},
   user = null,
   onOpenPerfil = () => {},
 }) {
-  const [menuOpen, setMenuOpen] = useState(false);
+  
+  const goToLogin = () => { setMenuOpen(false); router.push("/login"); };
+const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const router = useRouter();
 
@@ -175,32 +177,42 @@ export default function Header({
             {/* Menú desplegable del perfil */}
             {menuOpen && (
               <div className="profile-menu">
-                <div className="profile-info">
-                  <div className="profile-name">{userData.nombre}</div>
-                  <div className="profile-email">{userData.correo}</div>
-                </div>
-                <hr className="profile-separator" />
-                <div className="profile-actions">
-                  <button
-                    className="btn-opcion"
-                    onClick={() => {
-                      setMenuOpen(false);
-                      onOpenPerfil();
-                    }}
-                  >
-                    Ver perfil y preferencias
-                  </button>
-                  <button
-                    className="btn-opcion cerrar"
-                    onClick={() => {
-                      setMenuOpen(false);
-                      onLogout?.();
-                    }}
-                  >
-                    Cerrar sesión
-                  </button>
-                </div>
-              </div>
+                {isLogged ? (
+                  <>
+                    <div className="profile-info">
+                      <div className="profile-name">{userData.nombre}</div>
+                      <div className="profile-email">{userData.correo}</div>
+                    </div>
+                    <hr className="profile-separator" />
+                    <div className="profile-actions">
+                      <button
+                        className="btn-opcion"
+                        onClick={() => {
+                          setMenuOpen(false);
+                          onOpenPerfil();
+                        }}
+                      >
+                        Ver perfil y preferencias
+                      </button>
+                      <button
+                        className="btn-opcion cerrar"
+                        onClick={() => {
+                          setMenuOpen(false);
+                          onLogout?.();
+                        }}
+                      >
+                        Cerrar sesión
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="profile-actions">
+                    <button className="btn-opcion" onClick={goToLogin}>
+                      Iniciar sesión
+                    </button>
+                  </div>
+                )}
+    </div>
             )}
           </div>
         </nav>
