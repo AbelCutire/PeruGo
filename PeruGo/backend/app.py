@@ -174,6 +174,35 @@ def call_minimax_tts(text):
         print("Error en TTS:", e)
         return None
 
+# --------------------------
+# 2️⃣ Ruta: /process - texto plano → LLM → TTS
+# --------------------------
+@app.route('/process', methods=['POST'])
+def process_text():
+    """
+    Recibe texto del frontend, lo envía a Mistral para procesarlo,
+    y genera una respuesta hablada opcionalmente con MiniMax TTS.
+    """
+    data = request.get_json()
+    user_text = data.get("text", "").strip()
+
+    if not user_text:
+        return jsonify({"error": "No se recibió texto"}), 400
+
+    # 1) Llama a Mistral para procesar el texto
+    llm_output = call_mistral_llm(user_text)
+    llm_text = llm_output.get("reply", "No se pudo generar respuesta.")
+
+    # 2) Genera audio con MiniMax TTS (opcional)
+    tts_audio = call_minimax_tts(llm_text)
+    audio_base64 = base64.b64encode(tts_audio).decode("utf-8") if tts_audio else None
+
+    # 3) Devuelve respuesta JSON al frontend
+    return jsonify({
+        "text_response": llm_text,
+        "audio_base64": audio_base64
+    })
+
 
 # --------------------------
 # Ejecutar servidor
