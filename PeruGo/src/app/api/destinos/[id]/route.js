@@ -1,24 +1,32 @@
-// src/app/api/destinos/[id]/route.js
-import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
-export async function GET(_request, context) {
-  // ✅ Esperar params correctamente (Next 14+ requiere esto)
-  const params = await context.params;
-  const { id } = params; // id aquí es el "slug" (ej: "cusco")
+export async function GET(req, { params }) {
+  const { id } = params;
 
   try {
-    const destino = await prisma.destino.findUnique({
-      where: { slug: id }, // ✅ Buscar por slug, no por id numérico
+    // Intentar buscar primero por slug
+    let destino = await prisma.destino.findUnique({
+      where: { slug: id },
     });
 
+    // Si no existe, intentar buscar por ID numérico
+    if (!destino && !isNaN(Number(id))) {
+      destino = await prisma.destino.findUnique({
+        where: { id: Number(id) },
+      });
+    }
+
     if (!destino) {
-      return NextResponse.json({ error: 'Destino no encontrado' }, { status: 404 });
+      return NextResponse.json(
+        { error: "Destino no encontrado" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json(destino);
   } catch (error) {
-    console.error('❌ Error al obtener destino:', error);
-    return NextResponse.json({ error: 'Error al obtener destino' }, { status: 500 });
+    console.error("Error en API destinos/[id]:", error);
+    return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
   }
 }
