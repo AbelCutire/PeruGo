@@ -10,20 +10,18 @@ datasource db {
 }
 
 model Destino {
-  id          Int      @id @default(autoincrement())
-  slug        String   @unique // ejemplo: "cusco", "paracas"
-  nombre      String
-  ubicacion   String
-  tipo        String
-  precio      Float
-  duracion    String
-  presupuesto String
-  imagen      String
-  descripcion String
-
-  gastos      Json     // alojamiento, transporte, etc.
-  tours       Json     // lista de tours con detalles
-
-  creadoEn    DateTime @default(now())
+  id           String   @id // ya no tiene @default(autoincrement())
+  slug         String   @unique
+  nombre       String
+  ubicacion    String
+  tipo         String
+  precio       Float
+  duracion     String
+  presupuesto  String
+  imagen       String
+  descripcion  String
+  gastos       Json
+  tours        Json
+  creadoEn     DateTime @default(now())
   actualizadoEn DateTime @updatedAt
 }
