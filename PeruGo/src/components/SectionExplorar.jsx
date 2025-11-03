@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import "./SectionExplorar.css";
@@ -98,7 +99,9 @@ export default function SectionExplorar() {
                   <p className="dias">Duración: {d.duracion}</p>
                   <div className="card-footer">
                     <div className="precio">Desde S/ {d.precio}</div>
-                    <button className="btn-ver" onClick={() => handleVer(d.slug)}>
+
+                    {/* 🔧 Cambio clave: usar d.id en lugar de d.slug */}
+                    <button className="btn-ver" onClick={() => handleVer(d.id)}>
                       Ver
                     </button>
                   </div>
