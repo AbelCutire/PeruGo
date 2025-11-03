@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-export async function GET(req, { params }) {
+export async function GET(req, context) {
+  const { params } = await context; // 👈 ahora esperamos los params correctamente
   const { id } = params;
 
   try {
@@ -10,11 +11,14 @@ export async function GET(req, { params }) {
       where: { slug: id },
     });
 
-    // Si no existe, intentar buscar por ID numérico
-    if (!destino && !isNaN(Number(id))) {
-      destino = await prisma.destino.findUnique({
-        where: { id: Number(id) },
-      });
+    // Si no existe, buscar por id numérico
+    if (!destino) {
+      const numericId = parseInt(id, 10);
+      if (!isNaN(numericId)) {
+        destino = await prisma.destino.findUnique({
+          where: { id: numericId },
+        });
+      }
     }
 
     if (!destino) {
@@ -26,7 +30,10 @@ export async function GET(req, { params }) {
 
     return NextResponse.json(destino);
   } catch (error) {
-    console.error("Error en API destinos/[id]:", error);
-    return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
+    console.error("Error en /api/destinos/[id]:", error);
+    return NextResponse.json(
+      { error: "Error al obtener el destino" },
+      { status: 500 }
+    );
   }
 }
