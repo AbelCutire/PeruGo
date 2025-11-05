@@ -22,7 +22,7 @@ export default function Chat() {
     // ✅ nueva función que llama al backend Flask
   const fetchReplyFromBackend = useCallback(async (text) => {
     try {
-      const res = await fetch("http://localhost:5000/process", {
+      const res = await fetch("https://perugo-backend-production.up.railway.app/process", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
@@ -403,3 +403,4 @@ export default function Chat() {
     </>
   );
 }
+
