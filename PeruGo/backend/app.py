@@ -56,7 +56,10 @@ def speech_to_speech():
     # 2) Procesamiento con Mistral (LLM)
     # --------------------------------
     llm_output = call_mistral_llm(stt_text)
-    llm_text = llm_output.get("reply", "No se pudo generar respuesta.")
+    if isinstance(llm_output, dict):
+        llm_text = llm_output.get("reply", str(llm_output))
+    else:
+        llm_text = str(llm_output)
     action = llm_output.get("action", "none")
 
     # --------------------------------
