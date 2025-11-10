@@ -30,9 +30,13 @@ export default function Chat() {
   
       const data = await res.json();
   
-      // ✅ Prioriza el campo "reply" si viene en formato JSON dentro de text_response
       let reply = "No se obtuvo respuesta.";
-      if (typeof data.text_response === "string") {
+  
+      // ✅ Asegurar que text_response sea un string
+      if (typeof data.text_response === "object" && data.text_response !== null) {
+        reply = data.text_response.reply || JSON.stringify(data.text_response);
+      } else if (typeof data.text_response === "string") {
+        // Si ya es texto, intentar parsear por si viene como string JSON
         try {
           const parsed = JSON.parse(data.text_response);
           reply = parsed.reply || data.text_response;
@@ -41,7 +45,6 @@ export default function Chat() {
         }
       }
   
-      // ✅ Si viene audio, reproducirlo
       if (data.audio_base64) {
         const audio = new Audio("data:audio/mp3;base64," + data.audio_base64);
         audio.play();
@@ -53,7 +56,6 @@ export default function Chat() {
       return "Error al conectar con el servidor.";
     }
   }, []);
-
 
   const assistantReply = useCallback(async (toText) => {
   if (typingRef.current) return;
@@ -393,4 +395,5 @@ export default function Chat() {
     </>
   );
 }
+
 
