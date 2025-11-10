@@ -21,29 +21,39 @@ export default function Chat() {
 
     // ✅ nueva función que llama al backend Flask
   const fetchReplyFromBackend = useCallback(async (text) => {
-    try {
-      const res = await fetch("https://perugo-backend-production.up.railway.app/process", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
-      });
-      const data = await res.json();
+  try {
+    const res = await fetch("https://perugo-backend-production.up.railway.app/process", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    });
 
-      // texto del asistente
-      const reply = data.text_response || "No se obtuvo respuesta.";
+    const data = await res.json();
 
-      // si hay audio, reproducirlo
-      if (data.audio_base64) {
-        const audio = new Audio("data:audio/mp3;base64," + data.audio_base64);
-        audio.play();
+    // ✅ Prioriza el campo "reply" si viene en formato JSON dentro de text_response
+    let reply = "No se obtuvo respuesta.";
+    if (typeof data.text_response === "string") {
+      try {
+        const parsed = JSON.parse(data.text_response);
+        reply = parsed.reply || data.text_response;
+      } catch {
+        reply = data.text_response;
       }
-
-      return reply;
-    } catch (err) {
-      console.error("Error comunicando con backend:", err);
-      return "Error al conectar con el servidor.";
     }
-  }, []);
+
+    // ✅ Si viene audio, reproducirlo
+    if (data.audio_base64) {
+      const audio = new Audio("data:audio/mp3;base64," + data.audio_base64);
+      audio.play();
+    }
+
+    return reply;
+  } catch (err) {
+    console.error("Error comunicando con backend:", err);
+    return "Error al conectar con el servidor.";
+  }
+}, []);
+
 
 
   // --- generar respuesta automática ---
@@ -403,4 +413,5 @@ export default function Chat() {
     </>
   );
 }
+
 
