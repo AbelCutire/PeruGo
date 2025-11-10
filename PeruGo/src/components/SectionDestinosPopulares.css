@@ -34,30 +34,30 @@
   overflow: hidden;
 }
 
-/* Carrusel continuo */
+/* Contenedor doble con desplazamiento */
 .carrusel-contenedor-infinito {
   display: flex;
-  width: calc(200%); /* el doble por duplicación */
+  width: max-content;
   height: 100%;
-  transition: transform 0.4s linear;
+  will-change: transform;
 }
 
-/* Tarjeta individual */
+/* Cada tarjeta ocupa todo el ancho visible */
 .tarjeta-carrusel {
-  flex: 0 0 100%;
+  flex: 0 0 100vw;
   height: 100%;
   background-size: cover;
   background-position: center;
   position: relative;
 }
 
-/* Overlay inferior */
+/* Overlay de texto inferior */
 .tarjeta-carrusel .overlay {
   position: absolute;
   bottom: 0;
   width: 100%;
   padding: 32px 20px;
-  background: linear-gradient(to top, rgba(255, 255, 255, 0.92), transparent);
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.9), transparent);
   color: #111;
 }
 
@@ -78,33 +78,6 @@
   font-size: 1rem;
   font-weight: 400;
   color: #555;
-}
-
-/* Flechas */
-.flecha {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(255, 255, 255, 0.8);
-  border: none;
-  font-size: 2rem;
-  cursor: pointer;
-  padding: 10px 14px;
-  border-radius: 50%;
-  transition: background 0.3s ease;
-  z-index: 5;
-}
-
-.flecha:hover {
-  background-color: rgba(255, 255, 255, 1);
-}
-
-.flecha-izquierda {
-  left: 20px;
-}
-
-.flecha-derecha {
-  right: 20px;
 }
 
 /* Responsividad */
