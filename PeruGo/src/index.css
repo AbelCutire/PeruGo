@@ -13,8 +13,8 @@
   --card: #ffffff;      /* color base de tarjetas */
 
   /* Medidas y sombras */
-  --radius: 12px;       /* radio de bordes por defecto */
-  --maxw: 1200px;       /* ancho máximo del contenedor principal */
+  --radius: 8px;       /* radio de bordes por defecto */
+  --maxw: 100%;       /* ancho máximo del contenedor principal */
   --shadow: 0 18px 60px rgba(2,6,23,0.18); /* sombra principal */
 }
 
