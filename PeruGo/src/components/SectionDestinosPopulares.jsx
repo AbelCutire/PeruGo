@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import "./SectionDestinosPopulares.css";
 
 const destinos = [
@@ -26,35 +26,32 @@ const destinos = [
 ];
 
 const SectionDestinosPopulares = () => {
-  const [indice, setIndice] = useState(0);
-  const contenedorRef = useRef(null);
+  const carruselRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
 
-  // Duplicamos la lista para crear el efecto infinito
+  // Duplicamos el arreglo para crear el efecto de bucle
   const destinosDobles = [...destinos, ...destinos];
 
-  // Desplazamiento automático continuo
+  // Desplazamiento continuo controlado por requestAnimationFrame
   useEffect(() => {
-    const intervalo = setInterval(() => {
-      setIndice((prev) => prev + 1);
-    }, 50); // velocidad del movimiento
-    return () => clearInterval(intervalo);
-  }, []);
+    const carrusel = carruselRef.current;
+    let offset = 0;
+    let animationFrameId;
 
-  // Reinicio imperceptible del bucle
-  useEffect(() => {
-    if (indice >= destinos.length * 100) {
-      setIndice(0);
-    }
-  }, [indice]);
+    const deslizar = () => {
+      if (!isPaused) {
+        offset -= 0.5; // velocidad de desplazamiento
+        if (Math.abs(offset) >= carrusel.scrollWidth / 2) {
+          offset = 0; // reinicio invisible al llegar al medio
+        }
+        carrusel.style.transform = `translateX(${offset}px)`;
+      }
+      animationFrameId = requestAnimationFrame(deslizar);
+    };
 
-  // Flechas manuales
-  const siguiente = () => {
-    setIndice((prev) => prev + 100);
-  };
-
-  const anterior = () => {
-    setIndice((prev) => (prev - 100 < 0 ? destinos.length * 100 : prev - 100));
-  };
+    animationFrameId = requestAnimationFrame(deslizar);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isPaused]);
 
   return (
     <section className="section-destinos-populares">
@@ -62,15 +59,15 @@ const SectionDestinosPopulares = () => {
         <h2 className="titulo-barra">Destinos más populares</h2>
       </div>
 
-      <div className="carrusel">
-        <div
-          ref={contenedorRef}
-          className="carrusel-contenedor-infinito"
-          style={{ transform: `translateX(-${indice / 100}%)` }}
-        >
-          {destinosDobles.map((destino, i) => (
+      <div
+        className="carrusel"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        <div ref={carruselRef} className="carrusel-contenedor-infinito">
+          {destinosDobles.map((destino, index) => (
             <div
-              key={i}
+              key={index}
               className="tarjeta-carrusel"
               style={{ backgroundImage: `url(${destino.imagen})` }}
             >
@@ -82,13 +79,6 @@ const SectionDestinosPopulares = () => {
             </div>
           ))}
         </div>
-
-        <button className="flecha flecha-izquierda" onClick={anterior}>
-          &#10094;
-        </button>
-        <button className="flecha flecha-derecha" onClick={siguiente}>
-          &#10095;
-        </button>
       </div>
     </section>
   );
