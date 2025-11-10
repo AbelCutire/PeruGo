@@ -21,61 +21,39 @@ export default function Chat() {
 
     // ✅ nueva función que llama al backend Flask
   const fetchReplyFromBackend = useCallback(async (text) => {
-  try {
-    const res = await fetch("https://perugo-backend-production.up.railway.app/process", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text }),
-    });
-
-    const data = await res.json();
-
-    // ✅ Prioriza el campo "reply" si viene en formato JSON dentro de text_response
-    let reply = "No se obtuvo respuesta.";
-    if (typeof data.text_response === "string") {
-      try {
-        const parsed = JSON.parse(data.text_response);
-        reply = parsed.reply || data.text_response;
-      } catch {
-        reply = data.text_response;
+    try {
+      const res = await fetch("https://perugo-backend-production.up.railway.app/process", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+  
+      const data = await res.json();
+  
+      // ✅ Prioriza el campo "reply" si viene en formato JSON dentro de text_response
+      let reply = "No se obtuvo respuesta.";
+      if (typeof data.text_response === "string") {
+        try {
+          const parsed = JSON.parse(data.text_response);
+          reply = parsed.reply || data.text_response;
+        } catch {
+          reply = data.text_response;
+        }
       }
+  
+      // ✅ Si viene audio, reproducirlo
+      if (data.audio_base64) {
+        const audio = new Audio("data:audio/mp3;base64," + data.audio_base64);
+        audio.play();
+      }
+  
+      return reply;
+    } catch (err) {
+      console.error("Error comunicando con backend:", err);
+      return "Error al conectar con el servidor.";
     }
+  }, []);
 
-    // ✅ Si viene audio, reproducirlo
-    if (data.audio_base64) {
-      const audio = new Audio("data:audio/mp3;base64," + data.audio_base64);
-      audio.play();
-    }
-
-    return reply;
-  } catch (err) {
-    console.error("Error comunicando con backend:", err);
-    return "Error al conectar con el servidor.";
-  }
-}, []);
-
-
-
-  // --- generar respuesta automática ---
-  /*const generateReply = useCallback((inputText) => {
-    const text = String(inputText || "").toLowerCase();
-    if (!text) return "¿En qué puedo ayudarte?";
-    if (text.includes("hotel") || text.includes("alojamiento"))
-      return "Puedo mostrarte hoteles cerca del destino. ¿Quieres filtrar por precio, estrellas o ubicación?";
-    if (text.includes("restaurante") || text.includes("comida"))
-      return "¿Prefieres comida tradicional peruana, mariscos o alguna restricción alimentaria?";
-    if (text.includes("vuelo") || text.includes("aeropuerto"))
-      return "¿Deseas priorizar el precio o la duración del vuelo?";
-    if (text.includes("plan") || text.includes("itinerario"))
-      return "Te propongo un itinerario base: Día 1 llegada y city tour, Día 2 actividad principal, Día 3 retorno. ¿Lo adapto?";
-    if (text.includes("precio") || text.includes("costo"))
-      return "Estimación rápida: alojamiento S/120–350/noche, comida S/40–80/día, tours S/150–600 según actividad.";
-    if (text.includes("gracias") || text.includes("perfecto"))
-      return "¡De nada! ¿Quieres que lo guarde en Mis Planes?";
-    if (text.includes("mostrar") || text.includes("opciones"))
-      return "Aquí te muestro algunas opciones simuladas.";
-    return "Entiendo. ¿Qué quieres hacer primero: buscar hoteles, ver itinerarios o estimar precios?";
-  }, []); */
 
   const assistantReply = useCallback(async (toText) => {
   if (typingRef.current) return;
@@ -415,3 +393,4 @@ export default function Chat() {
     </>
   );
 }
+
