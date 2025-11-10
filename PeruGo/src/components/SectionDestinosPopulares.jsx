@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./SectionDestinosPopulares.css";
 
 const destinos = [
@@ -27,21 +27,33 @@ const destinos = [
 
 const SectionDestinosPopulares = () => {
   const [indice, setIndice] = useState(0);
+  const contenedorRef = useRef(null);
 
-  // Avance automático cada 5 segundos
+  // Duplicamos la lista para crear el efecto infinito
+  const destinosDobles = [...destinos, ...destinos];
+
+  // Desplazamiento automático continuo
   useEffect(() => {
     const intervalo = setInterval(() => {
-      siguiente();
-    }, 5000);
+      setIndice((prev) => prev + 1);
+    }, 50); // velocidad del movimiento
     return () => clearInterval(intervalo);
-  });
+  }, []);
 
+  // Reinicio imperceptible del bucle
+  useEffect(() => {
+    if (indice >= destinos.length * 100) {
+      setIndice(0);
+    }
+  }, [indice]);
+
+  // Flechas manuales
   const siguiente = () => {
-    setIndice((prev) => (prev + 1) % destinos.length);
+    setIndice((prev) => prev + 100);
   };
 
   const anterior = () => {
-    setIndice((prev) => (prev - 1 + destinos.length) % destinos.length);
+    setIndice((prev) => (prev - 100 < 0 ? destinos.length * 100 : prev - 100));
   };
 
   return (
@@ -52,10 +64,11 @@ const SectionDestinosPopulares = () => {
 
       <div className="carrusel">
         <div
-          className="carrusel-contenedor"
-          style={{ transform: `translateX(-${indice * 100}%)` }}
+          ref={contenedorRef}
+          className="carrusel-contenedor-infinito"
+          style={{ transform: `translateX(-${indice / 100}%)` }}
         >
-          {destinos.map((destino, i) => (
+          {destinosDobles.map((destino, i) => (
             <div
               key={i}
               className="tarjeta-carrusel"
@@ -82,5 +95,3 @@ const SectionDestinosPopulares = () => {
 };
 
 export default SectionDestinosPopulares;
-
-
