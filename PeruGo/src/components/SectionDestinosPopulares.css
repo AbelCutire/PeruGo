@@ -1,3 +1,11 @@
+/* Reset mínimo para este componente */
+.section-destinos-populares,
+.section-destinos-populares * {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Contenedor general */
 .section-destinos-populares {
   display: flex;
   flex-direction: column;
@@ -15,82 +23,167 @@
   align-items: center;
   width: 100%;
   background: #fff;
-  padding: 18px 32px;
+  padding: 16px 28px;
   border-bottom: 1px solid #e5e5e5;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .titulo-barra {
   font-weight: 800;
-  font-size: 22px;
+  font-size: 20px;
   color: #06202b;
+  margin: 0;
 }
 
-/* Carrusel */
+/* Carrusel visible */
 .carrusel {
   position: relative;
   width: 100%;
-  height: 80vh;
+  height: 75vh; /* altura ajustable */
+  max-height: 900px;
   overflow: hidden;
 }
 
-/* Contenedor doble con desplazamiento */
-.carrusel-contenedor-infinito {
+/* Contenedor de slides en fila */
+.carrusel-contenedor {
   display: flex;
-  width: max-content;
+  width: auto;
   height: 100%;
+  transition: transform 0.65s cubic-bezier(.2,.9,.2,1);
   will-change: transform;
 }
 
-/* Cada tarjeta ocupa todo el ancho visible */
+/* Cada tarjeta ocupa exactamente el ancho de la ventana */
 .tarjeta-carrusel {
   flex: 0 0 100vw;
   height: 100%;
   background-size: cover;
-  background-position: center;
+  background-position: center center;
+  background-repeat: no-repeat;
   position: relative;
+  display: flex;
+  align-items: flex-end;
 }
 
-/* Overlay de texto inferior */
+/* Overlay inferior para texto (contraste y legibilidad) */
 .tarjeta-carrusel .overlay {
-  position: absolute;
-  bottom: 0;
   width: 100%;
-  padding: 32px 20px;
-  background: linear-gradient(to top, rgba(255, 255, 255, 0.9), transparent);
+  padding: 28px 24px;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.92), transparent 40%);
   color: #111;
+  backdrop-filter: saturate(1.02);
 }
 
+/* Tipografía del contenido */
 .tarjeta-carrusel h3 {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 700;
-  margin-bottom: 6px;
+  margin: 0 0 6px 0;
 }
 
 .tarjeta-carrusel .ubicacion {
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: 1.05rem;
+  font-weight: 600;
   color: #333;
-  margin-bottom: 4px;
+  margin: 0 0 6px 0;
 }
 
 .tarjeta-carrusel .ideal {
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 400;
   color: #555;
+  margin: 0;
 }
 
-/* Responsividad */
+/* Flechas de navegación */
+.flecha {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.92);
+  border: 0;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 10px 12px;
+  border-radius: 50%;
+  transition: transform 0.18s ease, background-color 0.18s ease;
+  z-index: 20;
+  box-shadow: 0 6px 18px rgba(6, 32, 43, 0.12);
+}
+
+.flecha:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.flecha:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.flecha-izquierda {
+  left: 18px;
+}
+
+.flecha-derecha {
+  right: 18px;
+}
+
+/* Indicadores (puntos) */
+.indicadores {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 14px;
+  display: flex;
+  gap: 8px;
+  z-index: 20;
+}
+
+.punto {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(6, 32, 43, 0.18);
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+}
+
+.punto.activo {
+  background: rgba(6, 32, 43, 0.88);
+}
+
+/* Acomodo en pantallas pequeñas */
 @media (max-width: 900px) {
   .carrusel {
-    height: 60vh;
+    height: 58vh;
   }
 
   .tarjeta-carrusel .overlay {
-    padding: 24px 16px;
+    padding: 18px 14px;
   }
 
   .tarjeta-carrusel h3 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+  }
+
+  .flecha {
+    font-size: 1.5rem;
+    padding: 8px 10px;
+  }
+
+  .flecha-izquierda {
+    left: 10px;
+  }
+
+  .flecha-derecha {
+    right: 10px;
+  }
+}
+
+/* Mejora de rendimiento en móviles */
+@media (prefers-reduced-motion: reduce) {
+  .carrusel-contenedor {
+    transition: none;
   }
 }
