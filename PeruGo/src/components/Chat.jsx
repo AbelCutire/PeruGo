@@ -212,7 +212,7 @@ export default function Chat() {
         aria-label={isOpen ? "Ocultar chat" : "Abrir chat"}
         style={{
           position: "fixed",
-          right: 16,
+          right: 32,
           bottom: 16,
           zIndex: 9999,
           width: 48,
@@ -220,14 +220,14 @@ export default function Chat() {
           borderRadius: "9999px",
           border: "none",
           boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
-          background: isOpen ? "linear-gradient(135deg,#ef4444,#dc2626)" : "linear-gradient(135deg,#10b981,#059669)",
+          background: isOpen ? "linear-gradient(135deg, rgb(70 70 70), rgb(0 0 0));color: rgb(255, 255, 255)",
           color: "#fff",
           fontWeight: 700,
           cursor: "pointer"
         }}
         title={isOpen ? "Ocultar" : "Chat"}
       >
-        {isOpen ? "–" : "💬"}
+        {isOpen ? "–" : "/"}
       </button>
 
       <div id="chat" role="dialog" aria-label="Asistente de viaje" style={isOpen ? {} : { display: "none" }}>
@@ -276,7 +276,7 @@ export default function Chat() {
                   }}
                 >
                   <img
-                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop" // Buscar neutro
                     alt="assistant"
                     style={{
                       width: "100%",
@@ -319,7 +319,7 @@ export default function Chat() {
                   }}
                 >
                   <img
-                    src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=400&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=400&auto=format&fit=crop" // Cambiar cuando haya perfiles
                     alt="user"
                     style={{
                       width: "100%",
@@ -404,6 +404,7 @@ export default function Chat() {
     </>
   );
 }
+
 
 
 
