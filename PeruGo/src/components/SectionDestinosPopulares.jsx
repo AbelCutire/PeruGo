@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./SectionDestinosPopulares.css";
 
 const destinos = [
@@ -25,33 +25,63 @@ const destinos = [
   },
 ];
 
+const AUTO_ADVANCE_MS = 4500; // tiempo entre cambios automáticos (puedes ajustar)
+
 const SectionDestinosPopulares = () => {
-  const carruselRef = useRef(null);
+  const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const autoRef = useRef(null);
+  const contenedorRef = useRef(null);
 
-  // Duplicamos el arreglo para crear el efecto de bucle
-  const destinosDobles = [...destinos, ...destinos];
+  const siguiente = () => {
+    setIndex((prev) => (prev + 1) % destinos.length);
+    resetAutoAdvance();
+  };
 
-  // Desplazamiento continuo controlado por requestAnimationFrame
+  const anterior = () => {
+    setIndex((prev) => (prev - 1 + destinos.length) % destinos.length);
+    resetAutoAdvance();
+  };
+
+  // (Re)inicia el intervalo automático
+  const resetAutoAdvance = () => {
+    if (autoRef.current) {
+      clearInterval(autoRef.current);
+    }
+    autoRef.current = setInterval(() => {
+      setIndex((prev) => (prev + 1) % destinos.length);
+    }, AUTO_ADVANCE_MS);
+  };
+
+  // Inicializar intervalo
   useEffect(() => {
-    const carrusel = carruselRef.current;
-    let offset = 0;
-    let animationFrameId;
-
-    const deslizar = () => {
-      if (!isPaused) {
-        offset -= 0.5; // velocidad de desplazamiento
-        if (Math.abs(offset) >= carrusel.scrollWidth / 2) {
-          offset = 0; // reinicio invisible al llegar al medio
-        }
-        carrusel.style.transform = `translateX(${offset}px)`;
-      }
-      animationFrameId = requestAnimationFrame(deslizar);
+    resetAutoAdvance();
+    return () => {
+      if (autoRef.current) clearInterval(autoRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    animationFrameId = requestAnimationFrame(deslizar);
-    return () => cancelAnimationFrame(animationFrameId);
+  // Pausar al entrar y reanudar al salir
+  useEffect(() => {
+    if (isPaused) {
+      if (autoRef.current) clearInterval(autoRef.current);
+      return;
+    }
+    // si no está pausado, asegurar que el intervalo esté activo
+    if (!autoRef.current) resetAutoAdvance();
   }, [isPaused]);
+
+  // Navegación con teclado: flechas izquierda/derecha
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "ArrowLeft") anterior();
+      if (e.key === "ArrowRight") siguiente();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <section className="section-destinos-populares">
@@ -63,12 +93,20 @@ const SectionDestinosPopulares = () => {
         className="carrusel"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
+        aria-roledescription="carrusel de destinos"
       >
-        <div ref={carruselRef} className="carrusel-contenedor-infinito">
-          {destinosDobles.map((destino, index) => (
-            <div
-              key={index}
+        <div
+          className="carrusel-contenedor"
+          ref={contenedorRef}
+          style={{ transform: `translateX(-${index * 100}vw)` }}
+        >
+          {destinos.map((destino, i) => (
+            <article
+              key={i}
               className="tarjeta-carrusel"
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${i + 1} de ${destinos.length}: ${destino.nombre}`}
               style={{ backgroundImage: `url(${destino.imagen})` }}
             >
               <div className="overlay">
@@ -76,7 +114,36 @@ const SectionDestinosPopulares = () => {
                 <p className="ubicacion">{destino.ubicacion}</p>
                 <p className="ideal">Ideal para {destino.ideal}</p>
               </div>
-            </div>
+            </article>
+          ))}
+        </div>
+
+        <button
+          className="flecha flecha-izquierda"
+          onClick={anterior}
+          aria-label="Anterior"
+        >
+          &#10094;
+        </button>
+        <button
+          className="flecha flecha-derecha"
+          onClick={siguiente}
+          aria-label="Siguiente"
+        >
+          &#10095;
+        </button>
+
+        <div className="indicadores" aria-hidden>
+          {destinos.map((_, i) => (
+            <button
+              key={i}
+              className={`punto ${i === index ? "activo" : ""}`}
+              onClick={() => {
+                setIndex(i);
+                resetAutoAdvance();
+              }}
+              aria-label={`Ir al slide ${i + 1}`}
+            />
           ))}
         </div>
       </div>
