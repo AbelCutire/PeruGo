@@ -220,7 +220,7 @@ export default function Chat() {
           borderRadius: "9999px",
           border: "none",
           boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
-          background: isOpen ? "linear-gradient(135deg, rgb(70,70,70), rgb(0,0,0))" : "linear-gradient(135deg, #10b981, #059669)",
+          background: "linear-gradient(135deg, rgb(70,70,70), rgb(0,0,0))",
           color: "#fff",
           fontWeight: 700,
           cursor: "pointer"
@@ -404,6 +404,7 @@ export default function Chat() {
     </>
   );
 }
+
 
 
 
