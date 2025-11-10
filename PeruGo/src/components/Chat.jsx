@@ -77,38 +77,29 @@ export default function Chat() {
     return "Entiendo. ¿Qué quieres hacer primero: buscar hoteles, ver itinerarios o estimar precios?";
   }, []); */
 
-  const assistantReply = useCallback(
-    async (toText) => {
-      if (typingRef.current) return;
-      typingRef.current = true;
+  const assistantReply = useCallback(async (toText) => {
+  if (typingRef.current) return;
+  typingRef.current = true;
 
-      // Mensaje temporal "Escribiendo..."
-      setMessages((prev) => [
-        ...prev,
-        { sender: "assistant", text: "Escribiendo…", time: Date.now() },
-      ]);
+  setMessages((prev) => [
+    ...prev,
+    { sender: "assistant", text: "Escribiendo…", time: Date.now() },
+  ]);
 
-      try {
-        const reply = await fetchReplyFromBackend(toText);
+  try {
+    const reply = await fetchReplyFromBackend(toText);
+    setMessages((prev) => {
+      const copy = [...prev];
+      const i = copy.findIndex(m => m.sender === "assistant" && m.text === "Escribiendo…");
+      if (i >= 0) copy.splice(i, 1);
+      copy.push({ sender: "assistant", text: String(reply), time: Date.now() });
+      return copy;
+    });
+  } finally {
+    typingRef.current = false;
+  }
+}, [fetchReplyFromBackend]);
 
-        setMessages((prev) => {
-          const copy = [...prev];
-          // eliminar "Escribiendo..."
-          for (let i = copy.length - 1; i >= 0; i--) {
-            if (copy[i].sender === "assistant" && copy[i].text === "Escribiendo…") {
-              copy.splice(i, 1);
-              break;
-            }
-          }
-          copy.push({ sender: "assistant", text: String(reply), time: Date.now() });
-          return copy;
-        });
-      } finally {
-        typingRef.current = false;
-      }
-    },
-    [fetchReplyFromBackend]
-  );
 
 
   // --- enviar mensaje del usuario ---
@@ -413,5 +404,6 @@ export default function Chat() {
     </>
   );
 }
+
 
 
