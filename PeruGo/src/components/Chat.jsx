@@ -201,6 +201,17 @@ export default function Chat() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messages]);
 
+  useEffect(() => {
+    const handleKeyToggle = (e) => {
+      if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault();
+        setIsOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyToggle);
+    return () => window.removeEventListener("keydown", handleKeyToggle);
+  }, []);
+
   
   // Mostrar/Ocultar chat
   const toggleOpen = useCallback(() => setIsOpen(o => !o), []);
@@ -404,9 +415,3 @@ export default function Chat() {
     </>
   );
 }
-
-
-
-
-
-
