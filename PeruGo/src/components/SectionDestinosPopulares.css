@@ -26,7 +26,7 @@
   color: #06202b;
 }
 
-/* --- Carrusel principal --- */
+/* Carrusel */
 .carrusel {
   position: relative;
   width: 100%;
@@ -34,16 +34,17 @@
   overflow: hidden;
 }
 
-.carrusel-contenedor {
+/* Carrusel continuo */
+.carrusel-contenedor-infinito {
   display: flex;
-  transition: transform 0.8s ease-in-out;
-  width: 100%;
+  width: calc(200%); /* el doble por duplicación */
   height: 100%;
+  transition: transform 0.4s linear;
 }
 
-/* Cada tarjeta ocupa toda la pantalla */
+/* Tarjeta individual */
 .tarjeta-carrusel {
-  min-width: 100%;
+  flex: 0 0 100%;
   height: 100%;
   background-size: cover;
   background-position: center;
@@ -79,7 +80,7 @@
   color: #555;
 }
 
-/* Flechas de navegación */
+/* Flechas */
 .flecha {
   position: absolute;
   top: 50%;
@@ -120,5 +121,3 @@
     font-size: 1.4rem;
   }
 }
-
-
