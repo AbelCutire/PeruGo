@@ -25,11 +25,15 @@ export default function Chat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
       });
+  
+      if (!res.ok) return { reply: "Error al conectar con el servidor.", audio: null };
+  
       const data = await res.json();
       let reply = "No se obtuvo respuesta.";
-      if (typeof data.text_response === "object" && data.text_response !== null) {
+  
+      if (typeof data.text_response === "object" && data.text_response !== null)
         reply = data.text_response.reply || JSON.stringify(data.text_response);
-      } else if (typeof data.text_response === "string") {
+      else if (typeof data.text_response === "string") {
         try {
           const parsed = JSON.parse(data.text_response);
           reply = parsed.reply || data.text_response;
@@ -37,15 +41,25 @@ export default function Chat() {
           reply = data.text_response;
         }
       }
-      if (data.audio_base64) {
-        const audio = new Audio("data:audio/mp3;base64," + data.audio_base64);
-        audio.play();
+  
+      const audio = data.audio_base64 ? "data:audio/mp3;base64," + data.audio_base64 : null;
+  
+      // reproducir automáticamente
+      if (audio) {
+        try {
+          const a = new Audio(audio);
+          a.play().catch(() => console.warn("Autoplay bloqueado por navegador"));
+        } catch (e) {
+          console.error("Error al reproducir audio:", e);
+        }
       }
-      return reply;
+  
+      return { reply, audio };
     } catch {
-      return "Error al conectar con el servidor.";
+      return { reply: "Error al conectar con el servidor.", audio: null };
     }
   }, []);
+
 
   const assistantReply = useCallback(
     async (toText) => {
@@ -283,4 +297,5 @@ export default function Chat() {
     </>
   );
 }
+
 
