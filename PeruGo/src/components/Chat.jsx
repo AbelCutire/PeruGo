@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { speakText } from "@/functions/speakText";
 import { Volume2 } from "lucide-react";
-import "./chat.css";
+import "./Chat.css";
 
 const STORAGE_KEY = "perugo_chat";
 
@@ -260,3 +260,4 @@ export default function Chat() {
     </>
   );
 }
+
