@@ -121,140 +121,140 @@ export default function Chat() {
   const toggleOpen = useCallback(() => setIsOpen((o) => !o), []);
 
   return (
-    <>
+    <div
+      id="chat"
+      role="dialog"
+      aria-label="Asistente de viaje"
+      style={{
+        position: "fixed",
+        right: 32,
+        bottom: 0,
+        width: 340,
+        background: "#f9fbfd",
+        borderRadius: "20px 20px 0 0",
+        boxShadow: "0 -4px 24px rgba(0,0,0,0.15)",
+        overflow: "hidden",
+        transition: "max-height 0.4s ease-in-out",
+        maxHeight: isOpen ? "70vh" : "60px",
+        zIndex: 9998,
+      }}
+    >
+      {/* Botón centrado respecto al header */}
       <button
         onClick={toggleOpen}
         aria-label={isOpen ? "Ocultar chat" : "Abrir chat"}
         style={{
-          position: "fixed",
-          top: 16,
-          right: 32,
-          zIndex: 9999,
-          width: 48,
-          height: 48,
+          position: "absolute",
+          top: 0,
+          left: "50%",
+          transform: "translateX(-50%) translateY(-50%)",
+          width: 44,
+          height: 44,
           borderRadius: "50%",
           border: "none",
-          boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
           background: "linear-gradient(135deg, rgb(70,70,70), rgb(0,0,0))",
           color: "#fff",
           fontWeight: 700,
           cursor: "pointer",
+          zIndex: 9999,
+          boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
         }}
       >
         {isOpen ? "–" : "💬"}
       </button>
 
-      <div
-        id="chat"
-        role="dialog"
-        aria-label="Asistente de viaje"
+      <header
         style={{
-          position: "fixed",
-          right: 32,
-          bottom: 0,
-          width: 340,
-          background: "#f9fbfd",
-          borderRadius: "20px 20px 0 0",
-          boxShadow: "0 -4px 24px rgba(0,0,0,0.15)",
-          overflow: "hidden",
-          transition: "max-height 0.4s ease-in-out",
-          maxHeight: isOpen ? "70vh" : "0",
-          zIndex: 9998,
+          background: "linear-gradient(90deg,var(--accent,#007aff),#00cfe8)",
+          color: "white",
+          padding: "12px 16px",
+          fontWeight: 700,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          position: "sticky",
+          top: 0,
+          zIndex: 2,
         }}
       >
-        <header
-          style={{
-            background: "linear-gradient(90deg,var(--accent,#007aff),#00cfe8)",
-            color: "white",
-            padding: "12px 16px",
-            fontWeight: 700,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            position: "sticky",
-            top: 0,
-            zIndex: 2,
-          }}
-        >
-          <span>PerúGo Asistente</span>
-          <span style={{ fontSize: 12 }}>En línea</span>
-        </header>
+        <span>PerúGo Asistente</span>
+        <span style={{ fontSize: 12 }}>En línea</span>
+      </header>
 
-        <div
-          ref={scrollRef}
-          style={{
-            flex: 1,
-            overflowY: "auto",
-            padding: 12,
-            height: "50vh",
-            background: "#fff",
-          }}
-        >
-          {messages.map((msg, i) => {
-            const isUser = msg.sender === "user";
-            return (
+      <div
+        ref={scrollRef}
+        style={{
+          flex: 1,
+          overflowY: "auto",
+          padding: 12,
+          height: "50vh",
+          background: "#fff",
+        }}
+      >
+        {messages.map((msg, i) => {
+          const isUser = msg.sender === "user";
+          return (
+            <div
+              key={i}
+              style={{
+                display: "flex",
+                justifyContent: isUser ? "flex-end" : "flex-start",
+                marginBottom: 8,
+              }}
+            >
               <div
-                key={i}
                 style={{
-                  display: "flex",
-                  justifyContent: isUser ? "flex-end" : "flex-start",
-                  marginBottom: 8,
+                  background: isUser ? "linear-gradient(90deg,var(--accent),#00cfe8)" : "#eef6fb",
+                  color: isUser ? "#fff" : "#06202b",
+                  padding: 10,
+                  borderRadius: 10,
+                  maxWidth: "80%",
                 }}
               >
-                <div
-                  style={{
-                    background: isUser ? "linear-gradient(90deg,var(--accent),#00cfe8)" : "#eef6fb",
-                    color: isUser ? "#fff" : "#06202b",
-                    padding: 10,
-                    borderRadius: 10,
-                    maxWidth: "80%",
-                  }}
-                >
-                  {msg.text}
-                </div>
+                {msg.text}
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
+      </div>
 
-        <div
+      <div
+        style={{
+          display: "flex",
+          padding: 12,
+          borderTop: "1px solid #e0e6eb",
+          background: "#f7fbff",
+        }}
+      >
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSend()}
+          placeholder="Escribe aquí..."
           style={{
-            display: "flex",
-            padding: 12,
-            borderTop: "1px solid #e0e6eb",
-            background: "#f7fbff",
+            flex: 1,
+            borderRadius: 8,
+            border: "1px solid #ccd9e3",
+            padding: 10,
+          }}
+        />
+        <button
+          onClick={handleSpeak}
+          style={{
+            marginLeft: 8,
+            borderRadius: "50%",
+            border: "none",
+            background: isSpeaking
+              ? "linear-gradient(135deg,#34d399,#059669)"
+              : "linear-gradient(135deg,#3b82f6,#2563eb)",
+            color: "#fff",
+            padding: 10,
+            cursor: "pointer",
           }}
         >
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            placeholder="Escribe aquí..."
-            style={{
-              flex: 1,
-              borderRadius: 8,
-              border: "1px solid #ccd9e3",
-              padding: 10,
-            }}
-          />
-          <button
-            onClick={handleSpeak}
-            style={{
-              marginLeft: 8,
-              borderRadius: "50%",
-              border: "none",
-              background: isSpeaking
-                ? "linear-gradient(135deg,#34d399,#059669)"
-                : "linear-gradient(135deg,#3b82f6,#2563eb)",
-              color: "#fff",
-              padding: 10,
-              cursor: "pointer",
-            }}
-          >
-            <Volume2 size={20} />
-          </button>
-        </div>
+          <Volume2 size={20} />
+        </button>
       </div>
-    </>
+    </div>
   );
 }
