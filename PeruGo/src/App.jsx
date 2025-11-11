@@ -45,11 +45,9 @@ function App() {
 
   // Si no está autenticado, mostrar el login
   if (!isLogged) {
-    return <Login onLogin={handleLogin} />;
-  }
 
   // Si está logueado, mostrar contenido principal
-  return (
+    return (
     <div className="App">
       <Header onLogout={handleLogout} isLogged={isLogged} />
 
