@@ -166,7 +166,7 @@ export default function Chat() {
             boxShadow: "0 6px 18px rgba(0,0,0,0.2)",
           }}
         >
-          {isOpen ? "–" : "💬"}
+          {isOpen ? "–" : "/"}
         </button>
 
         <div
@@ -283,3 +283,4 @@ export default function Chat() {
     </>
   );
 }
+
