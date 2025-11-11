@@ -12,7 +12,7 @@ import "./App.css";
 
 function App() {
   // Estado de autenticación
-  const [isLogged, setIsLogged] = useState(false);
+  const [isLogged, setIsLogged] = useState(true);
 
   useEffect(() => {
     // Verificamos si hay una sesión activa guardada
