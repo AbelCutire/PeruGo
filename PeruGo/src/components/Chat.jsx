@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { speakText } from "@/functions/speakText"; // ✅ TTS nativo
-import { Volume2 } from "lucide-react"; // 🔊 icono de parlante
+import { speakText } from "@/functions/speakText";
+import { Volume2 } from "lucide-react";
+import "./chat.css";
 
 const STORAGE_KEY = "perugo_chat";
 
@@ -14,12 +15,10 @@ export default function Chat() {
   const typingRef = useRef(false);
   const scrollRef = useRef(null);
 
-  // --- enviar mensaje al historial ---
   const pushChat = useCallback((text, sender = "assistant") => {
     setMessages((prev) => [...prev, { sender, text, time: Date.now() }]);
   }, []);
 
-    // ✅ nueva función que llama al backend Flask
   const fetchReplyFromBackend = useCallback(async (text) => {
     try {
       const res = await fetch("https://perugo-backend-production.up.railway.app/process", {
@@ -27,16 +26,13 @@ export default function Chat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
       });
-  
+
       const data = await res.json();
-  
       let reply = "No se obtuvo respuesta.";
-  
-      // ✅ Asegurar que text_response sea un string
+
       if (typeof data.text_response === "object" && data.text_response !== null) {
         reply = data.text_response.reply || JSON.stringify(data.text_response);
       } else if (typeof data.text_response === "string") {
-        // Si ya es texto, intentar parsear por si viene como string JSON
         try {
           const parsed = JSON.parse(data.text_response);
           reply = parsed.reply || data.text_response;
@@ -44,12 +40,12 @@ export default function Chat() {
           reply = data.text_response;
         }
       }
-  
+
       if (data.audio_base64) {
         const audio = new Audio("data:audio/mp3;base64," + data.audio_base64);
         audio.play();
       }
-  
+
       return reply;
     } catch (err) {
       console.error("Error comunicando con backend:", err);
@@ -58,31 +54,28 @@ export default function Chat() {
   }, []);
 
   const assistantReply = useCallback(async (toText) => {
-  if (typingRef.current) return;
-  typingRef.current = true;
+    if (typingRef.current) return;
+    typingRef.current = true;
 
-  setMessages((prev) => [
-    ...prev,
-    { sender: "assistant", text: "Escribiendo…", time: Date.now() },
-  ]);
+    setMessages((prev) => [
+      ...prev,
+      { sender: "assistant", text: "Escribiendo…", time: Date.now() },
+    ]);
 
-  try {
-    const reply = await fetchReplyFromBackend(toText);
-    setMessages((prev) => {
-      const copy = [...prev];
-      const i = copy.findIndex(m => m.sender === "assistant" && m.text === "Escribiendo…");
-      if (i >= 0) copy.splice(i, 1);
-      copy.push({ sender: "assistant", text: String(reply), time: Date.now() });
-      return copy;
-    });
-  } finally {
-    typingRef.current = false;
-  }
-}, [fetchReplyFromBackend]);
+    try {
+      const reply = await fetchReplyFromBackend(toText);
+      setMessages((prev) => {
+        const copy = [...prev];
+        const i = copy.findIndex((m) => m.sender === "assistant" && m.text === "Escribiendo…");
+        if (i >= 0) copy.splice(i, 1);
+        copy.push({ sender: "assistant", text: String(reply), time: Date.now() });
+        return copy;
+      });
+    } finally {
+      typingRef.current = false;
+    }
+  }, [fetchReplyFromBackend]);
 
-
-
-  // --- enviar mensaje del usuario ---
   const handleSend = useCallback(
     (externalText = null) => {
       const v = (externalText ? externalText : input).trim();
@@ -94,8 +87,6 @@ export default function Chat() {
     [input, pushChat, assistantReply]
   );
 
-
-  // --- reproducir último mensaje del asistente ---
   const handleSpeak = useCallback(async () => {
     const assistantMsgs = messages.filter(
       (m) => m.sender === "assistant" && m.text !== "Escribiendo…"
@@ -112,7 +103,6 @@ export default function Chat() {
     }
   }, [messages]);
 
-  // --- cargar mensajes guardados ---
   useEffect(() => {
     try {
       const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
@@ -153,7 +143,6 @@ export default function Chat() {
     };
   }, [pushChat, assistantReply]);
 
-  // --- 🔥 NUEVO: escuchar mensajes desde Hero o Header ---
   useEffect(() => {
     const onChatMessage = (e) => {
       const txt = e?.detail?.text;
@@ -166,7 +155,6 @@ export default function Chat() {
     return () => window.removeEventListener("chatMessage", onChatMessage);
   }, [pushChat, assistantReply]);
 
-  // --- guardar historial ---
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
@@ -175,7 +163,6 @@ export default function Chat() {
     }
   }, [messages]);
 
-  // --- autoscroll ---
   useEffect(() => {
     if (scrollRef.current)
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -192,208 +179,84 @@ export default function Chat() {
     return () => window.removeEventListener("keydown", handleKeyToggle);
   }, []);
 
-  
-  // Mostrar/Ocultar chat
-  const toggleOpen = useCallback(() => setIsOpen(o => !o), []);
-// --- render ---
+  const toggleOpen = useCallback(() => setIsOpen((o) => !o), []);
+
   return (
     <>
       <button
         onClick={toggleOpen}
         aria-label={isOpen ? "Ocultar chat" : "Abrir chat"}
-        style={{
-          position: "fixed",
-          right: 32,
-          bottom: 16,
-          zIndex: 9999,
-          width: 48,
-          height: 48,
-          borderRadius: "9999px",
-          border: "none",
-          boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
-          background: "linear-gradient(135deg, rgb(70,70,70), rgb(0,0,0))",
-          color: "#fff",
-          fontWeight: 700,
-          cursor: "pointer"
-        }}
+        className="chat-toggle"
         title={isOpen ? "Ocultar" : "Chat"}
       >
         {isOpen ? "–" : "/"}
       </button>
 
-      <div id="chat" role="dialog" aria-label="Asistente de viaje" style={isOpen ? {} : { display: "none" }}>
-      <header>
-        <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-          <div style={{ fontWeight: 800 }}>PerúGo</div>
-          <div style={{ fontSize: 13, opacity: 0.9 }}>Asistente</div>
-        </div>
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <div id="chatStatus" style={{ fontSize: 13, opacity: 0.9 }}>
-            En línea
+      <div id="chat" role="dialog" aria-label="Asistente de viaje" className={isOpen ? "chat" : "hidden"}>
+        <header className="chat-header">
+          <div className="chat-title">
+            <div className="chat-name">PerúGo</div>
+            <div className="chat-role">Asistente</div>
           </div>
-        </div>
-      </header>
+          <div className="chat-status">En línea</div>
+        </header>
 
-      <div
-        className="messages"
-        ref={scrollRef}
-        style={{ flex: 1, overflow: "auto", padding: 12 }}
-      >
-        {messages.map((msg, i) => {
-          const isUser = msg.sender === "user";
-          return (
-            <div
-              key={i}
-              className={`msg ${isUser ? "user" : "assistant"}`}
-              style={{
-                alignSelf: isUser ? "flex-end" : "flex-start",
-                maxWidth: "78%",
-                display: "flex",
-                gap: 8,
-                alignItems: "flex-end",
-                marginBottom: 8,
-              }}
-            >
-              {!isUser && (
-                <span
-                  className="avatar"
-                  aria-hidden="true"
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 999,
-                    overflow: "hidden",
-                    flexShrink: 0,
-                  }}
-                >
-                  <img
-                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop" // Buscar neutro
-                    alt="assistant"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
-                </span>
-              )}
+        <div className="messages" ref={scrollRef}>
+          {messages.map((msg, i) => {
+            const isUser = msg.sender === "user";
+            return (
+              <div key={i} className={`msg ${isUser ? "user" : "assistant"}`}>
+                {!isUser && (
+                  <span className="avatar">
+                    <img
+                      src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
+                      alt="assistant"
+                    />
+                  </span>
+                )}
 
-              <div
-                className="bubble"
-                style={{
-                  padding: 8,
-                  borderRadius: 8,
-                  background: isUser
-                    ? "linear-gradient(90deg,var(--accent),#00cfe8)"
-                    : "#fff",
-                  color: isUser ? "#fff" : "#06202b",
-                  boxShadow: isUser
-                    ? "0 2px 6px rgba(0,0,0,0.15)"
-                    : "0 1px 4px rgba(0,0,0,0.1)",
-                }}
-              >
-                <div style={{ whiteSpace: "pre-wrap", fontSize: 14 }}>
-                  {msg.text}
+                <div className={`bubble ${isUser ? "user-bubble" : "assistant-bubble"}`}>
+                  <div>{msg.text}</div>
                 </div>
+
+                {isUser && (
+                  <span className="avatar">
+                    <img
+                      src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=400&auto=format&fit=crop"
+                      alt="user"
+                    />
+                  </span>
+                )}
               </div>
+            );
+          })}
+        </div>
 
-              {isUser && (
-                <span
-                  className="avatar"
-                  aria-hidden="true"
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 999,
-                    overflow: "hidden",
-                    flexShrink: 0,
-                  }}
-                >
-                  <img
-                    src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=400&auto=format&fit=crop" // Cambiar cuando haya perfiles
-                    alt="user"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
-                </span>
-              )}
-            </div>
-          );
-        })}
+        <div className="input">
+          <input
+            id="chatInput"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSend();
+            }}
+            placeholder="Escribe aquí..."
+            aria-label="Entrada de chat"
+          />
+
+          <button
+            onClick={handleSpeak}
+            title="Reproducir último mensaje"
+            className={`speak-btn ${isSpeaking ? "speaking" : ""}`}
+          >
+            <Volume2 size={20} />
+          </button>
+
+          <button className="primary" onClick={() => handleSend()}>
+            Enviar
+          </button>
+        </div>
       </div>
-
-      <div
-        className="input"
-        style={{
-          display: "flex",
-          gap: 8,
-          padding: 12,
-          borderTop: "1px solid #eef6fb",
-          background: "linear-gradient(180deg,#fff,#f7fbff)",
-        }}
-      >
-        <input
-          id="chatInput"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleSend();
-          }}
-          placeholder="Escribe aquí..."
-          style={{
-            flex: 1,
-            padding: 12,
-            borderRadius: 10,
-            border: "1px solid #eef6fb",
-          }}
-          aria-label="Entrada de chat"
-        />
-
-        <button
-          onClick={handleSpeak}
-          title="Reproducir último mensaje"
-          style={{
-            padding: 10,
-            borderRadius: "50%",
-            background: isSpeaking
-              ? "linear-gradient(135deg,#34d399,#059669)"
-              : "linear-gradient(135deg,#3b82f6,#2563eb)",
-            border: "none",
-            color: "white",
-            boxShadow: isSpeaking
-              ? "0 0 12px rgba(52,211,153,0.8)"
-              : "0 0 10px rgba(59,130,246,0.6)",
-            cursor: "pointer",
-            transition: "all 0.2s ease-in-out",
-            transform: isSpeaking ? "scale(1.05)" : "scale(1)",
-          }}
-        >
-          <Volume2 size={20} />
-        </button>
-
-        <button
-          className="primary"
-          onClick={() => handleSend()}
-          style={{
-            padding: "10px 14px",
-            borderRadius: 10,
-            background: "linear-gradient(90deg,var(--accent),#00cfe8)",
-            color: "#fff",
-            fontWeight: 600,
-            border: "none",
-            cursor: "pointer",
-            transition: "0.2s ease-in-out",
-          }}
-        >
-          Enviar
-        </button>
-      </div>
-    </div>
     </>
   );
 }
-
-
