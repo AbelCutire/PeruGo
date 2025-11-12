@@ -1,11 +1,29 @@
+:root {
+  --color-bg: rgb(243,243,243);
+  --color-texto: rgb(0, 0, 0);
+  --color-btn: rgb(222,222,222);
+  --color-btn-hover: rgb(152,152,152);
+  --color-icon: rgb(255,255,255);
+  /* ... añade todas tus otras variables de color aquí ... */
+}
+
+/* body.dark-mode sobrescribe las variables cuando el modo oscuro está activo */
+body.dark-mode {
+  --color-bg: rgb(18, 18, 18);
+  --color-texto: rgb(255, 255, 255);
+  --color-btn: rgb(57,57,57);
+  --color-btn-hover: rgb(127,127,127);
+  --color-icon: rgb(0,0,0);
+  /* ... etc. ... */
+}
 
 .hero {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: #f3f4f6;
-  color: #111;
+  background: var(--color-bg);
+  color: var(--color-bg);
   font-family: "Inter", system-ui, sans-serif;
 }
 
@@ -22,13 +40,13 @@
 .hero-title {
   font-size: 3.8rem;
   font-weight: 800;
-  color: #000; /* negro sólido */
+  color: var(--color-texto); /* negro sólido */
   letter-spacing: -0.04em;
 }
 
 .hero-subtitle {
   font-size: 1.2rem;
-  color: #666;
+  color: var(--color-texto);
   font-weight: 400;
   margin-top: -2.5rem;
 }
@@ -36,8 +54,7 @@
 /* === MICROFONO === */
 .mic-grande {
   background: #fff;
-  border: 2px solid #ddd;
-  color: #111;
+  color: var(--color-icon);
   width: 90px;
   height: 90px;
   border-radius: 50%;
@@ -50,7 +67,7 @@
 }
 
 .mic-grande:hover {
-  background: #f9fafb;
+  background: var(--color-btn-hover);
   transform: translateY(-3px);
 }
 
@@ -66,12 +83,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: white;
-  border-radius: 14px;
+  background: var(--color-bg);
+  border-radius: 34px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
   padding: 0.3rem 0.5rem;
-  max-width: 650px;
-  width: 90%;
+  width: 200%;
+  border: 2px solid #434343;
 }
 
 .hero-input {
@@ -81,19 +98,18 @@
   font-size: 1.05rem;
   padding: 0.9rem;
   border-radius: 8px;
-  color: #222;
+  color: var(--color-texto);
   background: transparent;
   font-family: inherit;
 }
 
 .hero-input::placeholder {
-  color: #aaa;
+  color: #676767;
 }
 
 .btn-search {
   border: none;
-  background: #111;
-  color: white;
+  background: var(--color-btn);
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -106,8 +122,8 @@
 }
 
 .btn-search:hover {
-  background: #000;
-  transform: scale(1.08);
+  background: var(--color-btn-hover);
+  transform: scale(1.1);
 }
 
 /* === ANIMACIONES === */
@@ -153,6 +169,7 @@
     font-size: 0.95rem;
   }
 }
+
 
 
 
