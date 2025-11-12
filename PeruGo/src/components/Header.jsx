@@ -5,22 +5,6 @@ import { useRouter } from "next/navigation";
 import useVoiceSearch from "@/components/funciones/VoiceSearch";
 import "./Header.css";
 
-/* Importar imágenes desde la carpeta local ./icons */
-import logo from "./icons/logo.png";
-import logoAlt from "./icons/logo_alt.png";
-
-import explore from "./icons/explore.png";
-import exploreAlt from "./icons/explore_alt.png";
-
-import mic from "./icons/mic.png";
-import micAlt from "./icons/mic_alt.png";
-
-import mode from "./icons/mode.png";
-import modeAlt from "./icons/mode_alt.png";
-
-import user from "./icons/user.png";
-import userAlt from "./icons/user_alt.png";
-
 export default function Header({
   isLogged = true,
   onLogout = () => {},
@@ -32,7 +16,7 @@ export default function Header({
   const menuRef = useRef(null);
   const router = useRouter();
 
-  // Voz
+  // --- Voz ---
   const { record, text, toggleRecord } = useVoiceSearch();
   useEffect(() => {
     if (!record && text && text.trim()) {
@@ -40,7 +24,7 @@ export default function Header({
     }
   }, [record, text]);
 
-  // Cerrar menú al hacer clic fuera
+  // --- Cerrar menú al hacer clic fuera ---
   useEffect(() => {
     const onDocClick = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -51,34 +35,38 @@ export default function Header({
     return () => document.removeEventListener("mousedown", onDocClick);
   }, []);
 
+  // --- Usuario por defecto ---
   const userData = user || {
     nombre: "Usuario ejemplo",
     correo: "usuario@correo.com",
   };
 
-  // Modo: solo cambia íconos (no tocar color del header)
+  // --- Alternar modo (solo cambia íconos) ---
   const toggleMode = () => {
     setIsDarkMode((prev) => !prev);
   };
 
-  const pick = (normal, alt) => (isDarkMode ? alt : normal);
+  // --- Generar ruta según modo ---
+  const imgPath = (name) =>
+    `/icons/${isDarkMode ? `${name}_alt.png` : `${name}.png`}`;
 
   return (
     <header className="header-fijo header-amplio">
       <div className="header-contenido header-contenido-amplio">
-        {/* LOGO + TEXTO */}
+        {/* LOGO */}
         <div
           className="logo-header"
           onClick={() => router.push("/")}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => e.key === "Enter" && router.push("/")}
-          aria-label="Ir al inicio"
+          style={{ cursor: "pointer" }}
         >
-          <div className="logo-img-container" aria-hidden>
-            <img src={pick(logo, logoAlt)} alt="PeruGo" className="logo-img" draggable="false" />
+          <div className="logo-img-container">
+            <img
+              src={imgPath("logo")}
+              alt="PeruGo"
+              className="logo-img"
+              draggable="false"
+            />
           </div>
-
           <div className="logo-text">
             <span className="logo-principal">PeruGo</span>
             <span className="logo-secundario">El Perú te habla</span>
@@ -87,56 +75,70 @@ export default function Header({
 
         {/* NAV */}
         <nav className="nav-header" aria-label="Navegación principal">
-          {/* Mis Planes (explorar) */}
+          {/* --- Mis Planes --- */}
           <button
             className="btn-icono"
-            title="Mis planes"
-            aria-label="Mis planes"
+            title="Explorar"
             onClick={() => router.push("/mis-planes")}
           >
-            <img src={pick(explore, exploreAlt)} alt="Explorar" className="icon-img" draggable="false" />
+            <img
+              src={imgPath("explore")}
+              alt="Explorar"
+              className="icon-img"
+              draggable="false"
+            />
           </button>
 
-          {/* Micrófono */}
+          {/* --- Micrófono --- */}
           <button
             className={`btn-icono mic-btn ${record ? "mic-active" : ""}`}
             title="Hablar con el asistente"
-            aria-label={record ? "Detener grabación" : "Iniciar grabación"}
             onClick={toggleRecord}
           >
-            <img src={pick(mic, micAlt)} alt="Micrófono" className="icon-img" draggable="false" />
+            <img
+              src={imgPath("mic")}
+              alt="Micrófono"
+              className="icon-img"
+              draggable="false"
+            />
           </button>
 
-          {/* Modo (mode.png / mode_alt.png) */}
+          {/* --- Botón modo (mode.png / mode_alt.png) --- */}
           <button
             className="btn-icono"
-            title="Cambiar modo visual"
-            aria-label="Cambiar modo visual"
+            title="Cambiar modo"
             onClick={toggleMode}
           >
-            <img src={pick(mode, modeAlt)} alt="Cambiar modo" className="icon-img" draggable="false" />
+            <img
+              src={imgPath("mode")}
+              alt="Modo"
+              className="icon-img"
+              draggable="false"
+            />
           </button>
 
-          {/* Perfil */}
+          {/* --- Perfil --- */}
           <div className="profile-wrapper" ref={menuRef}>
             <button
               className="btn-icono"
               title="Perfil"
-              aria-label="Abrir perfil"
               onClick={() => setMenuOpen((s) => !s)}
             >
-              <img src={pick(user, userAlt)} alt="Perfil" className="icon-img" draggable="false" />
+              <img
+                src={imgPath("user")}
+                alt="Perfil"
+                className="icon-img"
+                draggable="false"
+              />
             </button>
 
             {menuOpen && (
-              <div className="profile-menu" role="menu" aria-label="Menú de usuario">
+              <div className="profile-menu">
                 <div className="profile-info">
                   <div className="profile-name">{userData.nombre}</div>
                   <div className="profile-email">{userData.correo}</div>
                 </div>
-
                 <hr className="profile-separator" />
-
                 <div className="profile-actions">
                   <button
                     className="btn-opcion"
@@ -147,7 +149,6 @@ export default function Header({
                   >
                     Ver perfil y preferencias
                   </button>
-
                   <button
                     className="btn-opcion cerrar"
                     onClick={() => {
@@ -166,5 +167,3 @@ export default function Header({
     </header>
   );
 }
-
-
