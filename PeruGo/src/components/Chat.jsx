@@ -26,14 +26,15 @@ export default function Chat() {
         body: JSON.stringify({ text }),
       });
   
-      if (!res.ok) return { reply: "Error al conectar con el servidor.", audio: null };
-  
       const data = await res.json();
+  
       let reply = "No se obtuvo respuesta.";
   
-      if (typeof data.text_response === "object" && data.text_response !== null)
+      // ✅ Asegurar que text_response sea un string
+      if (typeof data.text_response === "object" && data.text_response !== null) {
         reply = data.text_response.reply || JSON.stringify(data.text_response);
-      else if (typeof data.text_response === "string") {
+      } else if (typeof data.text_response === "string") {
+        // Si ya es texto, intentar parsear por si viene como string JSON
         try {
           const parsed = JSON.parse(data.text_response);
           reply = parsed.reply || data.text_response;
@@ -42,48 +43,40 @@ export default function Chat() {
         }
       }
   
-      const audio = data.audio_base64 ? "data:audio/mp3;base64," + data.audio_base64 : null;
-  
-      // reproducir automáticamente
-      if (audio) {
-        try {
-          const a = new Audio(audio);
-          a.play().catch(() => console.warn("Autoplay bloqueado por navegador"));
-        } catch (e) {
-          console.error("Error al reproducir audio:", e);
-        }
+      if (data.audio_base64) {
+        const audio = new Audio("data:audio/mp3;base64," + data.audio_base64);
+        audio.play();
       }
   
-      return { reply, audio };
-    } catch {
-      return { reply: "Error al conectar con el servidor.", audio: null };
+      return reply;
+    } catch (err) {
+      console.error("Error comunicando con backend:", err);
+      return "Error al conectar con el servidor.";
     }
   }, []);
 
+  const assistantReply = useCallback(async (toText) => {
+  if (typingRef.current) return;
+  typingRef.current = true;
 
-  const assistantReply = useCallback(
-    async (toText) => {
-      if (typingRef.current) return;
-      typingRef.current = true;
-      setMessages((prev) => [
-        ...prev,
-        { sender: "assistant", text: "Escribiendo…", time: Date.now() },
-      ]);
-      try {
-        const reply = await fetchReplyFromBackend(toText);
-        setMessages((prev) => {
-          const copy = [...prev];
-          const i = copy.findIndex((m) => m.sender === "assistant" && m.text === "Escribiendo…");
-          if (i >= 0) copy.splice(i, 1);
-          copy.push({ sender: "assistant", text: String(reply), time: Date.now() });
-          return copy;
-        });
-      } finally {
-        typingRef.current = false;
-      }
-    },
-    [fetchReplyFromBackend]
-  );
+  setMessages((prev) => [
+    ...prev,
+    { sender: "assistant", text: "Escribiendo…", time: Date.now() },
+  ]);
+
+  try {
+    const reply = await fetchReplyFromBackend(toText);
+    setMessages((prev) => {
+      const copy = [...prev];
+      const i = copy.findIndex(m => m.sender === "assistant" && m.text === "Escribiendo…");
+      if (i >= 0) copy.splice(i, 1);
+      copy.push({ sender: "assistant", text: String(reply), time: Date.now() });
+      return copy;
+    });
+  } finally {
+    typingRef.current = false;
+  }
+}, [fetchReplyFromBackend]);
 
   const handleSend = useCallback(() => {
     const v = input.trim();
@@ -297,5 +290,6 @@ export default function Chat() {
     </>
   );
 }
+
 
 
