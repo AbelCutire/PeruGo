@@ -45,6 +45,19 @@ export default function Header({
   const toggleMode = () => setIsDarkMode((prev) => !prev);
   const imgPath = (name) => `/icons/${isDarkMode ? `${name}_alt.png` : `${name}.png`}`;
 
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+
+    // Opcional: Limpieza al desmontar el componente
+    return () => {
+      document.body.classList.remove("dark-mode");
+    };
+  }, [isDarkMode]); // Se ejecuta cada vez que 'isDarkMode' cambia
+  
   return (
     <header className="header-fijo header-amplio">
       <div className="header-contenido header-contenido-amplio">
@@ -167,4 +180,5 @@ export default function Header({
     </header>
   );
 }
+
 
