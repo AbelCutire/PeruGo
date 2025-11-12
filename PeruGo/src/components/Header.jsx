@@ -52,7 +52,7 @@ export default function Header({
           style={{ cursor: "pointer" }}
           onClick={() => router.push("/")}
         >
-          <span className="logo-principal">PerúGo</span>
+          <span className="logo-principal">PeruGo</span>
           <span className="logo-secundario">El Perú te habla</span>
         </div>
 
@@ -208,3 +208,4 @@ export default function Header({
     </header>
   );
 }
+
