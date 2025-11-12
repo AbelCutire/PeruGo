@@ -1,11 +1,11 @@
-/* --- Header fijo (ajustado centro + gris oscuro) --- */
+/* --- Header fijo (sin cambios de color entre modos) --- */
 .header-fijo {
   position: fixed;
   top: -18px;
   left: 0;
   right: 0;
   height: 70px;
-  background: #770000; /* gris oscuro */
+  background: #770000; /* mantener siempre */
   color: #f9f9f9;
   display: flex;
   align-items: center;
@@ -15,7 +15,7 @@
   backdrop-filter: blur(6px);
 }
 
-
+/* Contenedor */
 .header-contenido {
   width: 100%;
   max-width: 1200px;
@@ -25,46 +25,72 @@
   justify-content: space-between;
 }
 
-/* Variante para contenido más ancho (aplicar clase header-contenido-amplio al contenedor interno) */
+/* Variante amplio */
 .header-contenido-amplio {
-  max-width: 1400px;   /* más ancho que antes */
-  padding: 0 2.5rem;   /* más espacio lateral */
+  max-width: 1400px;
+  padding: 0 2.5rem;
 }
 
-/* Logo */
+/* ---------- LOGO (alineado en fila) ---------- */
 .logo-header {
   display: flex;
-  flex-direction: column;
-  line-height: 1;
+  align-items: center;    /* centra verticalmente la imagen y el texto */
+  gap: 0.65rem;
   cursor: pointer;
   user-select: none;
 }
-.logo-principal {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #fff;
-}
-.logo-secundario {
-  font-size: 0.75rem;
-  color: #ddd;
+
+.logo-img-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
 }
 
-/* Navegación derecha */
+.logo-img {
+  height: 42px;
+  width: auto;
+  display: block; /* evita salto de línea/alineamiento inferior */
+  user-select: none;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+  margin-left: 0.1rem;
+}
+
+.logo-principal {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.logo-secundario {
+  font-size: 0.72rem;
+  color: #f0dedc;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+/* ---------- NAV (botones) ---------- */
 .nav-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
   min-height: 44px;
 }
 
-/* Botones de icono (estilo consolidado) */
+/* Botones de icono */
 .btn-icono {
   background: none;
   border: none;
   color: #eaeaea;
   cursor: pointer;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: 10px;
   transition: background 0.12s, transform 0.12s, color 0.12s;
   display: inline-flex;
   align-items: center;
@@ -72,105 +98,39 @@
   line-height: 0;
 }
 
+/* Asegura que la imagen no provoque salto vertical */
+.btn-icono .icon-img {
+  display: block;
+}
+
 /* Hover / focus */
 .btn-icono:hover,
 .btn-icono:focus {
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.04);
   transform: translateY(-2px);
-  color: #ffcc00; /* color hover para destacar */
+  color: #ffcc00;
   outline: none;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
 
-/* Focus visible para accesibilidad */
 .btn-icono:focus-visible {
-  box-shadow: 0 0 0 3px rgba(255,204,51,0.14);
-  border-radius: 8px;
-}
-
-/* Botón de texto (si necesitas mostrar Iniciar/Registrar cuando no logueado) */
-.btn-texto {
-  background: #007bff;
-  border: none;
-  color: white;
-  font-size: 0.85rem;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.15s, transform 0.12s;
-}
-.btn-texto:hover,
-.btn-texto:focus {
-  background: #005ecb;
-  transform: translateY(-2px);
-}
-
-/* Perfil: menú flotante (oscuro para encajar) */
-.profile-wrapper {
-  position: relative;
-}
-.profile-menu {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 8px);
-  width: 220px;
-  max-width: 90vw;
-  background: #333333;
-  color: #f1f1f1;
-  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 0 0 3px rgba(255, 204, 51, 0.14);
   border-radius: 10px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.5);
-  padding: 10px;
-  z-index: 100000; /* mayor que header si fuera necesario */
-  animation: fadeInDown 160ms ease;
-  transform-origin: top right;
 }
 
-/* Evitar que el menú se corte en pantallas pequeñas: si está cerca del borde, moverlo */
-@media (max-width: 420px) {
-  .profile-menu {
-    right: 8px;
-    left: 8px;
-    width: auto;
-  }
+/* Icon image */
+.icon-img {
+  width: 22px;
+  height: 22px;
+  transition: transform 0.15s ease;
+  display: block;
 }
 
-.profile-info {
-  padding: 6px 4px;
-}
-.profile-name {
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: #fff;
-}
-.profile-email {
-  font-size: 0.8rem;
-  color: #cfcfcf;
-  margin-top: 4px;
-}
-.profile-separator {
-  border: none;
-  height: 1px;
-  background: rgba(255,255,255,0.04);
-  margin: 8px 0;
-}
-.profile-logout {
-  width: 100%;
-  padding: 8px 10px;
-  background: #ff6b6b;
-  color: white;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-}
-.profile-logout:hover,
-.profile-logout:focus {
-  background: #e05555;
+.icon-img:hover {
+  transform: scale(1.1);
 }
 
-/* Micrófono elegante: tamaño mayor, borde sutil y efecto glow cuando está activo */
-/* Si quieres que mic use btn-icono, añade ambas clases: class="btn-icono mic-btn" */
+/* Micrófono */
 .mic-btn {
   width: 44px;
   height: 40px;
@@ -183,130 +143,17 @@
   background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
   color: #eaeaea;
 }
-.mic-btn:hover,
-.mic-btn:focus {
-  transform: translateY(-3px);
-  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
-}
+
 .mic-btn.mic-active {
-  border-color: rgba(255, 220, 120, 0.18);
-  box-shadow: 0 6px 20px rgba(255,220,120,0.06), 0 0 8px rgba(255,220,120,0.03) inset;
-  color: #ffd27a;
+  background-color: #ef4444;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+  animation: pulse 1s infinite;
 }
 
-/* Ajuste para que los iconos queden más espaciados cuando el header es más ancho */
-.nav-header { gap: 1rem; }
-
-/* Unificar padding para iconos */
-.btn-icono { padding: 10px; border-radius: 10px; }
-
-/* Mantener compatibilidad con resto del CSS (perfil/menu) - sin cambios necesarios */
-
-/* Animación */
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Respectar usuarios que prefieren reducir animaciones */
-@media (prefers-reduced-motion: reduce) {
-  .profile-menu,
-  .btn-icono,
-  .mic-btn {
-    transition: none;
-    animation: none;
-  }
-}
-
-/* Ajustes responsive */
-@media (max-width: 700px) {
-  .header-contenido { padding: 0 0.8rem; }
-  .logo-principal { font-size: 1.05rem; }
-  .nav-header { gap: 0.4rem; }
-  .btn-icono { padding: 6px; }
-}
+/* Perfil: menú */
 .profile-wrapper {
   position: relative;
-}
-
-.profile-menu {
-  position: absolute;
-  top: 40px;
-  right: 0;
-  background: #f3f3f3; /* gris claro */
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  padding: 12px;
-  min-width: 180px;
-  z-index: 10;
-  animation: fadeIn 0.15s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.profile-info {
-  padding-bottom: 8px;
-}
-
-.profile-name {
-  font-weight: 600;
-}
-
-.profile-email {
-  font-size: 0.85em;
-  color: gray;
-}
-
-.profile-separator {
-  margin: 8px 0;
-  border: 0;
-  border-top: 1px solid #ccc;
-}
-
-.profile-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.btn-opcion {
-  background: #e6e6e6;
-  border: none;
-  padding: 8px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.95em;
-  text-align: left;
-  transition: background 0.2s;
-}
-
-.btn-opcion:hover {
-  background: #d1d1d1;
-}
-
-.btn-opcion.cerrar {
-  background: #ffdddd;
-  color: #c00;
-}
-
-.btn-opcion.cerrar:hover {
-  background: #ffcccc;
-}
-/* === MENÚ DE PERFIL (dropdown flotante) === */
-
-.profile-wrapper {
-  position: relative;
-  display: inline-block;
 }
 
 .profile-menu {
@@ -322,19 +169,6 @@
   animation: fadeIn 0.2s ease;
 }
 
-/* Animación suave */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Información superior del usuario */
 .profile-info {
   padding: 0.8rem 1rem;
   border-bottom: 1px solid #eee;
@@ -352,14 +186,12 @@
   margin-top: 2px;
 }
 
-/* Separador */
 .profile-separator {
   border: none;
   border-top: 1px solid #eee;
   margin: 0.3rem 0;
 }
 
-/* Botones del menú */
 .profile-actions {
   display: flex;
   flex-direction: column;
@@ -390,141 +222,11 @@
   background: #fdecea;
 }
 
-/* Que no se corte en pantallas pequeñas */
-@media (max-width: 500px) {
-  .profile-menu {
-    right: -20px;
-    width: 210px;
-  }
-}
-.menu-perfil {
-  position: absolute;
-  top: 110%;
-  right: 0;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  z-index: 1000;
-  animation: fadeIn 0.2s ease;
-}
-
-.menu-perfil button {
-  background: none;
-  border: none;
-  text-align: left;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: 15px;
-  transition: background 0.2s;
-}
-
-.menu-perfil button:hover {
-  background: #f5f5f5;
-}
-
+/* Animaciones */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
+  from { opacity: 0; transform: translateY(-6px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.mic-btn.mic-active {
-  background-color: #ef4444;
-  color: #fff;
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
-  animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-}
-.mic-btn {
-  font-size: 1.5rem;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.mic-btn.mic-active {
-  color: white;
-  background-color: #ef4444; /* rojo grabando */
-  border-radius: 50%;
-  padding: 0.4rem 0.6rem;
-  animation: pulse 1s infinite;
-}
-
-/* --- Imágenes de iconos --- */
-.icon-img {
-  width: 22px;
-  height: 22px;
-  transition: transform 0.15s ease;
-}
-.icon-img:hover {
-  transform: scale(1.1);
-}
-
-.logo-container .logo-img {
-  height: 40px;
-  cursor: pointer;
-}
-
-/* --- Modo oscuro global --- */
-body.dark-mode {
-  background-color: #111;
-  color: #f1f1f1;
-}
-
-body.dark-mode .header-fijo {
-  background: #1e1e1e;
-  color: #f1f1f1;
-}
-
-body.dark-mode .profile-menu {
-  background: #2b2b2b;
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.08);
-}
-
-/* --- Ajustes para imágenes --- */
-.logo-header {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.logo-img-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo-img {
-  height: 42px;
-  width: auto;
-  user-select: none;
-}
-
-.logo-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-}
-
-.icon-img {
-  width: 22px;
-  height: 22px;
-  transition: transform 0.15s ease;
-}
-
-.icon-img:hover {
-  transform: scale(1.1);
-}
-
 
 @keyframes pulse {
   0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
@@ -532,6 +234,11 @@ body.dark-mode .profile-menu {
   100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
 }
 
-
-
-
+/* Responsive */
+@media (max-width: 700px) {
+  .header-contenido { padding: 0 0.8rem; }
+  .logo-principal { font-size: 1.05rem; }
+  .nav-header { gap: 0.6rem; }
+  .btn-icono { padding: 6px; }
+  .logo-img { height: 36px; }
+}
