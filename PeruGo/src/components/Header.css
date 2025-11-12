@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   height: 70px;
-  background: #770000;
+  background: isDarkMode ? rgb(128,0,0) : rgb(188,0,0);
   color: #f9f9f9;
   display: flex;
   align-items: center;
@@ -60,12 +60,12 @@
 .logo-principal {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #fff;
+  color: isDarkMode ? rgb(0,0,0) : rgb(255,255,255);
 }
 
 .logo-secundario {
   font-size: 0.75rem;
-  color: #ddd;
+  color: isDarkMode ? rgb(0,0,0) : rgb(255,255,255);
 }
 
 /* --- NAV --- */
@@ -83,7 +83,7 @@
   color: #eaeaea;
   cursor: pointer;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -93,7 +93,7 @@
 
 .btn-icono:hover,
 .btn-icono:focus {
-  background: rgb(70,0,0);
+  background: isDarkMode ? rgb(70,0,0) : rgb(130,0,0);
   transform: translateY(-2px);
   outline: none;
 }
@@ -231,20 +231,20 @@
   }
 }
 .btn-iniciar-sesion {
-  background-color: #803f3f;
+  background-color: isDarkMode ? rgb(128,0,0) : rgb(188,0,0);
   color: white;
   border: none;
   border-radius: 8px;
   padding: 8px 14px;
-  margin-left: 10px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .btn-iniciar-sesion:hover {
-  background-color: rgb(70,0,0);
-  transform: translateY(-2px), scale(1.1);
+  background-color: isDarkMode ? rgb(70,0,0) : rgb(130,0,0);
+  transform: translateY(-2px) scale(1.1);
 }
+
 
 
 
