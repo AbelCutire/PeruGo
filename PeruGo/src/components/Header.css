@@ -1,3 +1,21 @@
+:root {
+  --color-header: rgb(188, 0, 0);
+  --color-header-hover: rgb(130, 0, 0);
+  --color-texto-logo: rgb(255, 255, 255);
+  --color-texto-logo-secundario: rgb(255, 255, 255);
+  --color-btn-hover: rgb(130, 0, 0);
+  /* ... añade todas tus otras variables de color aquí ... */
+}
+
+/* body.dark-mode sobrescribe las variables cuando el modo oscuro está activo */
+body.dark-mode {
+  --color-header: rgb(128, 0, 0);
+  --color-header-hover: rgb(70, 0, 0);
+  --color-texto-logo: rgb(0, 0, 0);
+  --color-texto-logo-secundario: rgb(0, 0, 0);
+  --color-btn-hover: rgb(70, 0, 0);
+  /* ... etc. ... */
+}
 /* --- Header fijo --- */
 .header-fijo {
   position: fixed;
@@ -5,7 +23,7 @@
   left: 0;
   right: 0;
   height: 70px;
-  background: isDarkMode ? rgb(128,0,0) : rgb(188,0,0);
+  background: var(--color-header);
   color: #f9f9f9;
   display: flex;
   align-items: center;
@@ -60,12 +78,12 @@
 .logo-principal {
   font-size: 1.3rem;
   font-weight: 700;
-  color: isDarkMode ? rgb(0,0,0) : rgb(255,255,255);
+  color: var(--color-texto-logo);
 }
 
 .logo-secundario {
   font-size: 0.75rem;
-  color: isDarkMode ? rgb(0,0,0) : rgb(255,255,255);
+  color: var(--color-texto-logo-secundario);
 }
 
 /* --- NAV --- */
@@ -93,7 +111,7 @@
 
 .btn-icono:hover,
 .btn-icono:focus {
-  background: isDarkMode ? rgb(70,0,0) : rgb(130,0,0);
+  background: var(--color-btn-hover);
   transform: translateY(-2px);
   outline: none;
 }
@@ -231,7 +249,7 @@
   }
 }
 .btn-iniciar-sesion {
-  background-color: isDarkMode ? rgb(128,0,0) : rgb(188,0,0);
+  background-color: var(--color-header);
   color: white;
   border: none;
   border-radius: 8px;
@@ -241,9 +259,10 @@
 }
 
 .btn-iniciar-sesion:hover {
-  background-color: isDarkMode ? rgb(70,0,0) : rgb(130,0,0);
+  background-color: var(--color-header-hover);
   transform: translateY(-2px) scale(1.1);
 }
+
 
 
 
