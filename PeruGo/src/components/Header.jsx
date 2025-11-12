@@ -51,7 +51,7 @@ export default function Header({
   };
 
   // --- Rutas de imágenes según modo ---
-  const imgPath = (name) => (isDarkMode ? `/${name}_alt.png` : `/${name}.png`);
+  const imgPath = (name) => (isDarkMode ? `/icons/${name}_alt.png` : `/icons/${name}.png`);
 
   return (
     <header className={`header-fijo header-amplio ${isDarkMode ? "dark" : ""}`}>
@@ -160,3 +160,4 @@ export default function Header({
     </header>
   );
 }
+
