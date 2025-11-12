@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import useVoiceSearch from "@/components/funciones/VoiceSearch"; // ✅ ruta corregida
+import useVoiceSearch from "@/components/funciones/VoiceSearch";
 import "./Header.css";
 
 export default function Header({
@@ -12,22 +12,19 @@ export default function Header({
   onOpenPerfil = () => {},
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const menuRef = useRef(null);
   const router = useRouter();
 
-  // ✅ Integrar micrófono igual que en Hero
+  // --- Voz ---
   const { record, text, toggleRecord } = useVoiceSearch();
-
-  // 🔥 Cuando termina de grabar y hay texto, enviarlo al Chat
   useEffect(() => {
     if (!record && text && text.trim()) {
-      window.dispatchEvent(
-        new CustomEvent("chatMessage", { detail: { text } })
-      );
+      window.dispatchEvent(new CustomEvent("chatMessage", { detail: { text } }));
     }
   }, [record, text]);
 
-  // 🔒 Manejo del menú del perfil
+  // --- Cerrar menú al hacer clic fuera ---
   useEffect(() => {
     const onDocClick = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -38,141 +35,96 @@ export default function Header({
     return () => document.removeEventListener("mousedown", onDocClick);
   }, []);
 
+  // --- Usuario de ejemplo ---
   const userData = user || {
     nombre: "Usuario ejemplo",
     correo: "usuario@correo.com",
   };
 
+  // --- Cambiar modo ---
+  const toggleMode = () => {
+    setIsDarkMode((prev) => {
+      const newMode = !prev;
+      document.body.classList.toggle("dark-mode", newMode);
+      return newMode;
+    });
+  };
+
+  // --- Rutas de imágenes según modo ---
+  const imgPath = (name) => (isDarkMode ? `/${name}_alt.png` : `/${name}.png`);
+
   return (
-    <header className="header-fijo header-amplio">
+    <header className={`header-fijo header-amplio ${isDarkMode ? "dark" : ""}`}>
       <div className="header-contenido header-contenido-amplio">
-        {/* LOGO */}
-        <div
-          className="logo-header"
-          style={{ cursor: "pointer" }}
-          onClick={() => router.push("/")}
-        >
-          <span className="logo-principal">PeruGo</span>
-          <span className="logo-secundario">El Perú te habla</span>
+        {/* --- LOGO --- */}
+        <div className="logo-container" onClick={() => router.push("/")}>
+          <img
+            src={imgPath("logo")}
+            alt="PeruGo"
+            className="logo-img"
+            draggable="false"
+          />
         </div>
 
+        {/* --- NAV --- */}
         <nav className="nav-header" aria-label="Navegación principal">
-          {/* 🔹 Botón Mis Planes */}
+          {/* --- Mis Planes --- */}
           <button
             className="btn-icono"
-            title="Mis planes"
-            aria-label="Mis planes"
+            title="Explorar"
             onClick={() => router.push("/mis-planes")}
           >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden
-            >
-              <path
-                d="M21 3l-6 6"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M3 21l6-6 3 3-6 6-3-3z"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M7 7l10-4-4 10-4-4-2-2z"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <img
+              src={imgPath("explore")}
+              alt="Explorar"
+              className="icon-img"
+              draggable="false"
+            />
           </button>
 
-          {/* 🔹 Micrófono (igual que el del Hero) */}
+          {/* --- Micrófono --- */}
           <button
             className={`btn-icono mic-btn ${record ? "mic-active" : ""}`}
             title="Hablar con el asistente"
-            aria-label="Micrófono"
             onClick={toggleRecord}
           >
-            🎤
+            <img
+              src={imgPath("mic")}
+              alt="Micrófono"
+              className="icon-img"
+              draggable="false"
+            />
           </button>
 
-          {/* 🔹 Configuración */}
+          {/* --- Modo diurno/nocturno --- */}
           <button
             className="btn-icono"
-            title="Configuración"
-            aria-label="Configuración"
+            title="Cambiar modo"
+            onClick={toggleMode}
           >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden
-            >
-              <path
-                d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7z"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06A2 2 0 1 1 3.7 16.9l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09c.7 0 1.27-.45 1.51-1a1.65 1.65 0 0 0-.33-1.82L4.3 3.7A2 2 0 1 1 7.13.87l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V1a2 2 0 1 1 4 0v.09c0 .595.41 1.115 1 1.51h.01c.64.41 1.4.22 1.8-.17l.06-.06A2 2 0 1 1 20.3 7.13l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.23.56.81 1 1.5 1H21a2 2 0 1 1 0 4h-.1c-.59 0-1.09.47-1.5 1z"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <img
+              src={imgPath("mode")}
+              alt="Modo"
+              className="icon-img"
+              draggable="false"
+            />
           </button>
 
-          {/* 🔹 Perfil */}
+          {/* --- Perfil --- */}
           <div className="profile-wrapper" ref={menuRef}>
             <button
               className="btn-icono"
               title="Perfil"
-              aria-label="Perfil"
               onClick={() => setMenuOpen((s) => !s)}
             >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden
-              >
-                <path
-                  d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <circle
-                  cx="12"
-                  cy="7"
-                  r="4"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <img
+                src={imgPath("user")}
+                alt="Perfil"
+                className="icon-img"
+                draggable="false"
+              />
             </button>
 
-            {/* Menú desplegable del perfil */}
             {menuOpen && (
               <div className="profile-menu">
                 <div className="profile-info">
@@ -208,4 +160,3 @@ export default function Header({
     </header>
   );
 }
-
