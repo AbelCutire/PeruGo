@@ -25,16 +25,14 @@ export default function Chat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
       });
-  
+
       const data = await res.json();
-  
+
       let reply = "No se obtuvo respuesta.";
-  
-      // ✅ Asegurar que text_response sea un string
+
       if (typeof data.text_response === "object" && data.text_response !== null) {
         reply = data.text_response.reply || JSON.stringify(data.text_response);
       } else if (typeof data.text_response === "string") {
-        // Si ya es texto, intentar parsear por si viene como string JSON
         try {
           const parsed = JSON.parse(data.text_response);
           reply = parsed.reply || data.text_response;
@@ -42,12 +40,12 @@ export default function Chat() {
           reply = data.text_response;
         }
       }
-  
+
       if (data.audio_base64) {
         const audio = new Audio("data:audio/mp3;base64," + data.audio_base64);
         audio.play();
       }
-  
+
       return reply;
     } catch (err) {
       console.error("Error comunicando con backend:", err);
@@ -55,28 +53,33 @@ export default function Chat() {
     }
   }, []);
 
-  const assistantReply = useCallback(async (toText) => {
-  if (typingRef.current) return;
-  typingRef.current = true;
+  const assistantReply = useCallback(
+    async (toText) => {
+      if (typingRef.current) return;
+      typingRef.current = true;
 
-  setMessages((prev) => [
-    ...prev,
-    { sender: "assistant", text: "Escribiendo…", time: Date.now() },
-  ]);
+      setMessages((prev) => [
+        ...prev,
+        { sender: "assistant", text: "Escribiendo…", time: Date.now() },
+      ]);
 
-  try {
-    const reply = await fetchReplyFromBackend(toText);
-    setMessages((prev) => {
-      const copy = [...prev];
-      const i = copy.findIndex(m => m.sender === "assistant" && m.text === "Escribiendo…");
-      if (i >= 0) copy.splice(i, 1);
-      copy.push({ sender: "assistant", text: String(reply), time: Date.now() });
-      return copy;
-    });
-  } finally {
-    typingRef.current = false;
-  }
-}, [fetchReplyFromBackend]);
+      try {
+        const reply = await fetchReplyFromBackend(toText);
+        setMessages((prev) => {
+          const copy = [...prev];
+          const i = copy.findIndex(
+            (m) => m.sender === "assistant" && m.text === "Escribiendo…"
+          );
+          if (i >= 0) copy.splice(i, 1);
+          copy.push({ sender: "assistant", text: String(reply), time: Date.now() });
+          return copy;
+        });
+      } finally {
+        typingRef.current = false;
+      }
+    },
+    [fetchReplyFromBackend]
+  );
 
   const handleSend = useCallback(() => {
     const v = input.trim();
@@ -97,22 +100,43 @@ export default function Chat() {
     setIsSpeaking(false);
   }, [messages]);
 
+  // 🔹 Inicializa mensajes del chat
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
     if (stored.length) setMessages(stored);
     else {
       const welcome = [
-        { sender: "assistant", text: "Hola 👋 soy tu asistente PerúGo. ¿En qué puedo ayudarte hoy?", time: Date.now() },
+        {
+          sender: "assistant",
+          text: "Hola 👋 soy tu asistente PerúGo. ¿En qué puedo ayudarte hoy?",
+          time: Date.now(),
+        },
       ];
       setMessages(welcome);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(welcome));
     }
   }, []);
 
+  // 🔹 Guarda los mensajes nuevos
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
   }, [messages]);
 
+  // 🔹 Escucha el evento global "chatMessage" desde Hero o Header
+  useEffect(() => {
+    const handleExternalChat = (e) => {
+      const text = e.detail?.text;
+      if (text && text.trim()) {
+        pushChat(text, "user");
+        assistantReply(text);
+      }
+    };
+
+    window.addEventListener("chatMessage", handleExternalChat);
+    return () => window.removeEventListener("chatMessage", handleExternalChat);
+  }, [pushChat, assistantReply]);
+
+  // 🔹 Toggle con tecla "/"
   useEffect(() => {
     const handleKeyToggle = (e) => {
       if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey) {
@@ -150,7 +174,7 @@ export default function Chat() {
           overflow: "visible",
         }}
       >
-        {/* Botón centrado sobre el header */}
+        {/* Botón de abrir/cerrar chat */}
         <button
           onClick={toggleOpen}
           aria-label={isOpen ? "Ocultar chat" : "Abrir chat"}
@@ -290,6 +314,3 @@ export default function Chat() {
     </>
   );
 }
-
-
-
