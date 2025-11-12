@@ -41,29 +41,36 @@ export default function Header({
     correo: "usuario@correo.com",
   };
 
-  // --- Cambiar modo ---
+  // --- Cambiar modo (solo cambia íconos, no color del header) ---
   const toggleMode = () => {
-    setIsDarkMode((prev) => {
-      const newMode = !prev;
-      document.body.classList.toggle("dark-mode", newMode);
-      return newMode;
-    });
+    setIsDarkMode((prev) => !prev);
   };
 
   // --- Rutas de imágenes según modo ---
-  const imgPath = (name) => (isDarkMode ? `/icons/${name}_alt.png` : `/icons/${name}.png`);
+  const imgPath = (name) =>
+    `./icons/${isDarkMode ? `${name}_alt.png` : `${name}.png`}`;
 
   return (
-    <header className={`header-fijo header-amplio ${isDarkMode ? "dark" : ""}`}>
+    <header className="header-fijo header-amplio">
       <div className="header-contenido header-contenido-amplio">
-        {/* --- LOGO --- */}
-        <div className="logo-container" onClick={() => router.push("/")}>
-          <img
-            src={imgPath("logo")}
-            alt="PeruGo"
-            className="logo-img"
-            draggable="false"
-          />
+        {/* --- LOGO + texto --- */}
+        <div
+          className="logo-header"
+          onClick={() => router.push("/")}
+          style={{ cursor: "pointer" }}
+        >
+          <div className="logo-img-container">
+            <img
+              src={imgPath("logo")}
+              alt="PeruGo"
+              className="logo-img"
+              draggable="false"
+            />
+          </div>
+          <div className="logo-text">
+            <span className="logo-principal">PeruGo</span>
+            <span className="logo-secundario">El Perú te habla</span>
+          </div>
         </div>
 
         {/* --- NAV --- */}
@@ -96,7 +103,7 @@ export default function Header({
             />
           </button>
 
-          {/* --- Modo diurno/nocturno --- */}
+          {/* --- Botón de modo --- */}
           <button
             className="btn-icono"
             title="Cambiar modo"
@@ -160,4 +167,3 @@ export default function Header({
     </header>
   );
 }
-
