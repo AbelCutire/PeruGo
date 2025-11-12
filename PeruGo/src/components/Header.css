@@ -490,12 +490,48 @@ body.dark-mode .profile-menu {
   border-color: rgba(255, 255, 255, 0.08);
 }
 
+/* --- Ajustes para imágenes --- */
+.logo-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.logo-img-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-img {
+  height: 42px;
+  width: auto;
+  user-select: none;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.icon-img {
+  width: 22px;
+  height: 22px;
+  transition: transform 0.15s ease;
+}
+
+.icon-img:hover {
+  transform: scale(1.1);
+}
+
 
 @keyframes pulse {
   0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
   70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
   100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
 }
+
 
 
 
