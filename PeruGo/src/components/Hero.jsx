@@ -31,7 +31,7 @@ export default function Hero() {
     <section className="hero">
       <div className="hero-content">
         {/* === TITULOS === */}
-        <h1 className="hero-title">PerúGo</h1>
+        <h1 className="hero-title">PeruGo</h1>
         <h2 className="hero-subtitle">El Perú te habla</h2>
 
         {/* === MICROFONO === */}
@@ -96,3 +96,4 @@ export default function Hero() {
     </section>
   );
 }
+
