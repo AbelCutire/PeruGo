@@ -6,20 +6,20 @@ import useVoiceSearch from "@/components/funciones/VoiceSearch";
 import "./Header.css";
 
 /* Importar imágenes desde la carpeta local ./icons */
-import logo from "/icons/logo.png";
-import logoAlt from "/icons/logo_alt.png";
+import logo from "./icons/logo.png";
+import logoAlt from "./icons/logo_alt.png";
 
-import explore from "/icons/explore.png";
-import exploreAlt from "/icons/explore_alt.png";
+import explore from "./icons/explore.png";
+import exploreAlt from "./icons/explore_alt.png";
 
-import mic from "/icons/mic.png";
-import micAlt from "/icons/mic_alt.png";
+import mic from "./icons/mic.png";
+import micAlt from "./icons/mic_alt.png";
 
-import mode from "/icons/mode.png";
-import modeAlt from "/icons/mode_alt.png";
+import mode from "./icons/mode.png";
+import modeAlt from "./icons/mode_alt.png";
 
-import user from "/icons/user.png";
-import userAlt from "/icons/user_alt.png";
+import user from "./icons/user.png";
+import userAlt from "./icons/user_alt.png";
 
 export default function Header({
   isLogged = true,
@@ -166,4 +166,5 @@ export default function Header({
     </header>
   );
 }
+
 
