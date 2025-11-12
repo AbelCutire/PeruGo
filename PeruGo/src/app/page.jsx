@@ -11,30 +11,25 @@ import SectionPerfil from "@/components/SectionPerfil";
 import Chat from "@/components/Chat";
 import Login from "@/components/Login";
 
-
 export default function Page() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const [justLoggedIn, setJustLoggedIn] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
 
-  // Comprobamos si ya hay sesión activa
   useEffect(() => {
     const session = sessionStorage.getItem("isLoggedIn");
-    if (session === "true") {
-      setIsLoggedIn(true);
-    }
+    if (session === "true") setIsLoggedIn(true);
     setCheckingSession(false);
   }, []);
 
-  // Al iniciar sesión
   const handleLogin = () => {
     setIsLoggedIn(true);
+    setShowLogin(false);
     setJustLoggedIn(true);
     sessionStorage.setItem("isLoggedIn", "true");
-
   };
 
-  // Al cerrar sesión
   const handleLogout = () => {
     setIsLoggedIn(false);
     sessionStorage.removeItem("isLoggedIn");
@@ -42,43 +37,14 @@ export default function Page() {
     sessionStorage.removeItem("returnFromFicha");
   };
 
-  // Scroll a sección de perfil
   const handleOpenPerfil = () => {
     const perfilSection = document.getElementById("perfil");
-    if (perfilSection) {
+    if (perfilSection)
       perfilSection.scrollIntoView({ behavior: "smooth" });
-    }
   };
 
-  // Guardar posición de scroll
-  useEffect(() => {
-    const saveScroll = () => {
-      sessionStorage.setItem("scrollY", window.scrollY);
-    };
-    window.addEventListener("beforeunload", saveScroll);
-    return () => window.removeEventListener("beforeunload", saveScroll);
-  }, []);
-
-  // Restaurar posición o comportamiento según contexto
-  useEffect(() => {
-    if (!isLoggedIn) return;
-
-    const returnFromFicha = sessionStorage.getItem("returnFromFicha");
-    const savedScroll = parseInt(sessionStorage.getItem("scrollY") || "0", 10);
-
-    if (justLoggedIn) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      setJustLoggedIn(false);
-    } else if (returnFromFicha === "true") {
-      const explorarSection = document.getElementById("explorar");
-      if (explorarSection) {
-        explorarSection.scrollIntoView({ behavior: "smooth" });
-      }
-      sessionStorage.removeItem("returnFromFicha");
-    } else {
-      window.scrollTo({ top: savedScroll, behavior: "auto" });
-    }
-  }, [isLoggedIn, justLoggedIn]);
+  const handleOpenLogin = () => setShowLogin(true);
+  const handleCloseLogin = () => setShowLogin(false);
 
   if (checkingSession) {
     return (
@@ -97,20 +63,25 @@ export default function Page() {
 
   return (
     <main>
-      {!isLoggedIn ? (
-        <Login onLogin={handleLogin} />
-      ) : (
-        <>
-          <Header onLogout={handleLogout} onOpenPerfil={handleOpenPerfil} />
-          <Hero />
-          <SectionDestinosPopulares />
-          <section id="explorar">
-            <SectionExplorar />
-          </section>
-          <SectionPerfil />
-          <Chat />
-        </>
-      )}
+      {/* Header siempre visible */}
+      <Header
+        onLogout={handleLogout}
+        onOpenPerfil={handleOpenPerfil}
+        onOpenLogin={handleOpenLogin}
+        isLogged={isLoggedIn}
+      />
+
+      {/* Mostrar login solo cuando se da clic en el botón */}
+      {showLogin && !isLoggedIn && <Login onLogin={handleLogin} onClose={handleCloseLogin} />}
+
+      {/* Página principal visible siempre */}
+      <Hero />
+      <SectionDestinosPopulares />
+      <section id="explorar">
+        <SectionExplorar />
+      </section>
+      <SectionPerfil />
+      <Chat />
     </main>
   );
 }
