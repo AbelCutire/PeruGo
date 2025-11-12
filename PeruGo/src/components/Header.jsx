@@ -37,14 +37,6 @@ export default function Header({
     return () => document.removeEventListener("mousedown", onDocClick);
   }, []);
 
-  const userData = user || {
-    nombre: "Usuario ejemplo",
-    correo: "usuario@correo.com",
-  };
-
-  const toggleMode = () => setIsDarkMode((prev) => !prev);
-  const imgPath = (name) => `/icons/${isDarkMode ? `${name}_alt.png` : `${name}.png`}`;
-
   useEffect(() => {
     if (isDarkMode) {
       document.body.classList.add("dark-mode");
@@ -57,6 +49,14 @@ export default function Header({
       document.body.classList.remove("dark-mode");
     };
   }, [isDarkMode]); // Se ejecuta cada vez que 'isDarkMode' cambia
+  
+  const userData = user || {
+    nombre: "Usuario ejemplo",
+    correo: "usuario@correo.com",
+  };
+
+  const toggleMode = () => setIsDarkMode((prev) => !prev);
+  const imgPath = (name) => `/icons/${isDarkMode ? `${name}_alt.png` : `${name}.png`}`;
   
   return (
     <header className="header-fijo header-amplio">
@@ -180,5 +180,6 @@ export default function Header({
     </header>
   );
 }
+
 
 
