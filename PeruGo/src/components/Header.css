@@ -1,8 +1,7 @@
 :root {
   --color-header: rgb(188, 0, 0);
   --color-header-hover: rgb(130, 0, 0);
-  --color-texto-logo: rgb(255, 255, 255);
-  --color-texto-logo-secundario: rgb(255, 255, 255);
+  --color-texto: rgb(0, 0, 0);
   --color-btn-hover: rgb(130, 0, 0);
   /* ... añade todas tus otras variables de color aquí ... */
 }
@@ -11,8 +10,7 @@
 body.dark-mode {
   --color-header: rgb(128, 0, 0);
   --color-header-hover: rgb(70, 0, 0);
-  --color-texto-logo: rgb(0, 0, 0);
-  --color-texto-logo-secundario: rgb(0, 0, 0);
+  --color-texto: rgb(255, 255, 255);
   --color-btn-hover: rgb(70, 0, 0);
   /* ... etc. ... */
 }
@@ -78,12 +76,12 @@ body.dark-mode {
 .logo-principal {
   font-size: 1.3rem;
   font-weight: 700;
-  color: var(--color-texto-logo);
+  color: var(--color-texto);
 }
 
 .logo-secundario {
   font-size: 0.75rem;
-  color: var(--color-texto-logo-secundario);
+  color: var(--color-texto);
 }
 
 /* --- NAV --- */
@@ -250,7 +248,7 @@ body.dark-mode {
 }
 .btn-iniciar-sesion {
   background-color: var(--color-header);
-  color: white;
+  color: var(--color-texto);
   border: none;
   border-radius: 8px;
   padding: 8px 14px;
@@ -262,6 +260,7 @@ body.dark-mode {
   background-color: var(--color-header-hover);
   transform: translateY(-2px) scale(1.1);
 }
+
 
 
 
