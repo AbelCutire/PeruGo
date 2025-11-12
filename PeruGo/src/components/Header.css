@@ -2,16 +2,16 @@
   --color-header: rgb(255, 0, 0);
   --color-header-hover: rgb(130, 0, 0);
   --color-texto: rgb(0, 0, 0);
-  --color-btn-hover: rgb(197, 0, 0);
+  --color-btn-hover: rgb(130, 0, 0);
   /* ... añade todas tus otras variables de color aquí ... */
 }
 
 /* body.dark-mode sobrescribe las variables cuando el modo oscuro está activo */
 body.dark-mode {
   --color-header: rgb(128, 0, 0);
-  --color-header-hover: rgb(70, 0, 0);
+  --color-header-hover: rgb(198, 0, 0);
   --color-texto: rgb(255, 255, 255);
-  --color-btn-hover: rgb(70, 0, 0);
+  --color-btn-hover: rgb(198, 0, 0);
   /* ... etc. ... */
 }
 /* --- Header fijo --- */
@@ -260,6 +260,7 @@ body.dark-mode {
   background-color: var(--color-header-hover);
   transform: translateY(-2px) scale(1.1);
 }
+
 
 
 
