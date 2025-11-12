@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   height: 70px;
-  background: #2b2b2b; /* gris oscuro */
+  background: #770000; /* gris oscuro */
   color: #f9f9f9;
   display: flex;
   align-items: center;
@@ -463,4 +463,5 @@
   70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
   100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
 }
+
 
