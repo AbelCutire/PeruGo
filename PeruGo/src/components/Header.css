@@ -1,11 +1,11 @@
-/* --- Header fijo (sin cambios de color entre modos) --- */
+/* --- Header fijo --- */
 .header-fijo {
   position: fixed;
   top: -18px;
   left: 0;
   right: 0;
   height: 70px;
-  background: #770000; /* mantener siempre */
+  background: #770000;
   color: #f9f9f9;
   display: flex;
   align-items: center;
@@ -15,7 +15,6 @@
   backdrop-filter: blur(6px);
 }
 
-/* Contenedor */
 .header-contenido {
   width: 100%;
   max-width: 1200px;
@@ -25,17 +24,16 @@
   justify-content: space-between;
 }
 
-/* Variante amplio */
 .header-contenido-amplio {
   max-width: 1400px;
   padding: 0 2.5rem;
 }
 
-/* ---------- LOGO (alineado en fila) ---------- */
+/* --- LOGO --- */
 .logo-header {
   display: flex;
-  align-items: center;    /* centra verticalmente la imagen y el texto */
-  gap: 0.65rem;
+  align-items: center;
+  gap: 0.6rem;
   cursor: pointer;
   user-select: none;
 }
@@ -44,38 +42,33 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 auto;
 }
 
 .logo-img {
   height: 42px;
   width: auto;
-  display: block; /* evita salto de línea/alineamiento inferior */
+  display: block;
   user-select: none;
 }
 
 .logo-text {
   display: flex;
   flex-direction: column;
-  line-height: 1.05;
-  margin-left: 0.1rem;
+  line-height: 1.1;
 }
 
 .logo-principal {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: #fff;
-  line-height: 1;
 }
 
 .logo-secundario {
-  font-size: 0.72rem;
-  color: #f0dedc;
-  line-height: 1;
-  margin-top: 2px;
+  font-size: 0.75rem;
+  color: #ddd;
 }
 
-/* ---------- NAV (botones) ---------- */
+/* --- NAV --- */
 .nav-header {
   display: flex;
   align-items: center;
@@ -83,75 +76,48 @@
   min-height: 44px;
 }
 
-/* Botones de icono */
+/* --- Botones --- */
 .btn-icono {
   background: none;
   border: none;
   color: #eaeaea;
   cursor: pointer;
   padding: 8px;
-  border-radius: 10px;
-  transition: background 0.12s, transform 0.12s, color 0.12s;
+  border-radius: 8px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   line-height: 0;
+  transition: background 0.12s, transform 0.12s;
 }
 
-/* Asegura que la imagen no provoque salto vertical */
-.btn-icono .icon-img {
-  display: block;
-}
-
-/* Hover / focus */
 .btn-icono:hover,
 .btn-icono:focus {
   background: rgba(255, 255, 255, 0.04);
   transform: translateY(-2px);
-  color: #ffcc00;
   outline: none;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
 
-.btn-icono:focus-visible {
-  box-shadow: 0 0 0 3px rgba(255, 204, 51, 0.14);
-  border-radius: 10px;
-}
-
-/* Icon image */
 .icon-img {
   width: 22px;
   height: 22px;
-  transition: transform 0.15s ease;
   display: block;
+  transition: transform 0.15s ease;
 }
 
 .icon-img:hover {
   transform: scale(1.1);
 }
 
-/* Micrófono */
-.mic-btn {
-  width: 44px;
-  height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  transition: all 0.16s ease;
-  border: 1px solid transparent;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  color: #eaeaea;
-}
-
+/* --- Micrófono activo --- */
 .mic-btn.mic-active {
   background-color: #ef4444;
-  color: #fff;
+  border-radius: 10px;
   box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
   animation: pulse 1s infinite;
 }
 
-/* Perfil: menú */
+/* --- Perfil menú --- */
 .profile-wrapper {
   position: relative;
 }
@@ -222,23 +188,45 @@
   background: #fdecea;
 }
 
-/* Animaciones */
+/* --- Animaciones --- */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
-  70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
 }
 
-/* Responsive */
+/* --- Responsive --- */
 @media (max-width: 700px) {
-  .header-contenido { padding: 0 0.8rem; }
-  .logo-principal { font-size: 1.05rem; }
-  .nav-header { gap: 0.6rem; }
-  .btn-icono { padding: 6px; }
-  .logo-img { height: 36px; }
+  .header-contenido {
+    padding: 0 0.8rem;
+  }
+  .logo-principal {
+    font-size: 1.05rem;
+  }
+  .nav-header {
+    gap: 0.5rem;
+  }
+  .btn-icono {
+    padding: 6px;
+  }
+  .logo-img {
+    height: 36px;
+  }
 }
