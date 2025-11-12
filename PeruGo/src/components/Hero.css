@@ -1,8 +1,8 @@
 :root {
   --color-bg: rgb(243,243,243);
   --color-texto: rgb(0, 0, 0);
-  --color-btn-h: rgb(160,160,160);
-  --color-btn-hover-h: rgb(90,90,90);
+  --color-btn-h: rgb(170,170,170);
+  --color-btn-hover-h: rgb(100,100,100);
   --color-icon: rgb(0,0,0);
   /* ... añade todas tus otras variables de color aquí ... */
 }
@@ -11,8 +11,8 @@
 body.dark-mode {
   --color-bg: rgb(18, 18, 18);
   --color-texto: rgb(255, 255, 255);
-  --color-btn-h: rgb(57,57,57);
-  --color-btn-hover-h: rgb(127,127,127);
+  --color-btn-h: rgb(67,67,67);
+  --color-btn-hover-h: rgb(137,137,137);
   --color-icon: rgb(255,255,255);
   /* ... etc. ... */
 }
@@ -57,7 +57,7 @@ body.dark-mode {
 
 /* === MICROFONO === */
 .mic-grande {
-  background: #fff;
+  background: var(--color-btn-h);
   color: var(--color-icon);
   width: 90px;
   height: 90px;
@@ -114,6 +114,7 @@ body.dark-mode {
 .btn-search {
   border: none;
   background: var(--color-btn-h);
+  color: var(--color-icon);
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -173,6 +174,7 @@ body.dark-mode {
     font-size: 0.95rem;
   }
 }
+
 
 
 
