@@ -458,10 +458,44 @@
   animation: pulse 1s infinite;
 }
 
+/* --- Imágenes de iconos --- */
+.icon-img {
+  width: 22px;
+  height: 22px;
+  transition: transform 0.15s ease;
+}
+.icon-img:hover {
+  transform: scale(1.1);
+}
+
+.logo-container .logo-img {
+  height: 40px;
+  cursor: pointer;
+}
+
+/* --- Modo oscuro global --- */
+body.dark-mode {
+  background-color: #111;
+  color: #f1f1f1;
+}
+
+body.dark-mode .header-fijo {
+  background: #1e1e1e;
+  color: #f1f1f1;
+}
+
+body.dark-mode .profile-menu {
+  background: #2b2b2b;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+
 @keyframes pulse {
   0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
   70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
   100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
 }
+
 
 
