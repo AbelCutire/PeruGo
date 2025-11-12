@@ -1,8 +1,8 @@
 :root {
-  --color-header: rgb(188, 0, 0);
+  --color-header: rgb(255, 0, 0);
   --color-header-hover: rgb(130, 0, 0);
   --color-texto: rgb(0, 0, 0);
-  --color-btn-hover: rgb(130, 0, 0);
+  --color-btn-hover: rgb(197, 0, 0);
   /* ... añade todas tus otras variables de color aquí ... */
 }
 
@@ -260,6 +260,7 @@ body.dark-mode {
   background-color: var(--color-header-hover);
   transform: translateY(-2px) scale(1.1);
 }
+
 
 
 
