@@ -10,21 +10,23 @@ export default function Header({
   onLogout = () => {},
   user = null,
   onOpenPerfil = () => {},
+  onOpenLogin = () => {}, // Prop que activará el login
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const menuRef = useRef(null);
   const router = useRouter();
 
-  // --- Voz ---
   const { record, text, toggleRecord } = useVoiceSearch();
+
+  // Detecta cuando se deja de hablar
   useEffect(() => {
     if (!record && text && text.trim()) {
       window.dispatchEvent(new CustomEvent("chatMessage", { detail: { text } }));
     }
   }, [record, text]);
 
-  // --- Cerrar menú al hacer clic fuera ---
+  // Cierra el menú al hacer clic fuera
   useEffect(() => {
     const onDocClick = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -35,20 +37,13 @@ export default function Header({
     return () => document.removeEventListener("mousedown", onDocClick);
   }, []);
 
-  // --- Usuario por defecto ---
   const userData = user || {
     nombre: "Usuario ejemplo",
     correo: "usuario@correo.com",
   };
 
-  // --- Alternar modo (solo cambia íconos) ---
-  const toggleMode = () => {
-    setIsDarkMode((prev) => !prev);
-  };
-
-  // --- Generar ruta según modo ---
-  const imgPath = (name) =>
-    `/icons/${isDarkMode ? `${name}_alt.png` : `${name}.png`}`;
+  const toggleMode = () => setIsDarkMode((prev) => !prev);
+  const imgPath = (name) => `/icons/${isDarkMode ? `${name}_alt.png` : `${name}.png`}`;
 
   return (
     <header className="header-fijo header-amplio">
@@ -103,12 +98,8 @@ export default function Header({
             />
           </button>
 
-          {/* --- Botón modo (mode.png / mode_alt.png) --- */}
-          <button
-            className="btn-icono"
-            title="Cambiar modo"
-            onClick={toggleMode}
-          >
+          {/* --- Modo claro/oscuro --- */}
+          <button className="btn-icono" title="Cambiar modo" onClick={toggleMode}>
             <img
               src={imgPath("mode")}
               alt="Modo"
@@ -117,53 +108,63 @@ export default function Header({
             />
           </button>
 
-          {/* --- Perfil --- */}
-          <div className="profile-wrapper" ref={menuRef}>
-            <button
-              className="btn-icono"
-              title="Perfil"
-              onClick={() => setMenuOpen((s) => !s)}
-            >
-              <img
-                src={imgPath("user")}
-                alt="Perfil"
-                className="icon-img"
-                draggable="false"
-              />
+          {/* --- Iniciar sesión (solo texto, visible solo si no hay sesión) --- */}
+          {!isLogged && (
+            <button className="btn-iniciar-sesion" onClick={onOpenLogin}>
+              Iniciar sesión
             </button>
+          )}
 
-            {menuOpen && (
-              <div className="profile-menu">
-                <div className="profile-info">
-                  <div className="profile-name">{userData.nombre}</div>
-                  <div className="profile-email">{userData.correo}</div>
+          {/* --- Perfil (si hay sesión) --- */}
+          {isLogged && (
+            <div className="profile-wrapper" ref={menuRef}>
+              <button
+                className="btn-icono"
+                title="Perfil"
+                onClick={() => setMenuOpen((s) => !s)}
+              >
+                <img
+                  src={imgPath("user")}
+                  alt="Perfil"
+                  className="icon-img"
+                  draggable="false"
+                />
+              </button>
+
+              {menuOpen && (
+                <div className="profile-menu">
+                  <div className="profile-info">
+                    <div className="profile-name">{userData.nombre}</div>
+                    <div className="profile-email">{userData.correo}</div>
+                  </div>
+                  <hr className="profile-separator" />
+                  <div className="profile-actions">
+                    <button
+                      className="btn-opcion"
+                      onClick={() => {
+                        setMenuOpen(false);
+                        onOpenPerfil();
+                      }}
+                    >
+                      Ver perfil y preferencias
+                    </button>
+                    <button
+                      className="btn-opcion cerrar"
+                      onClick={() => {
+                        setMenuOpen(false);
+                        onLogout?.();
+                      }}
+                    >
+                      Cerrar sesión
+                    </button>
+                  </div>
                 </div>
-                <hr className="profile-separator" />
-                <div className="profile-actions">
-                  <button
-                    className="btn-opcion"
-                    onClick={() => {
-                      setMenuOpen(false);
-                      onOpenPerfil();
-                    }}
-                  >
-                    Ver perfil y preferencias
-                  </button>
-                  <button
-                    className="btn-opcion cerrar"
-                    onClick={() => {
-                      setMenuOpen(false);
-                      onLogout?.();
-                    }}
-                  >
-                    Cerrar sesión
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </nav>
       </div>
     </header>
   );
 }
+
