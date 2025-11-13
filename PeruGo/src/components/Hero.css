@@ -1,8 +1,8 @@
 :root {
   --color-bg: rgb(243,243,243);
   --color-texto: rgb(0, 0, 0);
-  --color-btn-h: rgb(200,200,200);
-  --color-btn-hover-h: rgb(130,130,130);
+  --color-btn-hero: rgb(200,200,200);
+  --color-btn-hover-hero: rgb(130,130,130);
   --color-icon: rgb(0,0,0);
   /* ... añade todas tus otras variables de color aquí ... */
 }
@@ -11,8 +11,8 @@
 body.dark-mode {
   --color-bg: rgb(18, 18, 18);
   --color-texto: rgb(255, 255, 255);
-  --color-btn-h: rgb(67,67,67);
-  --color-btn-hover-h: rgb(137,137,137);
+  --color-btn-hero: rgb(67,67,67);
+  --color-btn-hover-hero: rgb(137,137,137);
   --color-icon: rgb(255,255,255);
   /* ... etc. ... */
 }
@@ -57,7 +57,7 @@ body.dark-mode {
 
 /* === MICROFONO === */
 .mic-grande {
-  background: var(--color-btn-h);
+  background: var(--color-btn-hero);
   color: var(--color-icon);
   width: 90px;
   height: 90px;
@@ -71,7 +71,7 @@ body.dark-mode {
 }
 
 .mic-grande:hover {
-  background: var(--color-btn-hover-h);
+  background: var(--color-btn-hover-hero);
   transform: translateY(-3px);
 }
 
@@ -113,7 +113,7 @@ body.dark-mode {
 
 .btn-search {
   border: none;
-  background: var(--color-btn-h);
+  background: var(--color-btn-hero);
   color: var(--color-icon);
   width: 42px;
   height: 42px;
@@ -127,7 +127,7 @@ body.dark-mode {
 }
 
 .btn-search:hover {
-  background: var(--color-btn-hover-h);
+  background: var(--color-btn-hover-hero);
   transform: scale(1.1);
 }
 
@@ -174,6 +174,7 @@ body.dark-mode {
     font-size: 0.95rem;
   }
 }
+
 
 
 
