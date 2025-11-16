@@ -14,8 +14,30 @@
   --radius: 8px;
   --shadow: 0 18px 60px rgba(2, 6, 23, 0.18);
   --maxw: 100%;
+
+  /* Colores */
+  --color-header: rgb(255, 0, 0);
+  --color-header-hover: rgb(185, 0, 0);
+  --color-texto: rgb(0, 0, 0);
+  --color-btn-hover: rgb(185, 0, 0);
+  --color-bg: rgb(243,243,243);
+  --color-btn-hero: rgb(200,200,200);
+  --color-btn-hover-hero: rgb(130,130,130);
+  --color-icon: rgb(0,0,0);
 }
 
+/* body.dark-mode sobrescribe las variables cuando el modo oscuro está activo */
+body.dark-mode {
+  --color-header: rgb(128, 0, 0);
+  --color-header-hover: rgb(198, 0, 0);
+  --color-texto: rgb(255, 255, 255);
+  --color-btn-hover: rgb(198, 0, 0);
+  --color-bg: rgb(18, 18, 18);
+  --color-btn-hero: rgb(67,67,67);
+  --color-btn-hover-hero: rgb(137,137,137);
+  --color-icon: rgb(255,255,255);
+  /* ... etc. ... */
+}
 /* =========================================
    Reset
    ========================================= */
@@ -40,7 +62,6 @@ html, body {
    ========================================= */
 header {
   background: rgba(255,255,255,0.9);
-  backdrop-filter: blur(6px);
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -1,22 +1,3 @@
-:root {
-  --color-bg: rgb(243,243,243);
-  --color-texto: rgb(0, 0, 0);
-  --color-btn-hero: rgb(200,200,200);
-  --color-btn-hover-hero: rgb(130,130,130);
-  --color-icon: rgb(0,0,0);
-  /* ... añade todas tus otras variables de color aquí ... */
-}
-
-/* body.dark-mode sobrescribe las variables cuando el modo oscuro está activo */
-body.dark-mode {
-  --color-bg: rgb(18, 18, 18);
-  --color-texto: rgb(255, 255, 255);
-  --color-btn-hero: rgb(67,67,67);
-  --color-btn-hover-hero: rgb(137,137,137);
-  --color-icon: rgb(255,255,255);
-  /* ... etc. ... */
-}
-
 .hero {
   display: flex;
   align-items: center;
