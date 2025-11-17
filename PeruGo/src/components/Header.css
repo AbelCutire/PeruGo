@@ -106,6 +106,19 @@
   transform: scale(1.1);
 }
 
+.explore-svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+  transition: transform 0.15s ease;
+}
+
+.explore-svg:hover {
+  transform: scale(1.1);
+}
+
+
+
 /* --- Micrófono activo --- */
 .mic-btn.mic-active {
   background-color: #ef4444;

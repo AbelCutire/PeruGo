@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useVoiceSearch from "@/components/funciones/VoiceSearch";
+import ExploreIcon from "@/public/icons/explore.svg";
 import "./Header.css";
 
 export default function Header({
@@ -89,12 +90,7 @@ export default function Header({
             title="Explorar"
             onClick={() => router.push("/mis-planes")}
           >
-            <img
-              src={imgPath("explore")}
-              alt="Explorar"
-              className="icon-img"
-              draggable="false"
-            />
+            <ExploreIcon className = "explore-svg"/>
           </button>
 
           {/* --- Micrófono --- */}
