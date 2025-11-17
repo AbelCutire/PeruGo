@@ -98,7 +98,7 @@ const SectionDestinosPopulares = () => {
         <div
           className="carrusel-contenedor"
           ref={contenedorRef}
-          style={{ transform: `translateX(-${index * 100}vw)` }}
+          style={{ transform: `translateX(-${index * 100}%)` }}
         >
           {destinos.map((destino, i) => (
             <article

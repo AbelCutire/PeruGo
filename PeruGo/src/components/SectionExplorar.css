@@ -27,7 +27,7 @@
 
 .resultados-info {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--color-subtexto);
   margin-bottom: 1rem;
 }
 
@@ -40,7 +40,7 @@
 
 /* Tarjeta individual */
 .card {
-  background: #fff;
+  background: var(--color-bg);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
@@ -72,7 +72,7 @@
 
 .card-content p {
   font-size: 0.9rem;
-  color: #555;
+  color: var(--color-subtexto);
   margin-bottom: 0.4rem;
 }
 
@@ -92,7 +92,7 @@
 
 .precio {
   font-weight: bold;
-  color: #333;
+  color: var(--color-texto);
 }
 
 /* Botón "Ver" */
