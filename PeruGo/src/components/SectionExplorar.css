@@ -23,6 +23,8 @@
 /* Main (tarjetas) */
 .resultados {
   flex: 3;
+  border-radius: 18px;
+  padding: 2rem;
 }
 
 .resultados-info {
@@ -40,17 +42,17 @@
 
 /* Tarjeta individual */
 .card {
-  background: var(--color-bg);
-  border-radius: 16px;
+  background: var(--color-aux-bg);
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 8px var(--color-shadow);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 /* 🌟 Efecto al pasar el mouse */
 .card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 18px var(--color-shadow);
 }
 
 /* Imagen */
@@ -113,17 +115,19 @@
 /* ASIDE - filtros */
 .filtros {
   flex: 1;
-  background: #f9f9f9;
+  background: var(--color-aux-bg);
   border-radius: 12px;
   padding: 1rem;
 }
 
 .filtros h3 {
   margin-bottom: 1rem;
+  color: var(--color-texto);
 }
 
 .bloque-filtro {
   margin-bottom: 1.5rem;
+  color: var(--color-texto)
 }
 
 .presupuesto-botones {
