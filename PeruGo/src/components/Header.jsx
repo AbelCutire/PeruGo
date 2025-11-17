@@ -71,7 +71,7 @@ export default function Header({
           style={{ cursor: "pointer" }}
         >
           <div className="logo-img-container">
-            <img src="/icons/logo.svg" className="icon-svg" alt="Logo" />
+            <img src="/icons/logo.svg" className="logo-svg" alt="Logo" />
           </div>
           <div className="logo-text">
             <span className="logo-principal">PeruGo</span>
