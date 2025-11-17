@@ -43,14 +43,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(3px);
 }
 /* Fondo transparente que cubre toda la pantalla */
 .login-overlay {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(3px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -74,8 +72,6 @@ body {
 .login-box {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 16px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   padding: 40px 35px;
   width: 350px;
   color: white;
