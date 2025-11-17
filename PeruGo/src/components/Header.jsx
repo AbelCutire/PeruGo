@@ -87,7 +87,17 @@ export default function Header({
             title="Explorar"
             onClick={() => router.push("/mis-planes")}
           >
-            <img src="/icons/explore.svg" className="icon-svg" alt="Explorar" />
+            <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_30_48)">
+            <path d="M20.7782 3.32233L13 21L10.7298 13.3707L3.10051 11.1005L20.7782 3.32233Z" 
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <defs>
+            <clipPath id="clip0_30_48">
+            <rect width="24" height="24" fill="white"/>
+            </clipPath>
+            </defs>
+            </svg>
           </button>
 
           {/* --- Micrófono --- */}
