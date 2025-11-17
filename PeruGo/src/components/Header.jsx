@@ -2,11 +2,13 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import useVoiceSearch from "@/components/funciones/VoiceSearch";
-import ExploreIcon from "@/public/icons/explore.svg";
-import MicrophoneIcon from "@/public/icons/mic.svg";
-import SunIcon from "@/public/icons/sun.svg";
-import MoonIcon from "@/public/icons/moon.svg";
+import ExploreIcon from "@/assets/icons/explore.svg";
+import MicIcon from "@/assets/icons/mic.svg";
+import SunIcon from "@/assets/icons/sun.svg";
+import MoonIcon from "@/assets/icons/moon.svg";
+import UserIcon from "@/assets/icons/user.svg";
+import LogoIcon from "@/assets/icons/logo.svg";
+
 
 import "./Header.css";
 
@@ -73,12 +75,7 @@ export default function Header({
           style={{ cursor: "pointer" }}
         >
           <div className="logo-img-container">
-            <img
-              src={imgPath("logo")}
-              alt="PeruGo"
-              className="logo-img"
-              draggable="false"
-            />
+            <LogoIcon className = "icon-svg"/>
           </div>
           <div className="logo-text">
             <span className="logo-principal">PeruGo</span>
@@ -103,7 +100,7 @@ export default function Header({
             title="Hablar con el asistente"
             onClick={toggleRecord}
           >
-            <MicrophoneIcon className = "icon-svg"/>
+            <MicIcon className = "icon-svg"/>
           </button>
 
           {/* --- Modo claro/oscuro --- */}
@@ -130,12 +127,7 @@ export default function Header({
                 title="Perfil"
                 onClick={() => setMenuOpen((s) => !s)}
               >
-                <img
-                  src={imgPath("user")}
-                  alt="Perfil"
-                  className="icon-img"
-                  draggable="false"
-                />
+                <UserIcon className = "icon-svg"/>
               </button>
 
               {menuOpen && (
