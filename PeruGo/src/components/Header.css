@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 2px 8px var(--color-shadow);
   z-index: 9999;
 }
 
@@ -121,11 +121,11 @@
 
 .profile-menu {
   position: absolute;
-  top: 110%;
+  top: 150%;
   right: 0;
   background: var(--color-profile-bg);
   border-radius: 18px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px var(--color-shadow);
   width: 230px;
   z-index: 100;
   padding: 0.5rem 0;
@@ -182,7 +182,7 @@
 }
 
 .btn-opcion.cerrar:hover {
-  background: #fdecea;
+  background: var(--color-profile-cerrar-hover);
 }
 
 /* --- Animaciones --- */

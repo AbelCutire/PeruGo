@@ -28,6 +28,8 @@
   --color-icon: rgb(0,0,0);
   --color-profile-btn: rgb(243,243,243);
   --color-profile-btn-hover: rgb(173,173,173);
+  --color-profile-cerrar-hover: rgb(255, 185, 185);
+  --color-shadow: rgba(0, 0, 0, 0.25);
 }
 
 /* body.dark-mode sobrescribe las variables cuando el modo oscuro está activo */
@@ -44,7 +46,8 @@ body.dark-mode {
   --color-icon: rgb(255,255,255);
   --color-profile-btn: rgb(18, 18, 18);
   --color-profile-btn-hover: rgb(88,88,88);
-
+  --color-profile-cerrar-hover: rgb(88, 0, 0);
+  --color-shadow: rgba(255, 255, 255, 0.25);
   /* ... etc. ... */
 }
 /* =========================================
