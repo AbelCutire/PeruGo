@@ -31,7 +31,7 @@
   --color-profile-btn-hover: rgb(173,173,173);
   --color-profile-cerrar-hover: rgb(255, 185, 185);
   --color-shadow: rgba(0, 0, 0, 0.25);
-  --color-punto: rgba(50, 50, 50, 0.25);
+  --color-punto: rgba(50, 50, 50, 0.10);
   --color-punto-activo: rgba(50, 50, 50, 0.75);
   --color-flecha: rgba(255, 255, 255, 0.75);
 }
@@ -52,7 +52,7 @@ body.dark-mode {
   --color-profile-btn: rgb(18, 18, 18);
   --color-profile-btn-hover: rgb(88,88,88);
   --color-profile-cerrar-hover: rgb(88, 0, 0);
-  --color-shadow: rgba(0, 0, 0, 0.25);
+  --color-shadow: rgba(255, 255, 255, 0.10);
   --color-punto: rgba(200, 200, 200, 0.25);
   --color-punto-activo: rgba(200, 200, 200, 0.75);
   --color-flecha: rgba(0, 0, 0, 0.75);
@@ -293,6 +293,7 @@ aside {
 
 main {
   flex: 3 1 500px;
+  background-color: var(--color-aux-bg);
 }
 
 /* =========================================
