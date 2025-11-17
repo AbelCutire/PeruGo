@@ -102,9 +102,9 @@ export default function Header({
           {/* --- Modo claro/oscuro --- */}
           <button className="btn-icono" title="Cambiar modo" onClick={toggleMode}>
             {isDarkMode ? (
-              <img src="/icons/sun.svg" className="icon-svg" alt="Sol" />
-            ) : (
               <img src="/icons/moon.svg" className="icon-svg" alt="Luna" />
+            ) : (
+              <img src="/icons/sun.svg" className="icon-svg" alt="Sol" />
             )}
           </button>
 
