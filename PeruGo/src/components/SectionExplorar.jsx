@@ -113,7 +113,7 @@ export default function SectionExplorar() {
 
           <div className="cards-grid">
             {destinosFiltrados.map((d) => (
-              <article key={d.id} className="card">
+              <article key={d.id} className="cardAlt">
                 <img src={d.imagen} alt={d.nombre} />
                 <div className="card-content">
                   <h3>{d.nombre}</h3>
