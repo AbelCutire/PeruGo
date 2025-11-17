@@ -80,7 +80,7 @@
   color: var(--color-icon);
   cursor: pointer;
   padding: 8px;
-  border-radius: 12px;
+  border-radius: 18px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -247,11 +247,10 @@
 .btn-iniciar-sesion {
   background-color: var(--color-header);
   color: var(--color-texto);
-  border: none;
-  border-radius: 8px;
+  border: 2px solid var(--color-header-hover);
+  border-radius: 18px;
   padding: 8px 14px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 .btn-iniciar-sesion:hover {
