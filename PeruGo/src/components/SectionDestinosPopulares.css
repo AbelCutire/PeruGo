@@ -17,23 +17,15 @@
 }
 
 /* Barra superior */
-.barra-blanca {
-  display: flex;
+.popular-header {
+  text-align: center;
+  margin-bottom: 2rem;
   justify-content: center;
-  align-items: center;
-  width: 100%;
-  background: var(--color-aux-bg);
-  padding: 16px 28px;
-  border-bottom: 1px solid var(--color-punto);
-  margin-bottom: 18px;
-  border-radius: 18px;
 }
 
-.titulo-barra {
-  font-weight: 800;
-  font-size: 20px;
-  color: var(--color-texto);
-  margin: 0;
+.popular-titulo {
+  font-size: 2rem;
+  font-weight: 700;
 }
 
 /* Carrusel visible */
