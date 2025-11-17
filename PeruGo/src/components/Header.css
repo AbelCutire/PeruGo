@@ -249,8 +249,9 @@
   color: var(--color-texto);
   border: 2px solid var(--color-header-hover);
   border-radius: 18px;
-  padding: 8px 14px;
+  padding: 0px 14px;
   cursor: pointer;
+  height: 38px;
 }
 
 .btn-iniciar-sesion:hover {
