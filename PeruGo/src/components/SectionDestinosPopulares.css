@@ -71,13 +71,13 @@
   width: 100%;
   padding: 28px 24px;
   background: linear-gradient(to top, rgba(255, 255, 255, 0.92), transparent 40%);
-  color: #111;
 }
 
 /* Tipografía del contenido */
-.tarjeta-carrusel h3 {
+.tarjeta-carrusel .nombre {
   font-size: 1.6rem;
   font-weight: 700;
+  color: #111;
   margin: 0 0 6px 0;
 }
 

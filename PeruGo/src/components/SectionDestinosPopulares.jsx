@@ -110,7 +110,7 @@ const SectionDestinosPopulares = () => {
               style={{ backgroundImage: `url(${destino.imagen})` }}
             >
               <div className="overlay">
-                <h3>{destino.nombre}</h3>
+                <p className="nombre">{destino.nombre}</p>
                 <p className="ubicacion">{destino.ubicacion}</p>
                 <p className="ideal">Ideal para {destino.ideal}</p>
               </div>
