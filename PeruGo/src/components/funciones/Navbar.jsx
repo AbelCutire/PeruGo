@@ -1,11 +1,7 @@
-"use client";
-
 import React from "react";
 import { MapPin, Mic, Settings } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 function Navbar() {
-  const router = useRouter();
   return (
     <header className="fixed top-0 left-0 w-full bg-gray-800 text-white shadow-lg z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
@@ -28,16 +24,10 @@ function Navbar() {
 
         {/* Botones */}
         <div className="flex gap-3">
-          <button
-            className="px-4 py-1 rounded-md border border-gray-400 hover:bg-gray-700 transition"
-            onClick={() => router.push('/login')}
-          >
+          <button className="px-4 py-1 rounded-md border border-gray-400 hover:bg-gray-700 transition">
             Iniciar sesión
           </button>
-          <button
-            className="px-4 py-1 rounded-md bg-red-600 hover:bg-red-700 transition"
-            onClick={() => router.push('/register')}
-          >
+          <button className="px-4 py-1 rounded-md bg-red-600 hover:bg-red-700 transition">
             Registrarse
           </button>
         </div>
@@ -47,3 +37,5 @@ function Navbar() {
 }
 
 export default Navbar;
+
+
