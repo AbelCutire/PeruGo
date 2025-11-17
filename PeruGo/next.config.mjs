@@ -18,4 +18,31 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+// Configuración para importar SVGs como componentes React usando SVGR
+const withSvgr = (nextConfig = {}) => {
+  return {
+    ...nextConfig,
+    webpack(config) {
+      config.module.rules.push({
+        test: /\.svg$/,
+        issuer: /\.[jt]sx?$/,
+        use: [
+          {
+            loader: '@svgr/webpack',
+            options: { icon: true },
+          },
+        ],
+      });
+      if (typeof nextConfig.webpack === 'function') {
+        return nextConfig.webpack(config);
+      }
+      return config;
+    },
+  };
+};
+
+export const experimental = {
+  turbo: false,
+};
+
+export default withSvgr(nextConfig);
