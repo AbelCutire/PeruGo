@@ -140,7 +140,7 @@
   position: absolute;
   top: 150%;
   right: 0;
-  background: var(--color-profile-bg);
+  background: var(--color-profile-btn);
   border-radius: 18px;
   box-shadow: 0 4px 16px var(--color-shadow);
   width: 230px;
