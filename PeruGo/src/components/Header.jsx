@@ -4,6 +4,10 @@ import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useVoiceSearch from "@/components/funciones/VoiceSearch";
 import ExploreIcon from "@/public/icons/explore.svg";
+import MicrophoneIcon from "@/public/icons/mic.svg";
+import SunIcon from "@/public/icons/sun.svg";
+import MoonIcon from "@/public/icons/moon.svg";
+
 import "./Header.css";
 
 export default function Header({
@@ -90,7 +94,7 @@ export default function Header({
             title="Explorar"
             onClick={() => router.push("/mis-planes")}
           >
-            <ExploreIcon className = "explore-svg"/>
+            <ExploreIcon className = "icon-svg"/>
           </button>
 
           {/* --- Micrófono --- */}
@@ -99,22 +103,16 @@ export default function Header({
             title="Hablar con el asistente"
             onClick={toggleRecord}
           >
-            <img
-              src={imgPath("mic")}
-              alt="Micrófono"
-              className="icon-img"
-              draggable="false"
-            />
+            <MicrophoneIcon className = "icon-svg"/>
           </button>
 
           {/* --- Modo claro/oscuro --- */}
           <button className="btn-icono" title="Cambiar modo" onClick={toggleMode}>
-            <img
-              src={imgPath("mode")}
-              alt="Modo"
-              className="icon-img"
-              draggable="false"
-            />
+            {isDarkMode ? (
+              <SunIcon className="icon-svg" />
+            ) : (
+              <MoonIcon className="icon-svg" />
+            )}
           </button>
 
           {/* --- Iniciar sesión (solo texto, visible solo si no hay sesión) --- */}

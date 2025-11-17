@@ -106,14 +106,14 @@
   transform: scale(1.1);
 }
 
-.explore-svg {
+.icon-svg {
   width: 22px;
   height: 22px;
-  display: block;
+  color: var(--color-icon);
   transition: transform 0.15s ease;
 }
 
-.explore-svg:hover {
+.icon-svg:hover {
   transform: scale(1.1);
 }
 
