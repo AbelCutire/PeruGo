@@ -306,10 +306,10 @@ main {
 }
 
 .card {
-  background: #fff;
-  border-radius: 10px;
+  background: var(--color-aux-bg);
+  border-radius: 1.5rem;
   padding: 12px;
-  box-shadow: 0 8px 30px rgba(2,6,12,0.04);
+  box-shadow: 0 8px 30px var(--color-shadow);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -318,7 +318,7 @@ main {
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 40px rgba(2,6,12,0.08);
+  box-shadow: 0 8px 40px var(--color-shadow);
 }
 
 .card img {
