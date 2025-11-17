@@ -22,7 +22,7 @@
   --color-subtexto: rgb(52,52,52);
   --color-texto-cerrar: rgb(255, 0, 0);
   --color-btn-hover: rgb(185, 0, 0);
-  --color-bg: rgb(243,243,243);
+  --color-bg: rgb(235, 235, 235);
   --color-aux-bg: rgb(255,255,255);
   --color-btn-hero: rgb(200,200,200);
   --color-btn-hover-hero: rgb(130,130,130);
@@ -44,7 +44,7 @@ body.dark-mode {
   --color-subtexto: rgb(203,203,203);
   --color-texto-cerrar: rgb(255, 0, 0);
   --color-btn-hover: rgb(198, 0, 0);
-  --color-bg: rgb(18, 18, 18);
+  --color-bg: rgb(50, 50, 50);
   --color-aux-bg: rgb(0,0,0);
   --color-btn-hero: rgb(67,67,67);
   --color-btn-hover-hero: rgb(137,137,137);
@@ -271,7 +271,7 @@ nav a:hover {
    ========================================= */
 section {
   padding: 28px;
-  background: #fff;
+  background: var(--color-bg);
   margin: 20px auto;
   max-width: var(--maxw);
   border-radius: 12px;
