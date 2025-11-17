@@ -150,7 +150,6 @@ nav a:hover {
   background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.9));
   box-shadow: 0 30px 80px rgba(2,6,12,0.22);
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.6);
 }
 
 .hero-inner {
