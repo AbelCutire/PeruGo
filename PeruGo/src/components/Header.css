@@ -33,7 +33,7 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  cursor: pointer;
+  color: var(--color-icon);
 }
 
 .logo-img-container {
