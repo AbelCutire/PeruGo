@@ -101,7 +101,7 @@
 
 /* Botón "Ver" */
 .btn-ver {
-  background: #007bff;
+  background: var(--color-btn);
   color: white;
   border: none;
   border-radius: 8px;
@@ -111,7 +111,7 @@
 }
 
 .btn-ver:hover {
-  background: #0056b3;
+  background: var(--color-btn-hover);
 }
 
 /* ASIDE - filtros */
