@@ -2,16 +2,11 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import ExploreIcon from "@/assets/icons/explore.svg";
-import MicIcon from "@/assets/icons/mic.svg";
-import SunIcon from "@/assets/icons/sun.svg";
-import MoonIcon from "@/assets/icons/moon.svg";
-import UserIcon from "@/assets/icons/user.svg";
-import LogoIcon from "@/assets/icons/logo.svg";
-import useVoiceSearch from "./funciones/VoiceSearch";
+// Íconos SVG ahora se usan como imágenes desde /public/icons
 
 
 import "./Header.css";
+import useVoiceSearch from "./funciones/VoiceSearch";
 
 export default function Header({
   isLogged = true,
@@ -76,7 +71,7 @@ export default function Header({
           style={{ cursor: "pointer" }}
         >
           <div className="logo-img-container">
-            <LogoIcon className = "icon-svg"/>
+            <img src="/icons/logo.svg" className="icon-svg" alt="Logo" />
           </div>
           <div className="logo-text">
             <span className="logo-principal">PeruGo</span>
@@ -92,7 +87,7 @@ export default function Header({
             title="Explorar"
             onClick={() => router.push("/mis-planes")}
           >
-            <ExploreIcon className = "icon-svg"/>
+            <img src="/icons/explore.svg" className="icon-svg" alt="Explorar" />
           </button>
 
           {/* --- Micrófono --- */}
@@ -101,15 +96,15 @@ export default function Header({
             title="Hablar con el asistente"
             onClick={toggleRecord}
           >
-            <MicIcon className = "icon-svg"/>
+            <img src="/icons/mic.svg" className="icon-svg" alt="Micrófono" />
           </button>
 
           {/* --- Modo claro/oscuro --- */}
           <button className="btn-icono" title="Cambiar modo" onClick={toggleMode}>
             {isDarkMode ? (
-              <SunIcon className="icon-svg" />
+              <img src="/icons/sun.svg" className="icon-svg" alt="Sol" />
             ) : (
-              <MoonIcon className="icon-svg" />
+              <img src="/icons/moon.svg" className="icon-svg" alt="Luna" />
             )}
           </button>
 
@@ -128,7 +123,7 @@ export default function Header({
                 title="Perfil"
                 onClick={() => setMenuOpen((s) => !s)}
               >
-                <UserIcon className = "icon-svg"/>
+                <img src="/icons/user.svg" className="icon-svg" alt="Usuario" />
               </button>
 
               {menuOpen && (
