@@ -140,19 +140,18 @@
 .profile-name {
   font-weight: 600;
   font-size: 0.95rem;
-  color: #222;
+  color: var(--color-texto);
 }
 
 .profile-email {
   font-size: 0.8rem;
-  color: #666;
+  color: var(--color-subtexto);
   margin-top: 2px;
 }
 
 .profile-separator {
   border: none;
   border-top: 1px solid #eee;
-  margin: 0.3rem 0;
 }
 
 .profile-actions {
@@ -161,7 +160,7 @@
 }
 
 .btn-opcion {
-  background: none;
+  background: var(--color-profile-btn);
   border: none;
   text-align: left;
   padding: 0.75rem 1rem;
@@ -173,11 +172,11 @@
 }
 
 .btn-opcion:hover {
-  background: var(--color-profile-btn);
+  background: var(--color-profile-btn-hover);
 }
 
 .btn-opcion.cerrar {
-  color: #e53935;
+  color: var(--color-texto-cerrar);
   font-weight: 600;
   border-radius: 10px;
 }

@@ -19,11 +19,15 @@
   --color-header: rgb(255, 0, 0);
   --color-header-hover: rgb(185, 0, 0);
   --color-texto: rgb(0, 0, 0);
+  --color-subtexto: rgb(52,52,52);
+  --color-texto-cerrar: rgb(255, 0, 0);
   --color-btn-hover: rgb(185, 0, 0);
   --color-bg: rgb(243,243,243);
   --color-btn-hero: rgb(200,200,200);
   --color-btn-hover-hero: rgb(130,130,130);
   --color-icon: rgb(0,0,0);
+  --color-profile-btn: rgb(243,243,243);
+  --color-profile-btn-hover: rgb(173,173,173);
 }
 
 /* body.dark-mode sobrescribe las variables cuando el modo oscuro está activo */
@@ -31,11 +35,16 @@ body.dark-mode {
   --color-header: rgb(128, 0, 0);
   --color-header-hover: rgb(198, 0, 0);
   --color-texto: rgb(255, 255, 255);
+  --color-subtexto: rgb(203,203,203);
+  --color-texto-cerrar: rgb(255, 0, 0);
   --color-btn-hover: rgb(198, 0, 0);
   --color-bg: rgb(18, 18, 18);
   --color-btn-hero: rgb(67,67,67);
   --color-btn-hover-hero: rgb(137,137,137);
   --color-icon: rgb(255,255,255);
+  --color-profile-btn: rgb(18, 18, 18);
+  --color-profile-btn-hover: rgb(88,88,88);
+
   /* ... etc. ... */
 }
 /* =========================================
