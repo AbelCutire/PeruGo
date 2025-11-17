@@ -80,7 +80,7 @@ export default function Page() {
       <section id="explorar">
         <SectionExplorar />
       </section>
-      <SectionPerfil />
+      
       <Chat />
     </main>
   );
