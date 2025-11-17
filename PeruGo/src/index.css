@@ -21,6 +21,7 @@
   --color-texto: rgb(0, 0, 0);
   --color-subtexto: rgb(52,52,52);
   --color-texto-cerrar: rgb(255, 0, 0);
+  --color-btn: rgb(255, 0, 0);
   --color-btn-hover: rgb(215, 0, 0);
   --color-bg: rgb(235, 235, 235);
   --color-aux-bg: rgb(255,255,255);
@@ -43,6 +44,7 @@ body.dark-mode {
   --color-texto: rgb(255, 255, 255);
   --color-subtexto: rgb(203,203,203);
   --color-texto-cerrar: rgb(255, 0, 0);
+  --color-btn: rgb(128, 0, 0);
   --color-btn-hover: rgb(168, 0, 0);
   --color-bg: rgb(20, 20, 20);
   --color-aux-bg: rgb(0,0,0);
