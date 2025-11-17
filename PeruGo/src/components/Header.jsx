@@ -8,6 +8,7 @@ import SunIcon from "@/assets/icons/sun.svg";
 import MoonIcon from "@/assets/icons/moon.svg";
 import UserIcon from "@/assets/icons/user.svg";
 import LogoIcon from "@/assets/icons/logo.svg";
+import useVoiceSearch from "./funciones/VoiceSearch";
 
 
 import "./Header.css";
