@@ -17,7 +17,7 @@
 
   /* Colores */
   --color-header: rgb(255, 0, 0);
-  --color-header-hover: rgb(185, 0, 0);
+  --color-header-hover: rgb(215, 0, 0);
   --color-texto: rgb(0, 0, 0);
   --color-subtexto: rgb(52,52,52);
   --color-texto-cerrar: rgb(255, 0, 0);
@@ -39,7 +39,7 @@
 /* body.dark-mode sobrescribe las variables cuando el modo oscuro está activo */
 body.dark-mode {
   --color-header: rgb(128, 0, 0);
-  --color-header-hover: rgb(198, 0, 0);
+  --color-header-hover: rgb(168, 0, 0);
   --color-texto: rgb(255, 255, 255);
   --color-subtexto: rgb(203,203,203);
   --color-texto-cerrar: rgb(255, 0, 0);
@@ -81,7 +81,8 @@ html, body {
    Header
    ========================================= */
 header {
-  background: rgba(255,255,255,0.9);
+  background: var(--color-aux-bg);
+  color: var(--color-texto);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -89,7 +90,6 @@ header {
   max-width: var(--maxw);
   margin: 18px auto;
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.6);
   box-shadow: var(--shadow);
   flex-wrap: wrap;
   gap: 12px;

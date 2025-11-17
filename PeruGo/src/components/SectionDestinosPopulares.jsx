@@ -85,9 +85,9 @@ const SectionDestinosPopulares = () => {
 
   return (
     <section className="section-destinos-populares">
-      <div className="barra-blanca">
-        <h2 className="titulo-barra">Destinos más populares</h2>
-      </div>
+      <header className="explorar-header">
+        <div className="explorar-titulo">Destinos Más Populares</div>
+      </header>
 
       <div
         className="carrusel"
