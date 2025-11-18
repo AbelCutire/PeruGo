@@ -148,11 +148,11 @@
 }
 
 .presupuesto-botones .ghost.active {
-  border-color: #007bff;
-  background: #007bff;
+  border-color: var(--color-btn);
+  background: var(--color-btn);
   color: #fff;
 }
 
 .presupuesto-botones .ghost:hover {
-  border-color: #007bff;
+  border-color: var(--color-btn);
 }
