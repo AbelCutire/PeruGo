@@ -151,7 +151,7 @@
 
 .profile-info {
   padding: 0.8rem 1rem;
-  border-bottom: 1px solid var(--color-texto);
+  border-bottom: 1px solid var(--color-subtexto);
 }
 
 .profile-name {
@@ -168,7 +168,7 @@
 
 .profile-separator {
   border: none;
-  border-top: 1px solid var(--color-texto);
+  border-top: 1px solid var(--color-subtexto);
 }
 
 .profile-actions {
