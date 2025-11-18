@@ -126,7 +126,7 @@
 /* --- Micrófono activo --- */
 .mic-btn.mic-active {
   background-color: #ef4444;
-  border-radius: 10px;
+  border-radius: 18px;
   box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
   animation: pulse 1s infinite;
 }
