@@ -46,7 +46,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 5px 5px var(--color-shadow);
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -74,6 +74,7 @@
   padding: 0.3rem 0.5rem;
   width: 200%;
   border: 2px solid #676767;
+  box-shadow: 0 5px 5px var(--color-shadow);
 }
 
 .hero-input {
