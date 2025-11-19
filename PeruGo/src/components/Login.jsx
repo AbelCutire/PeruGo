@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { login, recover } from "@/services/auth";
+import Register from "@/components/Register";
 import "./Login.css";
 
 export default function Login({ onLogin, onClose }) {
@@ -11,6 +12,7 @@ export default function Login({ onLogin, onClose }) {
   const [mostrarContrasena, setMostrarContrasena] = useState(false);
   const [modo, setModo] = useState("inicio");
   const [recordar, setRecordar] = useState(false);
+  const [mostrarRegistro, setMostrarRegistro] = useState(false);
 
   const manejarEnvio = async (e) => {
     e.preventDefault();
@@ -51,6 +53,7 @@ export default function Login({ onLogin, onClose }) {
       <div className="login-container">
         <div className="login-box">
           <button className="close-login" onClick={onClose}>✕</button>
+
           <div className="login-icon">
             <i className="fas fa-user"></i>
           </div>
@@ -58,6 +61,7 @@ export default function Login({ onLogin, onClose }) {
           {modo === "inicio" ? (
             <>
               <h2>Iniciar Sesión</h2>
+
               <form onSubmit={manejarEnvio}>
                 <div className="input-group">
                   <i className="fas fa-envelope"></i>
@@ -102,6 +106,7 @@ export default function Login({ onLogin, onClose }) {
                     />
                     Recordarme
                   </label>
+
                   <button
                     type="button"
                     className="link-button"
@@ -114,11 +119,20 @@ export default function Login({ onLogin, onClose }) {
                 <button type="submit" className="login-btn">
                   INGRESAR
                 </button>
+
+                <button
+                  type="button"
+                  className="link-button"
+                  onClick={() => setMostrarRegistro(true)}
+                >
+                  Crear cuenta nueva
+                </button>
               </form>
             </>
           ) : (
             <>
               <h2>Recuperar Contraseña</h2>
+
               <form onSubmit={manejarEnvio}>
                 <div className="input-group">
                   <i className="fas fa-envelope"></i>
@@ -146,7 +160,16 @@ export default function Login({ onLogin, onClose }) {
           )}
         </div>
       </div>
+
+      {mostrarRegistro && (
+        <Register
+          onClose={() => setMostrarRegistro(false)}
+          onSuccess={() => {
+            setMostrarRegistro(false);
+            setModo("inicio");
+          }}
+        />
+      )}
     </div>
   );
 }
-
