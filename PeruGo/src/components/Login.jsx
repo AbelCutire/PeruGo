@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { login, recover } from "@/services/auth";
 import "./Login.css";
 
 export default function Login({ onLogin, onClose }) {
@@ -11,21 +12,36 @@ export default function Login({ onLogin, onClose }) {
   const [modo, setModo] = useState("inicio");
   const [recordar, setRecordar] = useState(false);
 
-  const manejarEnvio = (e) => {
+  const manejarEnvio = async (e) => {
     e.preventDefault();
 
     if (modo === "inicio") {
-      if (correo && usuario && contrasena) {
-        onLogin(recordar);
-      } else {
+      if (!correo || !usuario || !contrasena) {
         alert("Por favor, completa todos los campos");
+        return;
       }
+
+      try {
+        const { token } = await login(correo, usuario, contrasena);
+
+        if (recordar) {
+          localStorage.setItem("token", token);
+        } else {
+          sessionStorage.setItem("token", token);
+        }
+
+        onLogin(token);
+      } catch (err) {
+        alert("Error: " + err.message);
+      }
+
     } else {
-      if (correo) {
-        alert("Se ha enviado un enlace de recuperación a tu correo electrónico.");
+      try {
+        await recover(correo);
+        alert("Se ha enviado un enlace a tu correo.");
         setModo("inicio");
-      } else {
-        alert("Por favor, ingresa tu correo para continuar.");
+      } catch (err) {
+        alert("Error: " + err.message);
       }
     }
   };
