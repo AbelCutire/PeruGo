@@ -3,34 +3,31 @@
 import React, { useState } from "react";
 import "../styles/auth.css";
 
-export default function PageLogin() {
+export default function PageRegister() {
+  const [nombre, setNombre] = useState("");
   const [correo, setCorreo] = useState("");
   const [clave, setClave] = useState("");
   const [mensaje, setMensaje] = useState("");
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     setMensaje("");
 
     try {
-      const res = await fetch("https://perugo-backend-production.up.railway.app/login", {
+      const res = await fetch("https://perugo-backend-production.up.railway.app/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ correo, clave }),
+        body: JSON.stringify({ nombre, correo, clave }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setMensaje(data.message || "Credenciales incorrectas");
+        setMensaje(data.message || "No se pudo registrar");
         return;
       }
 
-      // Guardar token
-      localStorage.setItem("token", data.token);
-
-      // Redirigir
-      window.location.href = "/";
+      window.location.href = "/login";
     } catch (err) {
       setMensaje("Error de conexión con el servidor");
     }
@@ -38,9 +35,17 @@ export default function PageLogin() {
 
   return (
     <div className="auth-container">
-      <h2>Iniciar Sesión</h2>
+      <h2>Crear Cuenta</h2>
 
-      <form className="auth-form" onSubmit={handleLogin}>
+      <form className="auth-form" onSubmit={handleRegister}>
+        <label>Nombre</label>
+        <input
+          type="text"
+          required
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+        />
+
         <label>Correo electrónico</label>
         <input
           type="email"
@@ -59,12 +64,11 @@ export default function PageLogin() {
 
         {mensaje && <div className="auth-error">{mensaje}</div>}
 
-        <button type="submit" className="auth-submit">Ingresar</button>
+        <button type="submit" className="auth-submit">Registrarse</button>
       </form>
 
       <div className="auth-links">
-        <a href="/recover">¿Olvidaste tu contraseña?</a>
-        <a href="/register">Crear cuenta nueva</a>
+        <a href="/login">¿Ya tienes cuenta? Iniciar sesión</a>
       </div>
     </div>
   );

@@ -27,7 +27,7 @@ export default function Register({ onClose, onSuccess }) {
     try {
       await register(correo, usuario, contrasena);
       alert("Registro exitoso. Ahora puede iniciar sesión.");
-      onSuccess(); // normalmente abrir login
+      onSuccess();
     } catch (err) {
       alert("Error: " + err.message);
     }
@@ -88,6 +88,10 @@ export default function Register({ onClose, onSuccess }) {
                 value={confirmar}
                 onChange={(e) => setConfirmar(e.target.value)}
               />
+              <i
+                className={`fas ${mostrarContrasena ? "fa-eye-slash" : "fa-eye"}`}
+                onClick={() => setMostrarContrasena(!mostrarContrasena)}
+              ></i>
             </div>
 
             <button type="submit" className="register-btn">

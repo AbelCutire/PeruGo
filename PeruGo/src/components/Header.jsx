@@ -137,11 +137,26 @@ export default function Header({
           </button>
 
           {/* --- Iniciar sesión (solo texto, visible solo si no hay sesión) --- */}
+          {/* --- Botones Login y Register cuando NO hay sesión --- */}
           {!isLogged && (
-            <button className="btn-iniciar-sesion" onClick={onOpenLogin}>
-              Iniciar sesión
-            </button>
+            <>
+              <button
+                className="btn-iniciar-sesion"
+                onClick={() => router.push("/login")}
+              >
+                Iniciar sesión
+              </button>
+
+              <button
+                className="btn-iniciar-sesion"
+                onClick={() => router.push("/register")}
+                style={{ marginLeft: "6px" }}
+              >
+                Registrarse
+              </button>
+            </>
           )}
+
 
           {/* --- Perfil (si hay sesión) --- */}
           {isLogged && (
@@ -200,6 +215,3 @@ export default function Header({
     </header>
   );
 }
-
-
-
