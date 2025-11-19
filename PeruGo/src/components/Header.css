@@ -145,7 +145,7 @@
   box-shadow: 0 4px 16px var(--color-shadow);
   width: 230px;
   z-index: 100;
-  padding: 0.5rem 0;
+  padding: 1rem 0;
   animation: fadeIn 0.2s ease;
 }
 
@@ -190,7 +190,6 @@
 .btn-opcion.cerrar {
   color: var(--color-texto-cerrar);
   font-weight: 600;
-  border-radius: 10px;
 }
 
 .btn-opcion.cerrar:hover {
