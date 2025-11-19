@@ -151,7 +151,7 @@
 
 .profile-info {
   padding: 0.8rem 1rem;
-  border-bottom: 1px solid var(--color-subtexto);
+  border-bottom: 2px solid var(--color-profile-btn-hover);
 }
 
 .profile-name {
@@ -164,11 +164,6 @@
   font-size: 0.8rem;
   color: var(--color-subtexto);
   margin-top: 2px;
-}
-
-.profile-separator {
-  border: none;
-  border-top: 1px solid var(--color-subtexto);
 }
 
 .profile-actions {
@@ -185,7 +180,7 @@
   color: var(--color-texto);
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
-  border-radius: 10px;
+  border-top: 2px solid var(--color-profile-btn-hover);
 }
 
 .btn-opcion:hover {

@@ -162,7 +162,6 @@ export default function Header({
                     <div className="profile-name">{userData.nombre}</div>
                     <div className="profile-email">{userData.correo}</div>
                   </div>
-                  <hr className="profile-separator" />
                   <div className="profile-actions">
                     <button
                       className="btn-opcion"
