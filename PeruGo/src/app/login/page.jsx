@@ -42,17 +42,21 @@ export default function PageLogin() {
 
       <form className="auth-form" onSubmit={handleLogin}>
         <label>Correo electrónico</label>
+        <i className="fas fa-envelope"></i>
         <input
           type="email"
           required
+          placeholder="Correo electrónico"
           value={correo}
           onChange={(e) => setCorreo(e.target.value)}
         />
 
         <label>Contraseña</label>
+        <i className="fas fa-lock"></i>
         <input
           type="password"
           required
+          placeholder="Contraseña"
           value={clave}
           onChange={(e) => setClave(e.target.value)}
         />

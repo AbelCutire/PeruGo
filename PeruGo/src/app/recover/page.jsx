@@ -37,9 +37,11 @@ export default function PageRecover() {
 
       <form className="auth-form" onSubmit={handleRecover}>
         <label>Correo</label>
+        <i className="fas fa-envelope"></i>
         <input
           type="email"
           required
+          placeholder="Correo electrónico"
           value={correo}
           onChange={(e) => setCorreo(e.target.value)}
         />
