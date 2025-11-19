@@ -168,6 +168,15 @@ export default function Header({
                       className="btn-opcion"
                       onClick={() => {
                         setMenuOpen(false);
+                        router.push("/mis-planes");
+                      }}
+                    >
+                      Mis Planes
+                    </button>
+                    <button
+                      className="btn-opcion"
+                      onClick={() => {
+                        setMenuOpen(false);
                         onOpenPerfil();
                       }}
                     >
