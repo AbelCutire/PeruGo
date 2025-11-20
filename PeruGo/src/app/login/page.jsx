@@ -26,10 +26,7 @@ export default function PageLogin() {
         return;
       }
 
-      // Guardar token
       localStorage.setItem("token", data.token);
-
-      // Redirigir
       window.location.href = "/";
     } catch (err) {
       setMensaje("Error de conexión con el servidor");
@@ -41,25 +38,30 @@ export default function PageLogin() {
       <h2>Iniciar Sesión</h2>
 
       <form className="auth-form" onSubmit={handleLogin}>
+
         <label>Correo electrónico</label>
-        <i className="fas fa-envelope"></i>
-        <input
-          type="email"
-          required
-          placeholder="Correo electrónico"
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
-        />
+        <div className="input-group">
+          <i className="fas fa-envelope"></i>
+          <input
+            type="email"
+            required
+            placeholder="Correo electrónico"
+            value={correo}
+            onChange={(e) => setCorreo(e.target.value)}
+          />
+        </div>
 
         <label>Contraseña</label>
-        <i className="fas fa-lock"></i>
-        <input
-          type="password"
-          required
-          placeholder="Contraseña"
-          value={clave}
-          onChange={(e) => setClave(e.target.value)}
-        />
+        <div className="input-group">
+          <i className="fas fa-lock"></i>
+          <input
+            type="password"
+            required
+            placeholder="Contraseña"
+            value={clave}
+            onChange={(e) => setClave(e.target.value)}
+          />
+        </div>
 
         {mensaje && <div className="auth-error">{mensaje}</div>}
 
