@@ -39,34 +39,40 @@ export default function PageRegister() {
 
       <form className="auth-form" onSubmit={handleRegister}>
         <label>Nombre</label>
-        <i className="fas fa-user-circle"></i>
-        <input
-          type="text"
-          required
-          placeholder="Nombre de usuario"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-        />
+        <div className="input-group">
+          <i className="fas fa-user-circle"></i>
+          <input
+            type="text"
+            required
+            placeholder="Nombre de usuario"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+          />
+        </div>
 
         <label>Correo electrónico</label>
-        <i className="fas fa-envelope"></i>
-        <input
-          type="email"
-          required
-          placeholder="Correo electrónico"
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
-        />
+        <div className="input-group">
+          <i className="fas fa-envelope"></i>
+          <input
+            type="email"
+            required
+            placeholder="Correo electrónico"
+            value={correo}
+            onChange={(e) => setCorreo(e.target.value)}
+          />
+        </div>
 
         <label>Contraseña</label>
-        <i className="fas fa-lock"></i>
-        <input
-          type="password"
-          required
-          placeholder="Contraseña"
-          value={clave}
-          onChange={(e) => setClave(e.target.value)}
-        />
+        <div className="input-group">
+          <i className="fas fa-lock"></i>
+          <input
+            type="password"
+            required
+            placeholder="Contraseña"
+            value={clave}
+            onChange={(e) => setClave(e.target.value)}
+          />
+        </div>
 
         {mensaje && <div className="auth-error">{mensaje}</div>}
 
