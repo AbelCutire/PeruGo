@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: var(--color-bg);
+  background: var(--bg-img);
   color: var(--color-bg);
   font-family: "Inter", system-ui, sans-serif;
 }
