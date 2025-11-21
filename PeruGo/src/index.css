@@ -3,7 +3,7 @@
    ========================================= */
 :root {
   --bg-img: url('https://upload.wikimedia.org/wikipedia/commons/e/eb/Machu_Picchu%2C_Peru.jpg');
-
+  --bg-img: linear-gradient(0deg, rgb(0 0 0 / 50%), rgb(255 255 255 / 50%)), var(--bg-img);
   /* Colores principales */
   --accent: #06b6d4;
   --accent2: #ff6b6b;
@@ -39,6 +39,7 @@
 
 /* body.dark-mode sobrescribe las variables cuando el modo oscuro está activo */
 body.dark-mode {
+  --bg-img: linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5)), var(--bg-img);
   --color-header: rgb(128, 0, 0);
   --color-header-hover: rgb(168, 0, 0);
   --color-texto: rgb(255, 255, 255);
