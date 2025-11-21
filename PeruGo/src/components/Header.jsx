@@ -202,7 +202,7 @@ export default function Header({
                         setMenuOpen(false);
                         onLogout?.();
                       }}
-                    >
+                    ><i class="fa-solid fa-arrow-right-from-bracket"></i>
                       Cerrar sesión
                     </button>
                   </div>
