@@ -28,6 +28,12 @@ export default function Login({ onLogin, onClose }) {
 
         const data = await login(correo, contrasena); // ← Solo 2 parámetros
 
+        // Marcar sesión activa y guardar el correo usado para que la home pueda mostrarlo
+        if (typeof window !== "undefined") {
+          window.sessionStorage.setItem("isLoggedIn", "true");
+          window.sessionStorage.setItem("lastEmail", correo);
+        }
+
         if (recordar) {
           localStorage.setItem("token", data.token);
         } else {
