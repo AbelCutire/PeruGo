@@ -1,35 +1,35 @@
 "use client";
 
 import React, { useState } from "react";
+import { login } from "@/services/auth"; // Ajusta la ruta según tu estructura
 import "../styles/auth.css";
 
 export default function PageLogin() {
   const [correo, setCorreo] = useState("");
   const [clave, setClave] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const [cargando, setCargando] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setMensaje("");
+    setCargando(true);
 
     try {
-      const res = await fetch("https://perugo-backend-production.up.railway.app/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ correo, clave }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setMensaje(data.message || "Credenciales incorrectas");
-        return;
-      }
-
-      localStorage.setItem("token", data.token);
-      window.location.href = "/";
+      // Usar la función login del servicio auth.js
+      const data = await login(correo, clave);
+      
+      setMensaje("¡Inicio de sesión exitoso!");
+      
+      // Redireccionar después de un breve delay para mostrar el mensaje de éxito
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1000);
+      
     } catch (err) {
-      setMensaje("Error de conexión con el servidor");
+      setMensaje(err.message || "Error al iniciar sesión");
+    } finally {
+      setCargando(false);
     }
   };
 
@@ -48,6 +48,7 @@ export default function PageLogin() {
             placeholder="Correo electrónico"
             value={correo}
             onChange={(e) => setCorreo(e.target.value)}
+            disabled={cargando}
           />
         </div>
 
@@ -60,12 +61,24 @@ export default function PageLogin() {
             placeholder="Contraseña"
             value={clave}
             onChange={(e) => setClave(e.target.value)}
+            disabled={cargando}
+            minLength="6"
           />
         </div>
 
-        {mensaje && <div className="auth-error">{mensaje}</div>}
+        {mensaje && (
+          <div className={`auth-message ${mensaje.includes("éxito") ? "auth-success" : "auth-error"}`}>
+            {mensaje}
+          </div>
+        )}
 
-        <button type="submit" className="auth-submit">Ingresar</button>
+        <button 
+          type="submit" 
+          className="auth-submit"
+          disabled={cargando}
+        >
+          {cargando ? "Iniciando sesión..." : "Ingresar"}
+        </button>
       </form>
 
       <div className="auth-links">
