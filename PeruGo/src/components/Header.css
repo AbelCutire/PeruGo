@@ -253,18 +253,3 @@
   background-color: var(--color-header-hover);
   transform: translateY(-2px) scale(1.1);
 }
-
-.btn-register {
-  background-color: var(--color-btn-hero);
-  color: var(--color-texto);
-  border: 2px solid var(--color-btn-hover-hero);
-  border-radius: 18px;
-  padding: 0px 14px;
-  cursor: pointer;
-  height: 38px;
-}
-
-.btn-register:hover {
-  background-color: var(--color-btn-hover-hero);
-  transform: translateY(-2px) scale(1.1);
-}
