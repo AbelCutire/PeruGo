@@ -18,9 +18,15 @@ export default function PageLogin() {
     try {
       // Usar la función login del servicio auth.js
       const data = await login(correo, clave);
-      
+
+      // Marcar sesión activa y guardar el correo usado en el login
+      if (typeof window !== "undefined") {
+        window.sessionStorage.setItem("isLoggedIn", "true");
+        window.sessionStorage.setItem("lastEmail", correo);
+      }
+
       setMensaje("¡Inicio de sesión exitoso!");
-      
+
       // Redireccionar después de un breve delay para mostrar el mensaje de éxito
       setTimeout(() => {
         window.location.href = "/";
