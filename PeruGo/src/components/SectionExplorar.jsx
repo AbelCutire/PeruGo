@@ -3,11 +3,15 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import "./SectionExplorar.css";
+import { getUser } from "@/services/auth";
+
+const PROFILE_STORAGE_PREFIX = "perugo_profile_";
 
 export default function SectionExplorar() {
   const router = typeof window !== "undefined" ? useRouter() : null;
   const [destinos, setDestinos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [profileBudgetInfo, setProfileBudgetInfo] = useState(null);
 
   const [filtros, setFiltros] = useState({
     tipo: [],
@@ -47,6 +51,35 @@ export default function SectionExplorar() {
     };
 
     fetchDestinos();
+  }, []);
+
+  // 🔹 Cargar preferencias de perfil (presupuesto) y aplicarlas al filtro
+  useEffect(() => {
+    try {
+      const user = getUser();
+      const id = user?.email || user?.id || "guest";
+      const storageKey = `${PROFILE_STORAGE_PREFIX}${id}`;
+      const raw = typeof window !== "undefined" ? localStorage.getItem(storageKey) : null;
+      if (!raw) return;
+
+      const data = JSON.parse(raw);
+      const b = Number(data.budget);
+      if (!b || Number.isNaN(b)) return;
+
+      let category = "";
+      if (b <= 150) category = "Económico";
+      else if (b <= 300) category = "Medio";
+      else category = "Alto";
+
+      setFiltros((prev) => ({
+        ...prev,
+        presupuesto: prev.presupuesto || category,
+      }));
+
+      setProfileBudgetInfo({ budget: b, category });
+    } catch (e) {
+      console.error("Error cargando preferencias de perfil para filtros", e);
+    }
   }, []);
 
   if (loading) return <p>Cargando destinos...</p>;
@@ -109,6 +142,11 @@ export default function SectionExplorar() {
         <main className="resultados">
           <div className="resultados-info">
             Mostrando {destinosFiltrados.length} resultados
+            {profileBudgetInfo && (
+              <span style={{ marginLeft: 8, fontSize: 12, opacity: 0.8 }}>
+                (Usando tu presupuesto diario aprox. S/ {profileBudgetInfo.budget} – {profileBudgetInfo.category})
+              </span>
+            )}
           </div>
 
           <div className="cards-grid">
