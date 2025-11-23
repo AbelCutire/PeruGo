@@ -17,6 +17,7 @@ export default function Header({
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [effectiveLogged, setEffectiveLogged] = useState(false);
   const menuRef = useRef(null);
   const router = useRouter();
 
@@ -39,6 +40,19 @@ export default function Header({
     document.addEventListener("mousedown", onDocClick);
     return () => document.removeEventListener("mousedown", onDocClick);
   }, []);
+    // Sincroniza el estado de sesión efectivo con props y sessionStorage
+  useEffect(() => {
+    let logged = !!(isLogged || user);
+    try {
+      if (typeof window !== "undefined") {
+        const flag = window.sessionStorage.getItem("isLoggedIn");
+        if (flag === "true") logged = true;
+      }
+    } catch (e) {
+      // ignorar errores de acceso a sessionStorage
+    }
+    setEffectiveLogged(logged);
+  }, [isLogged, user]);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -53,10 +67,18 @@ export default function Header({
     };
   }, [isDarkMode]); // Se ejecuta cada vez que 'isDarkMode' cambia
   
-  const userData = user || {
-    nombre: "Usuario ejemplo",
-    correo: "usuario@correo.com",
-  };
+  const userData = user
+    ? {
+        nombre:
+          user.username ||
+          user.name ||
+          (user.email ? user.email.split("@")[0] : "Usuario"),
+        correo: user.email || "",
+      }
+    : {
+        nombre: "Usuario ejemplo",
+        correo: "usuario@correo.com",
+      };
 
   const toggleMode = () => setIsDarkMode((prev) => !prev);
   const imgPath = (name) => `/icons/${isDarkMode ? `${name}_alt.png` : `${name}.png`}`;
@@ -105,40 +127,95 @@ export default function Header({
           </button>
 
           {/* --- Micrófono --- */}
+                    {/* --- Micrófono --- */}
           <button
             className={`btn-icono mic-btn ${record ? "mic-active" : ""}`}
             title="Hablar con el asistente"
             onClick={toggleRecord}
           >
-            <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M19 10V12C19 15.866 15.866 19 12 19M5 10V12C5 15.866 8.13401 19 12 19M12 19V22M8 22H16M12 15C10.3431 15 9 13.6569 9 12V5C9 3.34315 10.3431 2 12 2C13.6569 2 15 3.34315 15 5V12C15 13.6569 13.6569 15 12 15Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <svg
+              width="22px"
+              height="22px"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M19 10V12C19 15.866 15.866 19 12 19M5 10V12C5 15.866 8.13401 19 12 19M12 19V22M8 22H16M12 15C10.3431 15 9 13.6569 9 12V5C9 3.34315 10.3431 2 12 2C13.6569 2 15 3.34315 15 5V12C15 13.6569 13.6569 15 12 15Z"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </button>
 
           {/* --- Modo claro/oscuro --- */}
           <button className="btn-icono" title="Cambiar modo" onClick={toggleMode}>
             {isDarkMode ? (
-              <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M3.39703 11.6315C3.39703 16.602 7.42647 20.6315 12.397 20.6315C15.6858 20.6315 18.5656 18.8664 20.1358 16.23C16.7285 17.3289 12.6922 16.7548 9.98282 14.0455C7.25201 11.3146 6.72603 7.28415 7.86703 3.89293C5.20697 5.47927 3.39703 8.38932 3.39703 11.6315ZM21.187 13.5851C22.0125 13.1021 23.255 13.6488 23 14.5706C21.7144 19.2187 17.4543 22.6315 12.397 22.6315C6.3219 22.6315 1.39703 17.7066 1.39703 11.6315C1.39703 6.58874 4.93533 2.25845 9.61528 0.999986C10.5393 0.751502 11.0645 1.99378 10.5641 2.80935C8.70026 5.84656 8.83194 10.0661 11.397 12.6312C13.9319 15.1662 18.1365 15.3702 21.187 13.5851Z" fill="#ffffff"/>
+              <svg
+                width="22px"
+                height="22px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M3.39703 11.6315C3.39703 16.602 7.42647 20.6315 12.397 20.6315C15.6858 20.6315 18.5656 18.8664 20.1358 16.23C16.7285 17.3289 12.6922 16.7548 9.98282 14.0455C7.25201 11.3146 6.72603 7.28415 7.86703 3.89293C5.20697 5.47927 3.39703 8.38932 3.39703 11.6315ZM21.187 13.5851C22.0125 13.1021 23.255 13.6488 23 14.5706C21.7144 19.2187 17.4543 22.6315 12.397 22.6315C6.3219 22.6315 1.39703 17.7066 1.39703 11.6315C1.39703 6.58874 4.93533 2.25845 9.61528 0.999986C10.5393 0.751502 11.0645 1.99378 10.5641 2.80935C8.70026 5.84656 8.83194 10.0661 11.397 12.6312C13.9319 15.1662 18.1365 15.3702 21.187 13.5851Z"
+                  fill="#ffffff"
+                />
               </svg>
             ) : (
-              <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2"/>
-              <path d="M12 2V4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M12 20V22" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M4 12L2 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M22 12L20 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M19.7778 4.22266L17.5558 6.25424" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M4.22217 4.22266L6.44418 6.25424" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M6.44434 17.5557L4.22211 19.7779" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M19.7778 19.7773L17.5558 17.5551" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              <svg
+                width="22px"
+                height="22px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="5"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+                <path d="M12 2V4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <path d="M12 20V22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <path d="M4 12L2 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <path d="M22 12L20 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <path
+                  d="M19.7778 4.22266L17.5558 6.25424"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M4.22217 4.22266L6.44418 6.25424"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M6.44434 17.5557L4.22211 19.7779"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M19.7778 19.7773L17.5558 17.5551"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
               </svg>
             )}
           </button>
-
           {/* --- Iniciar sesión (solo texto, visible solo si no hay sesión) --- */}
-          {/* --- Botones Login y Register cuando NO hay sesión --- */}
-          {!isLogged && (
+                    {/* --- Botones Login y Register cuando NO hay sesión --- */}
+          {!effectiveLogged && (
             <>
               <button
                 className="btn-iniciar-sesion"
@@ -157,9 +234,8 @@ export default function Header({
             </>
           )}
 
-
           {/* --- Perfil (si hay sesión) --- */}
-          {isLogged && (
+          {effectiveLogged && (
             <div className="profile-wrapper" ref={menuRef}>
               <button
                 className="btn-icono"
@@ -191,7 +267,7 @@ export default function Header({
                       className="btn-opcion"
                       onClick={() => {
                         setMenuOpen(false);
-                        onOpenPerfil();
+                        router.push("/perfil");
                       }}
                     >
                       Ver perfil y preferencias
@@ -202,7 +278,7 @@ export default function Header({
                         setMenuOpen(false);
                         onLogout?.();
                       }}
-                    ><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    ><i className="fa-solid fa-arrow-right-from-bracket"></i>
                       Cerrar sesión
                     </button>
                   </div>
