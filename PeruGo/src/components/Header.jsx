@@ -148,7 +148,7 @@ export default function Header({
               </button>
 
               <button
-                className="btn-iniciar-sesion"
+                className="btn-register"
                 onClick={() => router.push("/register")}
                 style={{ marginLeft: "6px" }}
               >
