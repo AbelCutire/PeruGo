@@ -21,7 +21,7 @@ export default function Chat() {
 
   const fetchReplyFromBackend = useCallback(async (text) => {
     try {
-      const res = await fetch("https://perugo-backend-production.up.railway.app/process", {
+      const res = await fetch("https://perugobackend-flask-production.up.railway.app/process", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
@@ -215,3 +215,4 @@ export default function Chat() {
     </>
   );
 }
+
