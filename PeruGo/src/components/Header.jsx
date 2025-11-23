@@ -40,13 +40,15 @@ export default function Header({
     document.addEventListener("mousedown", onDocClick);
     return () => document.removeEventListener("mousedown", onDocClick);
   }, []);
-    // Sincroniza el estado de sesión efectivo con props y sessionStorage
+  // Sincroniza el estado de sesión efectivo con prop isLogged y sessionStorage
   useEffect(() => {
-    let logged = !!(isLogged || user);
+    let logged = !!isLogged;
     try {
       if (typeof window !== "undefined") {
         const flag = window.sessionStorage.getItem("isLoggedIn");
-        if (flag === "true") logged = true;
+        if (flag === "true") {
+          logged = true;
+        }
       }
     } catch (e) {
       // ignorar errores de acceso a sessionStorage
