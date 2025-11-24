@@ -285,15 +285,6 @@ export default function Header({
                       Mis Planes
                     </button>
                     <button
-                      className="btn-opcion"
-                      onClick={() => {
-                        setMenuOpen(false);
-                        router.push("/perfil");
-                      }}
-                    >
-                      Ver perfil y preferencias
-                    </button>
-                    <button
                       className="btn-opcion cerrar"
                       onClick={() => {
                         setMenuOpen(false);
