@@ -143,7 +143,7 @@
   background: var(--color-profile-btn);
   border-radius: 18px;
   box-shadow: 0 4px 16px var(--color-shadow);
-  width: 230px;
+  width: auto;
   z-index: 100;
   padding: 1rem 0;
   animation: fadeIn 0.2s ease;
@@ -190,6 +190,9 @@
 .btn-opcion.cerrar {
   color: var(--color-texto-cerrar);
   font-weight: 600;
+  display: flex;
+  gap: .5rem;
+  align-items: center;
 }
 
 .btn-opcion.cerrar:hover {
@@ -252,4 +255,5 @@
 .btn-iniciar-sesion:hover {
   background-color: var(--color-header-hover);
   transform: translateY(-2px) scale(1.1);
+
 }
