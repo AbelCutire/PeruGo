@@ -209,11 +209,11 @@
 .btn-iniciar-sesion {
   background-color: var(--color-header);
   color: var(--color-texto);
-  border: 2px solid var(--color-header-hover);
-  border-radius: 18px;
-  padding: 0px 14px;
+  border: .1rem solid var(--color-header-hover);
+  border-radius: 1.5rem;
+  padding: 0 1rem;
   cursor: pointer;
-  height: 38px;
+  height: 2.15rem;
 }
 
 .btn-iniciar-sesion:hover {
@@ -221,5 +221,6 @@
   transform: translateY(-2px) scale(1.1);
 
 }
+
 
 
