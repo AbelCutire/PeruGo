@@ -2,26 +2,35 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-// Íconos SVG ahora se usan como imágenes desde /public/icons
-
-
+import { getCurrentUser, logout, isAuthenticated } from "@/services/auth"; // ✅ Importar funciones
 import "./Header.css";
 import useVoiceSearch from "./funciones/VoiceSearch";
 
 export default function Header({
   isLogged = true,
   onLogout = () => {},
-  user = null,
   onOpenPerfil = () => {},
-  onOpenLogin = () => {}, // Prop que activará el login
+  onOpenLogin = () => {},
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [effectiveLogged, setEffectiveLogged] = useState(false);
+  const [user, setUser] = useState(null); // ✅ Estado local para user
   const menuRef = useRef(null);
   const router = useRouter();
 
   const { record, text, toggleRecord } = useVoiceSearch();
+
+  useEffect(() => {
+    const currentUser = getCurrentUser();
+    const isLoggedIn = isAuthenticated() || sessionStorage.getItem("isLoggedIn") === "true";
+    
+    console.log("🔍 Header - Usuario actual:", currentUser);
+    console.log("🔍 Header - Está logueado:", isLoggedIn);
+    
+    setEffectiveLogged(isLoggedIn && !!currentUser);
+    setUser(currentUser);
+  }, []);
 
   // Detecta cuando se deja de hablar
   useEffect(() => {
@@ -69,25 +78,26 @@ export default function Header({
     };
   }, [isDarkMode]); // Se ejecuta cada vez que 'isDarkMode' cambia
   
-  // Debug
-  useEffect(() => {
-    console.log("User recibido en Header:", user);
-    console.log("username:", user?.username);
-    console.log("email:", user?.email);
-  }, [user]);
-  
   const userData = user
     ? {
-        nombre:
-          user.username ||
-          user.name ||
-          (user.email ? user.email.split("@")[0] : "Usuario"),
+        nombre: user.username || user.name || (user.email ? user.email.split("@")[0] : "Usuario"),
         correo: user.email || "",
       }
     : {
         nombre: "Usuario ejemplo",
         correo: "usuario@correo.com",
       };
+
+  console.log("👤 Header - userData final:", userData); // 🔍 Debug
+
+  const handleLogout = () => {
+    setMenuOpen(false);
+    logout(); // ✅ Usa la función del servicio
+    setEffectiveLogged(false);
+    setUser(null);
+    onLogout?.(); // Callback adicional si existe
+    router.push("/");
+  };
 
   const toggleMode = () => setIsDarkMode((prev) => !prev);
   const imgPath = (name) => `/icons/${isDarkMode ? `${name}_alt.png` : `${name}.png`}`;
@@ -300,4 +310,5 @@ export default function Header({
     </header>
   );
 }
+
 
