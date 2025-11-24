@@ -12,7 +12,7 @@ export default function PageRecover() {
     e.preventDefault();
     setMensaje("");
 
-    try
+    try {
 
       const data = await recover(correo);
 
