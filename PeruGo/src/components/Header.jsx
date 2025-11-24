@@ -69,6 +69,13 @@ export default function Header({
     };
   }, [isDarkMode]); // Se ejecuta cada vez que 'isDarkMode' cambia
   
+  // Debug
+  useEffect(() => {
+    console.log("User recibido en Header:", user);
+    console.log("username:", user?.username);
+    console.log("email:", user?.email);
+  }, [user]);
+  
   const userData = user
     ? {
         nombre:
@@ -293,3 +300,4 @@ export default function Header({
     </header>
   );
 }
+
