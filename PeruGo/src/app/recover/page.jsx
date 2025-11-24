@@ -12,7 +12,7 @@ export default function PageRecover() {
     setMensaje("");
 
     try {
-      const res = await fetch("https://perugo-backend-production.up.railway.app/recover", {
+      const res = await fetch("https://perugo-backend-production.up.railway.app/auth/recover", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ correo }),
