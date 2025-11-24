@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { recover } from "@/services/auth";
 import "../styles/auth.css";
 
 export default function PageRecover() {
@@ -11,16 +12,11 @@ export default function PageRecover() {
     e.preventDefault();
     setMensaje("");
 
-    try {
-      const res = await fetch("https://perugo-backend-production.up.railway.app/auth/recover", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ correo }),
-      });
+    try
 
-      const data = await res.json();
+      const data = await recover(correo);
 
-      if (!res.ok) {
+      if (data.error) {
         setMensaje(data.message || "No se pudo enviar el correo");
         return;
       }
