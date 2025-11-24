@@ -126,7 +126,7 @@
 .svg-icon {
   color: var(--color-texto);
   border: .1rem solid var(--color-texto);
-  border-radius: 1.5rem;
+  border-radius: 5rem;
 }
 
 .profile-name {
@@ -232,6 +232,7 @@
   transform: translateY(-2px) scale(1.1);
 
 }
+
 
 
 
