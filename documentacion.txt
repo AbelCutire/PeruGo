@@ -1,0 +1,230 @@
+PROYECTO WEB: PeruGo
+======================
+
+1. ¿Qué es PeruGo?
+-------------------
+PeruGo es una aplicación web pensada para ayudar a las personas a planear viajes por el Perú.
+
+Con la web puedes:
+- Explorar destinos turísticos (Cusco, Paracas, Arequipa, etc.).
+- Ver información detallada de cada destino (precio, duración, tipo de viaje, descripción, tours, etc.).
+- Guardar destinos en "Mis planes" y ver un flujo de reserva con varias etapas.
+- Ver un gráfico de cómo se reparte el gasto (alojamiento, transporte, alimentación y entradas).
+
+La web sirve como versión de escritorio / navegador del mismo concepto que la app móvil **PeruGoMobile**.
+
+
+2. Tecnologías principales
+--------------------------
+El proyecto está construido sobre el stack típico de una app moderna con Next.js:
+
+- **Next.js 15** (con `app/` directory y soporte para `next dev --turbopack`).
+- **React** (componentes funcionales).
+- **Tailwind / CSS propio** (archivos `.css` en `src/styles` y otros componentes).
+- **Prisma** para el acceso a base de datos (carpeta `prisma/`).
+- **Recharts** para los gráficos de distribución de gastos en la sección de reservas.
+- **Lucide React** para iconos SVG.
+- Algunas dependencias adicionales para backend/API:
+  - `express`, `cors`, `jsonwebtoken`, `bcryptjs` (útiles para API de auth si se despliega el backend dentro del mismo proyecto).
+- Gestión de variables de entorno con `dotenv` / `dotenv-cli`.
+
+Scripts principales (ver `PeruGo/package.json`):
+- `npm run dev` → `next dev --turbopack` (modo desarrollo).
+- `npm run build` → `next build --turbopack` (build de producción).
+- `npm start` → `next start` (levantar la build de producción).
+- `npm run migrate` → `prisma migrate dev` (migraciones de base de datos en desarrollo).
+- `npm run seed` → ejecuta `prisma/seed.js` para poblar datos.
+
+
+3. Estructura general del proyecto web
+--------------------------------------
+Carpetas y archivos importantes en `PeruGo/`:
+
+- `package.json` → dependencias y scripts.
+- `next.config.mjs` → configuración de Next.js (incluye cosas como experimental/turbopack, opciones de imágenes, etc.).
+- `postcss.config.mjs` y `tailwind` → configuración de estilos.
+- `public/` → imágenes y assets estáticos (logos, fondos, íconos, etc.).
+- `prisma/` → esquema de base de datos y seeds.
+- `src/` → **toda la lógica de la app web**:
+  - `app/` → páginas con el nuevo sistema de rutas de Next 13+.
+  - `components/` → componentes reutilizables (Hero, SectionReservas, MisPlanes, etc.).
+  - `data/` → datos locales de destinos (`destinos.js`).
+  - `functions/` → funciones auxiliares (por ejemplo lógica para reservas, cálculo de gastos, etc.).
+  - `helpers/` → pequeñas utilidades (formateo, helpers de UI, etc.).
+  - `lib/` → funciones relacionadas con base de datos o configuración compartida.
+  - `services/` → llamadas a APIs / capa de servicios.
+  - `styles/` → CSS modular para distintas secciones.
+  - `index.js`, `App.jsx`, `index.css`, `App.css` → entrada de la app cuando se usa la versión tipo SPA (creada originalmente) y estilos globales.
+
+
+4. Datos de destinos (src/data/destinos.js)
+-------------------------------------------
+En `src/data/destinos.js` está el catálogo de destinos que se muestran en la web.
+
+Cada destino tiene estructura similar a:
+- `id`: identificador único (por ej. `"cusco"`).
+- `nombre`: nombre del destino.
+- `ubicacion`: ciudad / región.
+- `tipo`: qué tipo de viaje es (aventura, cultural, naturaleza, etc.).
+- `precio`: precio aproximado total.
+- `duracion`: cuántos días / noches dura el viaje.
+- `presupuesto`: nivel de presupuesto (económico, medio, alto).
+- `imagen`: URL de imagen.
+- `descripcion`: texto descriptivo del destino.
+- `gastos`: objeto con el desglose de costos:
+  - `alojamiento`, `transporte`, `alimentacion`, `entradas`.
+- `tours`: lista de tours relacionados, cada uno con:
+  - `nombre`, `descripcion`, `precio`, `incluye` (array de strings) y su propio `gastos`.
+
+Este archivo se usa como **fuente principal** de información para la mayoría de las páginas (Home, Detalle de destino, Mis planes, SectionReservas, etc.).
+
+
+5. Componentes importantes
+--------------------------
+
+5.1. Hero (portada de inicio)
+-----------------------------
+Archivo: normalmente en `src/components/Hero.jsx` (+ `Hero.css`).
+
+- Es la sección grande de la portada con la imagen de Machu Picchu de fondo.
+- Contiene:
+  - Un título y subtítulo similares a los de la app ("PeruGo", "El Perú te habla").
+  - Botón de micrófono grande.
+  - Input de búsqueda + botón de buscar.
+- El objetivo es invitar al usuario a empezar su exploración de destinos usando texto o voz.
+
+
+5.2. MisPlanes (src/components/MisPlanes.jsx)
+--------------------------------------------
+- Muestra los planes de viaje que el usuario ha ido guardando.
+- Usa `localStorage` en el navegador para persistir las reservas entre sesiones.
+- Recorre la lista de reservas y, para cada una, renderiza una `SectionReservas`.
+- También ofrece la posibilidad de eliminar un plan.
+
+
+5.3. SectionReservas (src/components/SectionReservas.jsx)
+---------------------------------------------------------
+- Es el corazón del flujo de reservas en la web.
+- Se encarga de:
+  - Mostrar la información del destino elegido.
+  - Reflejar la etapa actual del proceso de reserva.
+  - Dibujar un gráfico de distribución de gastos usando **Recharts** (pie chart).
+  - Mostrar acciones específicas según la etapa (Confirmar, Simular pago, Confirmar pago, Reagendar, etc.).
+
+Lógica de etapas:
+- Etapas típicas: `borrador`, `confirmado`, `pendiente`, `pagado`, `finalizado`.
+- Usa un estado `nivel` (0–4) y un arreglo de etapas para saber en cuál estás.
+- Los botones cambian según la etapa (por ejemplo, en borrador aparece **Confirmar**, en pendiente aparece **Simular pago** / **Confirmar pago**, etc.).
+
+Gráfico de gastos:
+- Usa los campos `gastos` del destino (alojamiento, transporte, alimentación, entradas).
+- Recharts se encarga de:
+  - Dibujar el pie chart.
+  - Mostrar una leyenda con color + etiqueta + valor.
+
+
+5.4. Página de destino (src/app/destino/[id]/page.jsx)
+------------------------------------------------------
+- Es la página que se muestra cuando el usuario entra al detalle de un destino específico.
+- Usa el parámetro `id` de la URL para buscar el destino en `destinos.js`.
+- Muestra toda la información detallada:
+  - Imagen grande.
+  - Nombre, ubicación, tipo, duración, presupuesto, precio.
+  - Descripción.
+  - Tours disponibles (cada uno con precio, incluye, etc.).
+- También permite **añadir el destino a Mis planes**:
+  - Usa `localStorage` para guardar la reserva con los datos actuales.
+  - Más tarde esos datos se muestran en `MisPlanes` y `SectionReservas`.
+
+
+6. Routing y organización de páginas
+------------------------------------
+El proyecto combina el directorio `src/app/` (modelo nuevo de Next.js) con algunos archivos de entrada tipo SPA (`App.jsx`, `index.js`). Lo importante para entender el flujo es:
+
+- Home / página principal:
+  - Vive en `src/app/page.jsx` o a través de `App.jsx` según la configuración.
+  - Renderiza el `Hero` y otras secciones (Explorar, Mis planes, etc.).
+
+- Página de destino:
+  - `src/app/destino/[id]/page.jsx` (Next.js usa `[id]` como parámetro dinámico).
+
+- Otras secciones / rutas:
+  - `src/components/MisPlanes.jsx` y `src/components/SectionReservas.jsx` se integran en páginas específicas o secciones de la home.
+
+
+7. Estilos
+----------
+
+- Los estilos están repartidos en:
+  - `src/index.css` y `App.css` (estilos globales).
+  - Archivos de estilos específicos, como `Hero.css`, `SectionReservas.css`, etc., en `src/styles` o junto a cada componente.
+- Se combinan utilidades tipo Tailwind con clases propias para lograr el look and feel deseado (fondos, sombras, layout responsive, etc.).
+
+
+8. Base de datos y Prisma (visión general)
+------------------------------------------
+
+Aunque la lógica completa de BD no está detallada aquí, la estructura es la típica de un proyecto con Prisma:
+
+- `prisma/schema.prisma` → define los modelos (Usuario, Destino, Reserva, etc. según el diseño).
+- `prisma/seed.js` → script para poblar la base de datos con datos iniciales (puede apoyarse en `src/data/destinos.js`).
+- Comando `npm run migrate` → ejecuta `prisma migrate dev` para aplicar cambios de esquema.
+
+En muchos casos, el proyecto también puede funcionar usando solo los datos locales de `destinos.js` mientras se desarrolla la parte de BD.
+
+
+9. Servicios y helpers
+----------------------
+
+En `src/services/`, `src/functions/` y `src/helpers/` suelen estar:
+- Funciones que llaman a APIs (si hay backend separado).
+- Lógica para guardar/cargar reservas en `localStorage`.
+- Cálculos de gastos, generación de estructuras para Recharts, etc.
+
+Esta separación ayuda a que los componentes (como `Hero`, `MisPlanes`, `SectionReservas`) queden más limpios y se enfoquen en la UI.
+
+
+10. Cómo levantar el proyecto web
+---------------------------------
+Pasos típicos para correr PeruGo (web) en tu máquina:
+
+1. Ir a la carpeta del proyecto:
+   - `cd PeruGo`
+2. Instalar dependencias:
+   - `npm install`
+3. (Opcional, si se usa BD real) Aplicar migraciones y seed:
+   - `npm run migrate`
+   - `npm run seed`
+4. Levantar en modo desarrollo:
+   - `npm run dev`
+5. Abrir el navegador en la URL que indique (normalmente `http://localhost:3000`).
+
+Para producción:
+1. `npm run build`
+2. `npm start`
+
+
+11. Cómo se relaciona con la app móvil
+--------------------------------------
+
+- La **web** y la **app móvil** comparten la misma idea de negocio:
+  - Explorar destinos peruanos.
+  - Mostrar desglose de gastos.
+  - Tener un flujo de reserva con etapas.
+  - Manejar "Mis planes" para los viajes guardados.
+- Muchas decisiones de diseño vienen primero de la web (por ejemplo, el Hero de Machu Picchu y la SectionReservas con gráfico de gastos) y luego se adaptan a la app móvil.
+- El backend de IA / STT (Flask + Google Cloud) es compartido conceptualmente, aunque la configuración vive fuera de esta carpeta.
+
+
+12. Resumen final
+------------------
+Este archivo intenta contar, de forma humana, cómo está armado el proyecto web **PeruGo**:
+
+- Qué hace y para qué sirve.
+- Qué tecnologías usa.
+- Cómo está distribuido el código (carpetas y archivos importantes).
+- Cómo se manejan los datos de destinos y las reservas.
+- Qué componentes son clave (Hero, MisPlanes, SectionReservas, página de destino).
+- Cómo se levanta el proyecto en desarrollo o producción.
+
+La idea es que cualquier persona que abra esta carpeta pueda entender rápidamente el panorama general del proyecto sin necesidad de leer todos los archivos uno por uno.
