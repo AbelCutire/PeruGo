@@ -40,9 +40,10 @@ export default function PageRegister() {
 
   try {
     console.log("📤 Enviando datos al backend...");
-    
+
     // Usar la función register del servicio auth.js
-    const data = await register(correo, clave, nombre || null);
+    // Firma correcta: register(email, username, password)
+    const data = await register(correo, nombre || null, clave);
     
     console.log("✅ Registro exitoso:", data);
     setMensaje("¡Cuenta creada exitosamente! Redirigiendo...");
