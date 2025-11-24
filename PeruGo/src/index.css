@@ -92,7 +92,6 @@ header {
   padding: 14px 28px;
   max-width: var(--maxw);
   margin: 18px auto;
-  border-radius: 14px;
   box-shadow: var(--shadow);
   flex-wrap: wrap;
   gap: 12px;
