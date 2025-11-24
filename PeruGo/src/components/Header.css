@@ -1,22 +1,21 @@
 /* --- Header fijo --- */
 .header-fijo {
   position: fixed;
-  top: -18px;
+  top: -1.2rem;
   left: 0;
   right: 0;
-  height: 70px;
   background: var(--color-header);
   color: #f9f9f9;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px var(--color-shadow);
+  box-shadow: 0 .1rem .5rem var(--color-shadow);
   z-index: 9999;
 }
 
 .header-contenido {
   width: 100%;
-  max-width: 1200px;
+  max-width: 100%;
   padding: 0 1.5rem;
   display: flex;
   align-items: center;
@@ -24,7 +23,6 @@
 }
 
 .header-contenido-amplio {
-  max-width: 1400px;
   padding: 0 .5rem;
 }
 
@@ -40,12 +38,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.logo-img {
-  height: 42px;
-  width: auto;
-  display: block;
 }
 
 .logo-text {
@@ -99,7 +91,7 @@
 .mic-btn.mic-active {
   background-color: #ef4444;
   border-radius: 1rem;
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+  box-shadow: 0 0 .5rem rgba(239, 68, 68, 0.6);
   animation: pulse 1s infinite;
 }
 
@@ -229,4 +221,5 @@
   transform: translateY(-2px) scale(1.1);
 
 }
+
 
