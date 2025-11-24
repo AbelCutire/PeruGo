@@ -213,7 +213,7 @@
   border-radius: 1.5rem;
   padding: 0 1rem;
   cursor: pointer;
-  height: 2.15rem;
+  height: 2.35rem;
 }
 
 .btn-iniciar-sesion:hover {
@@ -221,6 +221,7 @@
   transform: translateY(-2px) scale(1.1);
 
 }
+
 
 
 
