@@ -118,6 +118,16 @@
   text-align: center;
 }
 
+.profile-icon {
+  display: flex;
+  justify-content: center;
+}
+
+.svg-icon {
+  border: .1rem solid var(--color-texto);
+  border-radius: 1.5rem;
+}
+
 .profile-name {
   font-weight: 600;
   font-size: 0.95rem;
@@ -221,6 +231,7 @@
   transform: translateY(-2px) scale(1.1);
 
 }
+
 
 
 
