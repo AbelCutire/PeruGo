@@ -1,6 +1,6 @@
 const BASE_URL = "https://perugo-backend-production.up.railway.app";
 
-export async function register(email, password, username = null) {
+export async function register(email, username, password) {
   try {
     console.log("🔗 Enviando registro a:", `${BASE_URL}/auth/register`);
     console.log("📤 Datos de registro:", { email, username, password: '***' });
@@ -11,12 +11,15 @@ export async function register(email, password, username = null) {
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
-      body: JSON.stringify({ email, password, username }),
+      body: JSON.stringify({ 
+        email: email.toLowerCase().trim(), 
+        username, 
+        password 
+      }),
     });
 
     console.log("📥 Status de respuesta:", response.status, response.statusText);
 
-    // Obtener la respuesta como texto primero para debug
     const responseText = await response.text();
     console.log("📦 Respuesta completa del backend:", responseText);
 
@@ -30,19 +33,13 @@ export async function register(email, password, username = null) {
 
     console.log("📊 Datos parseados:", data);
 
-    // Si la respuesta no es exitosa, mostrar el error específico
     if (!response.ok) {
       console.error("❌ Error del backend:", data);
       throw new Error(data.error || data.message || "Error al registrar");
     }
 
-    // Si todo sale bien, guardar el token
-    if (data.token && data.user) {
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      console.log("✅ Token guardado:", data.token);
-    }
-
+    // El registro NO devuelve token, solo message y user_id
+    console.log("✅ Registro exitoso:", data);
     return data;
 
   } catch (error) {
@@ -54,6 +51,7 @@ export async function register(email, password, username = null) {
 export async function login(email, password) {
   try {
     console.log("🔗 Enviando login a:", `${BASE_URL}/auth/login`);
+    console.log("📤 Datos de login:", { email, password: '***' });
     
     const response = await fetch(`${BASE_URL}/auth/login`, {
       method: "POST",
@@ -61,11 +59,14 @@ export async function login(email, password) {
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ 
+        email: email.toLowerCase().trim(), 
+        password 
+      }),
     });
 
     const responseText = await response.text();
-    console.log("📦 Respuesta login:", responseText);
+    console.log("📦 Respuesta login completa:", responseText);
 
     let data;
     try {
@@ -75,14 +76,22 @@ export async function login(email, password) {
       throw new Error("Error de comunicación con el servidor");
     }
 
+    console.log("📊 Datos parseados del login:", data);
+    console.log("👤 Usuario recibido:", data.user);
+
     if (!response.ok) {
       console.error("❌ Error en login:", data);
       throw new Error(data.error || data.message || "Error al iniciar sesión");
     }
 
     if (data.token && data.user) {
+      // ✅ Guardar TODO el objeto user (debe incluir: id, email, username)
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
+      
+      console.log("✅ Token guardado:", data.token.substring(0, 20) + "...");
+      console.log("✅ Usuario guardado:", data.user);
+      console.log("✅ Username guardado:", data.user.username); // 🔍 Verificación
     }
 
     return data;
@@ -94,19 +103,27 @@ export async function login(email, password) {
 
 export function checkAuth() {
   const token = localStorage.getItem('token');
-  const user = localStorage.getItem('user');
+  const userStr = localStorage.getItem('user');
   
   console.log("🔍 Verificando autenticación:", { 
     hasToken: !!token, 
-    hasUser: !!user 
+    hasUser: !!userStr 
   });
   
-  if (token && user) {
-    return {
-      isAuthenticated: true,
-      user: JSON.parse(user),
-      token: token
-    };
+  if (token && userStr) {
+    try {
+      const user = JSON.parse(userStr);
+      console.log("👤 Usuario en checkAuth:", user);
+      
+      return {
+        isAuthenticated: true,
+        user: user, // ✅ Incluye: id, email, username
+        token: token
+      };
+    } catch (e) {
+      console.error("❌ Error parseando user:", e);
+      return { isAuthenticated: false };
+    }
   }
   
   return { isAuthenticated: false };
@@ -114,15 +131,26 @@ export function checkAuth() {
 
 export async function recover(email) {
   try {
+    console.log("🔗 Enviando recuperación a:", `${BASE_URL}/auth/recover`);
+    
     const response = await fetch(`${BASE_URL}/auth/recover`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
+      headers: { 
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({ email: email.toLowerCase().trim() }),
     });
 
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Error al recuperar contraseña");
+    
+    if (!response.ok) {
+      throw new Error(data.error || "Error al recuperar contraseña");
+    }
+    
+    console.log("✅ Recuperación enviada:", data);
     return data;
+    
   } catch (error) {
     console.error("❌ Error en recover:", error);
     throw error;
@@ -131,8 +159,11 @@ export async function recover(email) {
 
 // Funciones auxiliares
 export function logout() {
+  console.log("🚪 Cerrando sesión...");
   localStorage.removeItem('token');
   localStorage.removeItem('user');
+  sessionStorage.removeItem('isLoggedIn');
+  sessionStorage.removeItem('lastEmail');
 }
 
 export function getToken() {
@@ -140,10 +171,24 @@ export function getToken() {
 }
 
 export function getUser() {
-  const user = localStorage.getItem('user');
-  return user ? JSON.parse(user) : null;
+  const userStr = localStorage.getItem('user');
+  if (!userStr) return null;
+  
+  try {
+    const user = JSON.parse(userStr);
+    console.log("👤 getUser devuelve:", user);
+    return user; // ✅ Debe tener: { id, email, username }
+  } catch (e) {
+    console.error("❌ Error parseando user:", e);
+    return null;
+  }
 }
 
 export function isAuthenticated() {
   return !!localStorage.getItem('token');
+}
+
+// ✅ Nueva función para obtener usuario actual
+export function getCurrentUser() {
+  return getUser();
 }
