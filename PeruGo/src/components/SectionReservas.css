@@ -224,7 +224,7 @@
 
 .tarjeta.activa {
   transform: scale(1.02);
-  border-left: 8px solid #2563eb !important;
+  border-left: 8px solid #2563eb;
 }
 
 .tarjeta.bloqueada {
@@ -319,4 +319,5 @@
   height: 14px;
   border-radius: 4px;
 }
+
 
