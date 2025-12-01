@@ -42,22 +42,36 @@ export default function PageDestino() {
   };
 
   const handleAgregarPlan = () => {
-    // Obtener o crear usuario
-    let usuario = localStorage.getItem("usuario");
-    if (!usuario) {
-      const usuarioPrueba = {
-        id: "user_" + Date.now(),
-        nombre: "Usuario Demo",
-        email: "demo@perugo.com"
-      };
-      localStorage.setItem("usuario", JSON.stringify(usuarioPrueba));
-      usuario = JSON.stringify(usuarioPrueba);
-    }
-    const usuarioObj = JSON.parse(usuario);
-
     if (!tourSeleccionado) {
       alert("❌ Debes seleccionar un plan primero");
       return;
+    }
+
+    // Verificar si hay sesión iniciada usando tu sistema
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    const userEmail = sessionStorage.getItem("lastEmail");
+    
+    if (!isLoggedIn || !userEmail) {
+      // No hay sesión, redirigir a login y guardar destino para volver
+      sessionStorage.setItem("redirectAfterLogin", window.location.pathname);
+      window.location.href = "/login";
+      return;
+    }
+
+    // Crear o recuperar usuario desde tu sistema
+    let usuario = localStorage.getItem(`usuario_${userEmail}`);
+    let usuarioObj;
+    
+    if (!usuario) {
+      // Primera vez que agrega un plan, crear estructura de usuario
+      usuarioObj = {
+        id: `user_${Date.now()}`,
+        email: userEmail,
+        nombre: userEmail.split('@')[0] // Usar parte del email como nombre por defecto
+      };
+      localStorage.setItem(`usuario_${userEmail}`, JSON.stringify(usuarioObj));
+    } else {
+      usuarioObj = JSON.parse(usuario);
     }
 
     const planesExistentes = JSON.parse(localStorage.getItem(`planes_${usuarioObj.id}`)) || [];
@@ -91,15 +105,12 @@ export default function PageDestino() {
            p.estado === "borrador"
     );
 
-    if (existe) {
-      alert("⚠️ Ya tienes este plan en borrador. Ve a 'Mis Planes' para confirmarlo.");
-      return;
+    if (!existe) {
+      planesExistentes.push(nuevoPlan);
+      localStorage.setItem(`planes_${usuarioObj.id}`, JSON.stringify(planesExistentes));
     }
-
-    planesExistentes.push(nuevoPlan);
-    localStorage.setItem(`planes_${usuarioObj.id}`, JSON.stringify(planesExistentes));
     
-    alert("✅ Plan agregado exitosamente");
+    // Redirigir directamente sin alert
     window.location.href = "/mis-planes";
   };
 
@@ -109,9 +120,20 @@ export default function PageDestino() {
       return;
     }
 
-    const usuario = JSON.parse(localStorage.getItem("usuario"));
-    if (!usuario) {
+    // Usar tu sistema de autenticación
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    const userEmail = sessionStorage.getItem("lastEmail");
+    
+    if (!isLoggedIn || !userEmail) {
       alert("❌ Debes iniciar sesión");
+      window.location.href = "/login";
+      return;
+    }
+
+    // Recuperar datos del usuario
+    const usuario = JSON.parse(localStorage.getItem(`usuario_${userEmail}`) || '{}');
+    if (!usuario.id) {
+      alert("❌ Error al obtener datos de usuario");
       return;
     }
 
