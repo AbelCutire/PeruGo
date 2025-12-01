@@ -106,6 +106,7 @@
 /* ================================
    PERFIL MENÚ
 ================================ */
+/* --- Perfil menú --- */
 .profile-wrapper {
   position: relative;
 }
@@ -117,11 +118,46 @@
   background: var(--color-profile-btn);
   border-radius: 1rem;
   box-shadow: 0 4px 16px var(--color-shadow);
+  width: auto;
   min-width: 18rem;
   z-index: 100;
   padding: 1rem 0;
   animation: fadeIn 0.2s ease;
 }
+
+.profile-info {
+  padding: 0.8rem 1rem;
+  text-align: center;
+}
+
+.profile-icon {
+  display: flex;
+  justify-content: center;
+}
+
+.svg-icon {
+  color: var(--color-texto);
+  border: .1rem solid var(--color-texto);
+  border-radius: 5rem;
+}
+
+.profile-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-texto);
+}
+
+.profile-email {
+  font-size: 0.8rem;
+  color: var(--color-subtexto);
+  margin-top: 0.1rem;
+}
+
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+}
+
 
 .btn-opcion {
   background: var(--color-profile-btn);
@@ -254,4 +290,5 @@
     padding: .3rem;
   }
 }
+
 
