@@ -17,13 +17,18 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
   const [estrellas, setEstrellas] = useState(5);
   const [comentario, setComentario] = useState("");
 
+  // Validar que plan existe
+  if (!plan || !plan.destino_id) {
+    return <p style={{ color: "#ef4444", padding: "20px" }}>Error: Plan no válido</p>;
+  }
+
   // Cargar destino
   useEffect(() => {
     const encontrado = destinos.find((d) => d.id === plan.destino_id);
     setDestino(encontrado);
   }, [plan.destino_id]);
 
-  if (!destino) return <p>Cargando...</p>;
+  if (!destino) return <p>Cargando destino...</p>;
 
   // Calcular fecha fin
   const calcularFechaFin = (fechaInicio) => {
