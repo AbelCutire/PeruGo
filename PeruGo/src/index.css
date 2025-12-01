@@ -294,7 +294,6 @@ aside {
 
 main {
   flex: 3 1 500px;
-  background-color: var(--color-aux-bg);
 }
 
 /* =========================================
@@ -470,14 +469,10 @@ main {
 
 @media (max-width: 600px) {
   header {
-    margin: 8px;
     flex-direction: column;
     text-align: center;
   }
-  .hero {
-    margin: 12px;
-    padding: 18px;
-  }
+
   .cards-grid {
     grid-template-columns: 1fr;
   }
