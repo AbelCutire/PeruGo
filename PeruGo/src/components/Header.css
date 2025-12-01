@@ -181,9 +181,11 @@
   border-top: .1rem solid var(--color-profile-btn-hover);
 }
 
-.btn-opcion:hover, .btn-opcion cerrar:hover {
+.btn-opcion:hover {
   background: var(--color-profile-btn-hover);
-  
+}
+.btn-opcion cerrar:hover {
+  background: var(--color-profile-btn-hover);
 }
 
 .fa-arrow-right-from-bracket {
@@ -309,6 +311,7 @@
     padding: .3rem;
   }
 }
+
 
 
 
