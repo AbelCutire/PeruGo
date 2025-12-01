@@ -247,9 +247,8 @@
 /* Burbuja “Estás aquí” */
 .burbuja {
   position: absolute;
-  top: -12px;
-  left: -10px;
-  background: #2563eb;
+  top: 0px;
+  left: -5px;
   color: white;
   padding: 4px 10px;
   font-size: 0.8rem;
@@ -319,5 +318,6 @@
   height: 14px;
   border-radius: 4px;
 }
+
 
 
