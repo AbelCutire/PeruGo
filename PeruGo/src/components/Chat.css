@@ -85,6 +85,7 @@
   overflow-y: scroll;
   padding: .75rem;
   background: var(--color-aux-bg);
+  border-top: .1rem solid var(--color-profile-btn-hover);
 }
 
 /* Filas de mensaje */
