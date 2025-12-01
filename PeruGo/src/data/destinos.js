@@ -1,4 +1,3 @@
-
 export const destinos = [
   {
     id: "cusco",
@@ -8,10 +7,8 @@ export const destinos = [
     precio: 500,
     duracion: "4 días / 3 noches",
     presupuesto: "Medio",
-    imagen:
-      "https://www.filmingperu.com/wp-content/uploads/2020/06/014.jpg",
-    descripcion:
-      "La antigua capital del Imperio Inca, Cusco, combina historia, cultura y paisajes andinos únicos. Es el punto de partida ideal para visitar Machu Picchu y el Valle Sagrado.",
+    imagen: "https://www.filmingperu.com/wp-content/uploads/2020/06/014.jpg",
+    descripcion: "La antigua capital del Imperio Inca, Cusco, combina historia, cultura y paisajes andinos únicos. Es el punto de partida ideal para visitar Machu Picchu y el Valle Sagrado.",
     gastos: {
       alojamiento: 200,
       transporte: 100,
@@ -20,9 +17,10 @@ export const destinos = [
     },
     tours: [
       {
+        id: "cusco-machu-picchu",
         nombre: "Tour clásico Machu Picchu",
-        descripcion:
-          "Incluye tren, guía y entrada al santuario histórico de Machu Picchu. Perfecto para quienes desean vivir la experiencia tradicional sin complicaciones.",
+        descripcion: "Incluye tren, guía y entrada al santuario histórico de Machu Picchu. Perfecto para quienes desean vivir la experiencia tradicional sin complicaciones.",
+        duracion: "3 días / 2 noches",
         precio: 580,
         incluye: ["Tren turístico", "Guía profesional", "Entrada a Machu Picchu"],
         gastos: {
@@ -33,9 +31,10 @@ export const destinos = [
         },
       },
       {
+        id: "cusco-valle-sagrado",
         nombre: "Tour Aventura Valle Sagrado",
-        descripcion:
-          "Explora Pisac, Ollantaytambo y Moray. Disfruta actividades al aire libre y paisajes impresionantes en los Andes peruanos.",
+        descripcion: "Explora Pisac, Ollantaytambo y Moray. Disfruta actividades al aire libre y paisajes impresionantes en los Andes peruanos.",
+        duracion: "4 días / 3 noches",
         precio: 620,
         incluye: ["Transporte", "Almuerzo buffet", "Actividades de aventura"],
         gastos: {
@@ -46,9 +45,10 @@ export const destinos = [
         },
       },
       {
+        id: "cusco-gastronomico",
         nombre: "Tour Cusco Gastronómico",
-        descripcion:
-          "Descubre los sabores andinos con un recorrido por los mejores restaurantes y mercados locales.",
+        descripcion: "Descubre los sabores andinos con un recorrido por los mejores restaurantes y mercados locales.",
+        duracion: "3 días / 2 noches",
         precio: 560,
         incluye: ["Degustaciones", "Chef guía", "Transporte local"],
         gastos: {
@@ -68,10 +68,8 @@ export const destinos = [
     precio: 350,
     duracion: "2 días / 1 noche",
     presupuesto: "Económico",
-    imagen:
-      "https://i.pinimg.com/originals/16/22/a9/1622a9445e54ccdef09214e2d5fb05ce.png",
-    descripcion:
-      "Paracas ofrece playas hermosas, fauna marina y las impresionantes Islas Ballestas. Un destino ideal para relajarse y disfrutar del océano Pacífico.",
+    imagen: "https://i.pinimg.com/originals/16/22/a9/1622a9445e54ccdef09214e2d5fb05ce.png",
+    descripcion: "Paracas ofrece playas hermosas, fauna marina y las impresionantes Islas Ballestas. Un destino ideal para relajarse y disfrutar del océano Pacífico.",
     gastos: {
       alojamiento: 150,
       transporte: 100,
@@ -80,9 +78,10 @@ export const destinos = [
     },
     tours: [
       {
+        id: "paracas-ballestas",
         nombre: "Tour Islas Ballestas",
-        descripcion:
-          "Paseo en lancha donde podrás observar lobos marinos, pingüinos de Humboldt y el famoso geoglifo del Candelabro.",
+        descripcion: "Paseo en lancha donde podrás observar lobos marinos, pingüinos de Humboldt y el famoso geoglifo del Candelabro.",
+        duracion: "1 día",
         precio: 380,
         incluye: ["Paseo en lancha", "Guía local", "Chaleco salvavidas"],
         gastos: {
@@ -93,9 +92,10 @@ export const destinos = [
         },
       },
       {
+        id: "paracas-reserva",
         nombre: "Tour Reserva Nacional de Paracas",
-        descripcion:
-          "Explora el desierto costero, las playas rojas y la biodiversidad marina única de la reserva.",
+        descripcion: "Explora el desierto costero, las playas rojas y la biodiversidad marina única de la reserva.",
+        duracion: "2 días / 1 noche",
         precio: 400,
         incluye: ["Transporte 4x4", "Guía", "Entrada a la reserva"],
         gastos: {
@@ -106,16 +106,12 @@ export const destinos = [
         },
       },
       {
+        id: "paracas-full",
         nombre: "Tour Paracas Full Experiencia",
-        descripcion:
-          "Una experiencia completa con actividades acuáticas, visita al museo de sitio y degustación gastronómica.",
+        descripcion: "Una experiencia completa con actividades acuáticas, visita al museo de sitio y degustación gastronómica.",
+        duracion: "2 días / 1 noche",
         precio: 450,
-        incluye: [
-          "Kayak o paddle",
-          "Museo de Paracas",
-          "Almuerzo marino",
-          "Guía bilingüe",
-        ],
+        incluye: ["Kayak o paddle", "Museo de Paracas", "Almuerzo marino", "Guía bilingüe"],
         gastos: {
           alojamiento: 140,
           transporte: 170,
@@ -133,10 +129,8 @@ export const destinos = [
     precio: 420,
     duracion: "3 días / 2 noches",
     presupuesto: "Medio",
-    imagen:
-      "https://lacasonadelolivo.com.pe/wp-content/uploads/2018/04/colca-arequipa.jpg",
-    descripcion:
-      "Explora la ‘Ciudad Blanca’ y contempla el vuelo del cóndor en el Cañón del Colca. Un destino que combina arquitectura colonial, naturaleza y tradición.",
+    imagen: "https://lacasonadelolivo.com.pe/wp-content/uploads/2018/04/colca-arequipa.jpg",
+    descripcion: "Explora la 'Ciudad Blanca' y contempla el vuelo del cóndor en el Cañón del Colca. Un destino que combina arquitectura colonial, naturaleza y tradición.",
     gastos: {
       alojamiento: 160,
       transporte: 120,
@@ -145,9 +139,10 @@ export const destinos = [
     },
     tours: [
       {
+        id: "arequipa-colca",
         nombre: "Tour Cañón del Colca",
-        descripcion:
-          "Observa el vuelo del cóndor y disfruta de los baños termales en Chivay.",
+        descripcion: "Observa el vuelo del cóndor y disfruta de los baños termales en Chivay.",
+        duracion: "2 días / 1 noche",
         precio: 460,
         incluye: ["Transporte", "Guía", "Almuerzo", "Entradas a termales"],
         gastos: {
@@ -158,9 +153,10 @@ export const destinos = [
         },
       },
       {
+        id: "arequipa-ciudad",
         nombre: "Tour Ciudad Blanca",
-        descripcion:
-          "Recorrido histórico por los puntos más emblemáticos de Arequipa.",
+        descripcion: "Recorrido histórico por los puntos más emblemáticos de Arequipa.",
+        duracion: "3 días / 2 noches",
         precio: 430,
         incluye: ["Guía local", "Transporte", "Entradas a museos"],
         gastos: {
@@ -172,7 +168,7 @@ export const destinos = [
       },
     ],
   },
-    {
+  {
     id: "puno",
     nombre: "Puno y Lago Titicaca",
     ubicacion: "Puno, Perú",
@@ -180,10 +176,8 @@ export const destinos = [
     precio: 380,
     duracion: "3 días / 2 noches",
     presupuesto: "Medio",
-    imagen:
-      "https://andinoperu.b-cdn.net/wp-content/uploads/2024/03/andino-peru-tours-lago-titicaca-full-day-1.webp",
-    descripcion:
-      "Puno es la puerta al Lago Titicaca, el lago navegable más alto del mundo. Conoce las islas flotantes de los Uros y vive la hospitalidad de sus comunidades.",
+    imagen: "https://andinoperu.b-cdn.net/wp-content/uploads/2024/03/andino-peru-tours-lago-titicaca-full-day-1.webp",
+    descripcion: "Puno es la puerta al Lago Titicaca, el lago navegable más alto del mundo. Conoce las islas flotantes de los Uros y vive la hospitalidad de sus comunidades.",
     gastos: {
       alojamiento: 150,
       transporte: 120,
@@ -192,9 +186,10 @@ export const destinos = [
     },
     tours: [
       {
+        id: "puno-uros-taquile",
         nombre: "Tour Islas Uros y Taquile",
-        descripcion:
-          "Visita las islas flotantes hechas de totora y conoce las costumbres de los pobladores locales.",
+        descripcion: "Visita las islas flotantes hechas de totora y conoce las costumbres de los pobladores locales.",
+        duracion: "2 días / 1 noche",
         precio: 400,
         incluye: ["Transporte en lancha", "Guía local", "Almuerzo típico"],
         gastos: {
@@ -205,9 +200,10 @@ export const destinos = [
         },
       },
       {
+        id: "puno-aventura",
         nombre: "Tour Aventura en el Titicaca",
-        descripcion:
-          "Experimenta el kayak sobre el lago y disfruta una noche con familias locales en Amantaní.",
+        descripcion: "Experimenta el kayak sobre el lago y disfruta una noche con familias locales en Amantaní.",
+        duracion: "3 días / 2 noches",
         precio: 450,
         incluye: ["Kayak", "Hospedaje rural", "Comidas", "Guía"],
         gastos: {
@@ -227,10 +223,8 @@ export const destinos = [
     precio: 320,
     duracion: "2 días / 1 noche",
     presupuesto: "Económico",
-    imagen:
-      "https://www.peru.travel/Contenido/General/Imagen/en/43/1.1/Huacachina.jpg",
-    descripcion:
-      "El oasis de Huacachina es famoso por sus dunas y deportes de aventura como el sandboard. Ideal para una escapada corta y divertida.",
+    imagen: "https://www.peru.travel/Contenido/General/Imagen/en/43/1.1/Huacachina.jpg",
+    descripcion: "El oasis de Huacachina es famoso por sus dunas y deportes de aventura como el sandboard. Ideal para una escapada corta y divertida.",
     gastos: {
       alojamiento: 120,
       transporte: 100,
@@ -239,9 +233,10 @@ export const destinos = [
     },
     tours: [
       {
+        id: "huacachina-buggy",
         nombre: "Tour en Buggy y Sandboard",
-        descripcion:
-          "Vive la adrenalina recorriendo las dunas y deslízate por la arena en sandboard.",
+        descripcion: "Vive la adrenalina recorriendo las dunas y deslízate por la arena en sandboard.",
+        duracion: "1 día",
         precio: 350,
         incluye: ["Buggy", "Tabla de sandboard", "Guía local"],
         gastos: {
@@ -252,9 +247,10 @@ export const destinos = [
         },
       },
       {
+        id: "huacachina-vinedos",
         nombre: "Tour Viñedos y Cata de Vinos",
-        descripcion:
-          "Visita bodegas tradicionales y degusta piscos y vinos artesanales de Ica.",
+        descripcion: "Visita bodegas tradicionales y degusta piscos y vinos artesanales de Ica.",
+        duracion: "2 días / 1 noche",
         precio: 370,
         incluye: ["Transporte", "Guía", "Degustación"],
         gastos: {
@@ -274,10 +270,8 @@ export const destinos = [
     precio: 680,
     duracion: "5 días / 4 noches",
     presupuesto: "Alto",
-    imagen:
-      "https://amazoniantrails.com/wp-content/uploads/2017/10/iquitos.jpg",
-    descripcion:
-      "Navega por el majestuoso río Amazonas, conoce comunidades indígenas y explora la selva tropical en su máxima expresión.",
+    imagen: "https://amazoniantrails.com/wp-content/uploads/2017/10/iquitos.jpg",
+    descripcion: "Navega por el majestuoso río Amazonas, conoce comunidades indígenas y explora la selva tropical en su máxima expresión.",
     gastos: {
       alojamiento: 300,
       transporte: 200,
@@ -286,9 +280,10 @@ export const destinos = [
     },
     tours: [
       {
+        id: "loreto-selva",
         nombre: "Tour Selva Amazónica",
-        descripcion:
-          "Incluye caminatas, avistamiento de fauna y visita a comunidades locales.",
+        descripcion: "Incluye caminatas, avistamiento de fauna y visita a comunidades locales.",
+        duracion: "5 días / 4 noches",
         precio: 720,
         incluye: ["Guía selva", "Lancha", "Alojamiento en lodge", "Comidas"],
         gastos: {
@@ -299,9 +294,10 @@ export const destinos = [
         },
       },
       {
+        id: "loreto-delfines",
         nombre: "Tour Delfines Rosados",
-        descripcion:
-          "Recorrido por el Amazonas con avistamiento de delfines rosados y flora exótica.",
+        descripcion: "Recorrido por el Amazonas con avistamiento de delfines rosados y flora exótica.",
+        duracion: "4 días / 3 noches",
         precio: 700,
         incluye: ["Lancha", "Guía especializado", "Comidas"],
         gastos: {
@@ -321,10 +317,8 @@ export const destinos = [
     precio: 450,
     duracion: "4 días / 3 noches",
     presupuesto: "Medio",
-    imagen:
-      "https://www.wamanadventures.com/blog/wp-content/uploads/2020/08/Laguna_Par%C3%B3n_waman_adventures.jpg",
-    descripcion:
-      "Rodeado de montañas nevadas, Huaraz es el destino perfecto para los amantes del trekking y los paisajes naturales.",
+    imagen: "https://www.wamanadventures.com/blog/wp-content/uploads/2020/08/Laguna_Par%C3%B3n_waman_adventures.jpg",
+    descripcion: "Rodeado de montañas nevadas, Huaraz es el destino perfecto para los amantes del trekking y los paisajes naturales.",
     gastos: {
       alojamiento: 180,
       transporte: 120,
@@ -333,9 +327,10 @@ export const destinos = [
     },
     tours: [
       {
+        id: "huaraz-laguna69",
         nombre: "Laguna 69 Trek",
-        descripcion:
-          "Una caminata desafiante con vistas espectaculares a la Cordillera Blanca.",
+        descripcion: "Una caminata desafiante con vistas espectaculares a la Cordillera Blanca.",
+        duracion: "3 días / 2 noches",
         precio: 480,
         incluye: ["Transporte", "Guía", "Box lunch", "Entradas al parque"],
         gastos: {
@@ -346,9 +341,10 @@ export const destinos = [
         },
       },
       {
+        id: "huaraz-pastoruri",
         nombre: "Nevado Pastoruri",
-        descripcion:
-          "Explora uno de los glaciares más impresionantes del Perú en una excursión de altura.",
+        descripcion: "Explora uno de los glaciares más impresionantes del Perú en una excursión de altura.",
+        duracion: "4 días / 3 noches",
         precio: 460,
         incluye: ["Transporte", "Guía", "Entradas"],
         gastos: {
@@ -368,10 +364,8 @@ export const destinos = [
     precio: 360,
     duracion: "3 días / 2 noches",
     presupuesto: "Económico",
-    imagen:
-      "https://img.panamericana.pe/noticia/2013/10/640-1381339332465.jpg.webp",
-    descripcion:
-      "Trujillo, la ciudad de la eterna primavera, ofrece historia, arqueología y tradición en cada esquina.",
+    imagen: "https://img.panamericana.pe/noticia/2013/10/640-1381339332465.jpg.webp",
+    descripcion: "Trujillo, la ciudad de la eterna primavera, ofrece historia, arqueología y tradición en cada esquina.",
     gastos: {
       alojamiento: 140,
       transporte: 100,
@@ -380,9 +374,10 @@ export const destinos = [
     },
     tours: [
       {
+        id: "trujillo-chanchan",
         nombre: "Tour Chan Chan",
-        descripcion:
-          "Descubre la ciudad de barro más grande del mundo, capital del reino Chimú.",
+        descripcion: "Descubre la ciudad de barro más grande del mundo, capital del reino Chimú.",
+        duracion: "2 días / 1 noche",
         precio: 390,
         incluye: ["Transporte", "Guía arqueológica", "Entradas"],
         gastos: {
@@ -393,9 +388,10 @@ export const destinos = [
         },
       },
       {
+        id: "trujillo-huanchaco",
         nombre: "Tour Huanchaco y Gastronomía",
-        descripcion:
-          "Paseo por la playa, pesca artesanal en caballitos de totora y almuerzo típico norteño.",
+        descripcion: "Paseo por la playa, pesca artesanal en caballitos de totora y almuerzo típico norteño.",
+        duracion: "3 días / 2 noches",
         precio: 380,
         incluye: ["Transporte", "Guía", "Almuerzo marino"],
         gastos: {
@@ -415,10 +411,8 @@ export const destinos = [
     precio: 400,
     duracion: "3 días / 2 noches",
     presupuesto: "Medio",
-    imagen:
-      "https://llanotourscolombia.com/wp-content/uploads/2020/09/UNA-AVETURA-CON-AMIGOS-7-1024x1024.jpg",
-    descripcion:
-      "Conocida como la ‘Ciudad de las Palmeras’, Tarapoto es un paraíso tropical con cascadas, lagunas y gastronomía selvática.",
+    imagen: "https://llanotourscolombia.com/wp-content/uploads/2020/09/UNA-AVETURA-CON-AMIGOS-7-1024x1024.jpg",
+    descripcion: "Conocida como la 'Ciudad de las Palmeras', Tarapoto es un paraíso tropical con cascadas, lagunas y gastronomía selvática.",
     gastos: {
       alojamiento: 160,
       transporte: 100,
@@ -427,9 +421,10 @@ export const destinos = [
     },
     tours: [
       {
+        id: "tarapoto-ahuashiyacu",
         nombre: "Tour Catarata de Ahuashiyacu",
-        descripcion:
-          "Visita una de las cataratas más bellas de la selva peruana, ideal para relajarse y nadar.",
+        descripcion: "Visita una de las cataratas más bellas de la selva peruana, ideal para relajarse y nadar.",
+        duracion: "2 días / 1 noche",
         precio: 420,
         incluye: ["Transporte", "Guía local", "Entradas"],
         gastos: {
@@ -440,9 +435,10 @@ export const destinos = [
         },
       },
       {
+        id: "tarapoto-laguna-azul",
         nombre: "Tour Laguna Azul",
-        descripcion:
-          "Paseo en bote, natación y gastronomía local en la hermosa laguna de Sauce.",
+        descripcion: "Paseo en bote, natación y gastronomía local en la hermosa laguna de Sauce.",
+        duracion: "3 días / 2 noches",
         precio: 440,
         incluye: ["Transporte", "Almuerzo típico", "Paseo en bote"],
         gastos: {
@@ -454,5 +450,4 @@ export const destinos = [
       },
     ],
   },
-
 ];
