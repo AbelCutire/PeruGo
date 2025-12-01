@@ -18,6 +18,7 @@ export default function Header({
   const [user, setUser] = useState(null); // ✅ Estado local para user
   const menuRef = useRef(null);
   const router = useRouter();
+  const [menuMovilAbierto, setMenuMovilAbierto] = useState(false);
 
   const { record, text, toggleRecord } = useVoiceSearch();
 
@@ -298,11 +299,41 @@ export default function Header({
               )}
             </div>
           )}
+          <button 
+            className="menu-movil-btn" 
+            onClick={() => setMenuMovilAbierto(!menuMovilAbierto)}
+          >
+            ☰
+          </button>
+
         </nav>
       </div>
+      <div className={`menu-movil-panel ${menuMovilAbierto ? "active" : ""}`}>
+        <button
+          className="btn-iniciar-sesion"
+          onClick={() => {
+            setMenuMovilAbierto(false);
+            router.push("/login");
+          }}
+        >
+          Iniciar sesión
+        </button>
+      
+        <button
+          className="btn-iniciar-sesion"
+          onClick={() => {
+            setMenuMovilAbierto(false);
+            router.push("/register");
+          }}
+        >
+          Registrarse
+        </button>
+      </div>
+
     </header>
   );
 }
+
 
 
 
