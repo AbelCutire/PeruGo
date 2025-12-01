@@ -124,6 +124,7 @@
   padding: .75rem;
   border-top: .1rem solid var(--color-profile-btn-hover);
   background: var(--color-aux-bg);
+  color: var(--color-texto);
 }
 
 /* Input */
@@ -133,6 +134,7 @@
   border: .1rem solid var(--color-profile-btn-hover);
   padding: .75rem;
   font: inherit;
+  color: var(--color-texto);
 }
 
 /* Botón de hablar */
