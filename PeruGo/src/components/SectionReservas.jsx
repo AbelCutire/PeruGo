@@ -274,7 +274,6 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
                     ))}
                   </Pie>
                   <Tooltip />
-                  <Legend />
                 </PieChart>
               </ResponsiveContainer>
 
@@ -577,3 +576,4 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
     </section>
   );
 }
+
