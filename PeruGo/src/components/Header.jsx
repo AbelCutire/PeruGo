@@ -286,7 +286,7 @@ export default function Header({
                       Mis Planes
                     </button>
                     <button
-                      className="btn-opcion cerrar"
+                      className="btn-opcion-cerrar"
                       onClick={() => {
                         setMenuOpen(false);
                         onLogout?.();
@@ -333,6 +333,7 @@ export default function Header({
     </header>
   );
 }
+
 
 
 
