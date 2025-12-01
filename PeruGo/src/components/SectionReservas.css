@@ -82,6 +82,7 @@
 }
 
 .tarjeta.activa {
+  display: none;
   transform: scale(1.02);
   border-left-color: #06b6d4;
 }
@@ -95,6 +96,7 @@
 /* 💬 BURBUJA "ESTÁS AQUÍ" */
 
 .burbuja {
+  display: none;
   position: absolute;
   top: -15px;
   left: 20px;
@@ -319,3 +321,4 @@
   height: 14px;
   border-radius: 4px;
 }
+
