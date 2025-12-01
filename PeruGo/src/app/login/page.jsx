@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { login } from "@/services/auth"; // Ajusta la ruta según tu estructura
+import { login } from "@/services/auth";
 import "../styles/auth.css";
 
 export default function PageLogin() {
@@ -27,9 +27,17 @@ export default function PageLogin() {
 
       setMensaje("¡Inicio de sesión exitoso!");
 
-      // Redireccionar después de un breve delay para mostrar el mensaje de éxito
+      // Verificar si hay una redirección pendiente
+      const redirectTo = sessionStorage.getItem("redirectAfterLogin");
+      
+      // Limpiar la redirección
+      if (redirectTo) {
+        sessionStorage.removeItem("redirectAfterLogin");
+      }
+
+      // Redireccionar después de un breve delay
       setTimeout(() => {
-        window.location.href = "/";
+        window.location.href = redirectTo || "/mis-planes";
       }, 1000);
       
     } catch (err) {
