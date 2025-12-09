@@ -5,6 +5,8 @@
   max-width: 1100px;
   margin: 0 auto;
   font-family: "Poppins", sans-serif;
+  background: #f9fafb;
+  border-radius: 16px;
 }
 
 #section-reservas h2 {
@@ -15,66 +17,34 @@
   color: #1e293b;
 }
 
-/* 🧭 GRAFICO DE GASTOS */
-
-.grafico-contenedor {
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-  margin-bottom: 2.5rem;
-  text-align: center;
-}
-
-.grafico-contenedor h3 {
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
-  color: #0f172a;
-}
-
-.grafico {
+/* Contenedor principal: tarjetas izquierda + gráfico derecha */
+.reservas-contenedor {
   display: flex;
-  justify-content: center;
-  align-items: center;
   gap: 2rem;
-  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
-.leyenda {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: left;
+/* Responsive: en móviles poner columna */
+@media (max-width: 768px) {
+  .reservas-contenedor {
+    flex-direction: column;
+  }
 }
-
-.leyenda li {
-  display: flex;
-  align-items: center;
-  margin-bottom: 6px;
-  font-size: 0.95rem;
-  color: #374151;
-}
-
-.leyenda .color {
-  width: 14px;
-  height: 14px;
-  border-radius: 3px;
-  margin-right: 8px;
-}
-
-/* 🧩 TARJETAS DE ETAPAS */
 
 .tarjetas-contenedor {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  width: 100%;
 }
 
+/* 🧩 TARJETA DEL PLAN */
 .tarjeta {
   position: relative;
   background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   padding: 1.5rem 1.8rem;
   transition: all 0.3s ease;
   overflow: hidden;
@@ -82,8 +52,7 @@
 }
 
 .tarjeta.activa {
-  transform: scale(1.02);
-  border-left-color: #06b6d4;
+  transform: scale(1.01);
 }
 
 .tarjeta.bloqueada {
@@ -92,54 +61,40 @@
   pointer-events: none;
 }
 
-/* 💬 BURBUJA "ESTÁS AQUÍ" */
+.tarjeta-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 
+.miniatura {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* 💬 BURBUJA "ESTÁS AQUÍ" */
 .burbuja {
   position: absolute;
-  top: -15px;
-  left: 20px;
+  top: 0px;
+  left: -5px;
   background: #06b6d4;
   color: #ffffff;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
+  padding: 4px 10px;
+  border-radius: 0 0 12px 0;
+  font-size: 0.8rem;
   font-weight: 500;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  animation: flotar 2.5s ease-in-out infinite;
-}
-
-@keyframes flotar {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-/* 🧠 CONTENIDO DE CADA TARJETA */
-
-.contenido-tarjeta h3 {
-  font-size: 1.3rem;
-  color: #0f172a;
-  margin-bottom: 6px;
-}
-
-.contenido-tarjeta p {
-  font-size: 1rem;
-  color: #475569;
-  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
 }
 
 /* 🔘 BOTONES DE ACCION */
-
 .acciones {
   display: flex;
   gap: 0.8rem;
   flex-wrap: wrap;
+  margin-top: 1.2rem;
 }
 
 .acciones button {
@@ -158,166 +113,106 @@
   transform: translateY(-1px);
 }
 
-/* 🧭 BOTONES DE NAVEGACION GENERAL */
-
-.navegacion {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2.5rem;
-}
-
-.navegacion button {
-  background-color: #334155;
-  color: white;
-  border: none;
-  padding: 0.6rem 1.3rem;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.navegacion button:hover {
-  background-color: #475569;
-}
-
-.navegacion button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-#section-reservas {
-  padding: 2rem;
-  background: #f9fafb;
-  border-radius: 16px;
-}
-
-#section-reservas h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-  color: #1f2937;
-}
-
-/* Contenedor principal: tarjetas izquierda + gráfico derecha */
-.reservas-contenedor {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-}
-
-.tarjetas-contenedor {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-/* Tarjeta */
-.tarjeta {
-  background: white;
-  border-radius: 12px;
-  padding: 1rem;
-  position: relative;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease;
-}
-
-.tarjeta.activa {
-  transform: scale(1.02);
-  border-left: 8px solid #2563eb;
-}
-
-.tarjeta.bloqueada {
-  opacity: 0.5;
-}
-
-.tarjeta-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.miniatura {
-  width: 70px;
-  height: 70px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-/* Burbuja “Estás aquí” */
-.burbuja {
-  position: absolute;
-  top: 0px;
-  left: -5px;
-  color: white;
-  padding: 4px 10px;
-  font-size: 0.8rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* Botones */
-.acciones {
-  margin-top: 0.5rem;
-  display: flex;
-  gap: 0.5rem;
-}
-
-.acciones button {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.3s;
-}
-
-.acciones button:hover {
-  background: #1e40af;
-}
-
-.navegacion {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-}
-
-/* Gráfico a la derecha */
+/* 🧭 GRAFICO DE GASTOS */
 .grafico-contenedor {
   flex: 1;
-  background: white;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  text-align: center;
+  width: 100%;
+}
+
+.grafico-contenedor h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: #0f172a;
 }
 
 .grafico {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+  gap: 1rem;
 }
 
 .leyenda {
   list-style: none;
   padding: 0;
-  margin-top: 1rem;
+  margin: 1rem 0 0 0;
+  text-align: left;
   width: 100%;
 }
 
 .leyenda li {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+  color: #374151;
 }
 
 .leyenda .color {
   width: 14px;
   height: 14px;
-  border-radius: 4px;
+  border-radius: 3px;
+  margin-right: 8px;
 }
 
+/* =========================================
+   🌍 NUEVOS ESTILOS: MAPA Y RESEÑAS
+   ========================================= */
 
+/* Mapa incrustado en la tarjeta */
+.mapa-wrapper {
+  margin: 15px 0;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 1px solid #e2e8f0;
+}
 
+/* Visualización de la reseña completada */
+.resena-visualizacion {
+  margin-top: 20px;
+  background-color: #f8fafc;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.estrellas-display {
+  color: #fbbf24;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+
+/* Corrección para móviles: asegura que el texto se ajuste y respete saltos */
+.comentario-texto {
+  color: #334155;
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  white-space: pre-wrap;      /* Respeta saltos de línea del usuario */
+  word-wrap: break-word;      /* Rompe palabras muy largas */
+  overflow-wrap: break-word;  /* Estándar moderno */
+  max-width: 100%;            /* Evita desbordes horizontales */
+}
+
+.fecha-resena {
+  display: block;
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  text-align: right;
+  font-weight: 500;
+}
