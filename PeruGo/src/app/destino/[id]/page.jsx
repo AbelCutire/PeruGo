@@ -251,7 +251,18 @@ export default function PageDestino() {
           <p className="intro">{destino.descripcion}</p>
 
           <div className="mapa-contenedor">
-            <div className="mapa-placeholder">🗺️ Mapa en desarrollo</div>
+            <iframe
+              title={`Mapa de ${destino.nombre}`}
+              src={`https://maps.google.com/maps?q=${encodeURIComponent(
+                destino.nombre + " " + destino.ubicacion
+              )}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+              width="100%"
+              height="350"
+              style={{ border: 0, borderRadius: "12px", marginBottom: "20px" }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
             <div className="recomendaciones">
               <h4>Recomendaciones</h4>
               <ol>
