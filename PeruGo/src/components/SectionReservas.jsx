@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import "./SectionReservas.css";
 import { destinos } from "@/data/destinos";
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 const COLORS = ["#3b82f6", "#8b5cf6", "#ec4899", "#f59e0b", "#22c55e", "#9ca3af"];
 
@@ -38,7 +38,7 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
     return fecha.toISOString().split('T')[0];
   };
 
-  // Confirmar plan con fecha
+  // Confirmar plan con fecha (de Borrador a Pendiente)
   const confirmarPlanConFecha = () => {
     if (!fechaSeleccionada) {
       alert("Debes seleccionar una fecha de partida");
@@ -65,11 +65,14 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
     setFechaSeleccionada("");
   };
 
-  // Procesar pago
+  // Procesar pago (de Pendiente a Confirmado)
   const procesarPago = async () => {
     setProcesandoPago(true);
+
+    // Simular procesamiento
     await new Promise(resolve => setTimeout(resolve, 2000));
 
+    // Reproducir sonido de éxito
     try {
       const audio = new Audio("/success.mp3");
       await audio.play();
@@ -90,7 +93,7 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
     }
   };
 
-  // Reagendar
+  // Reagendar (desde Cancelado)
   const reagendarPlan = () => {
     setModalFecha(true);
   };
@@ -109,11 +112,9 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
     }
 
     const resenas = JSON.parse(localStorage.getItem("resenas_planes") || "[]");
-    
-    // Verificar si ya dejó reseña (usando plan.id o plan.plan_id según tu estructura)
-    const planId = plan.id || plan.plan_id;
-    const yaReseno = resenas.some(r => r.plan_id === planId && r.usuario_id === usuario.id);
-    
+
+    // Verificar si ya dejó reseña
+    const yaReseno = resenas.some(r => r.plan_id === plan.plan_id && r.usuario_id === usuario.id);
     if (yaReseno) {
       alert("Ya has dejado una reseña para este plan");
       return;
@@ -121,7 +122,7 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
 
     resenas.push({
       id: Date.now(),
-      plan_id: planId,
+      plan_id: plan.plan_id,
       usuario_id: usuario.id,
       usuario_nombre: usuario.nombre,
       estrellas,
@@ -136,7 +137,7 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
     alert("✅ ¡Gracias por tu reseña!");
   };
 
-  // Datos para gráfico
+  // Preparar datos para gráfico (solo si está confirmado)
   const prepararDatosGrafico = () => {
     if (!plan.gastos || plan.estado !== "confirmado") return [];
 
@@ -149,6 +150,7 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
   const datosGrafico = prepararDatosGrafico();
   const totalGastos = datosGrafico.reduce((acc, g) => acc + g.value, 0);
 
+  // Colores según estado
   const coloresBorde = {
     borrador: "#9ca3af",
     pendiente: "#fbbf24",
@@ -192,34 +194,61 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
               </div>
             </div>
 
-            {/* BOTONES */}
+            {/* BOTONES SEGÚN ESTADO */}
             <div className="acciones">
+              {/* Estado: BORRADOR */}
               {plan.estado === "borrador" && (
-                <button onClick={() => setModalFecha(true)}>Editar y Confirmar</button>
+                <button onClick={() => setModalFecha(true)}>
+                  Editar y Confirmar
+                </button>
               )}
+
+              {/* Estado: PENDIENTE */}
               {plan.estado === "pendiente" && (
                 <>
-                  <button onClick={() => setModalPago(true)}>Pagar</button>
-                  <button onClick={cancelarPlan} style={{ background: "#ef4444" }}>Cancelar</button>
+                  <button onClick={() => setModalPago(true)}>
+                    Pagar
+                  </button>
+                  <button 
+                    onClick={cancelarPlan}
+                    style={{ background: "#ef4444" }}
+                  >
+                    Cancelar
+                  </button>
                 </>
               )}
+
+              {/* Estado: CONFIRMADO */}
               {plan.estado === "confirmado" && (
-                <button onClick={() => window.location.href = `/destino/${plan.destino_id}`}>Ver destino</button>
+                <button onClick={() => window.location.href = `/destino/${plan.destino_id}`}>
+                  Ver destino
+                </button>
               )}
+
+              {/* Estado: CANCELADO */}
               {plan.estado === "cancelado" && (
-                <button onClick={reagendarPlan}>Reagendar</button>
+                <button onClick={reagendarPlan}>
+                  Reagendar
+                </button>
               )}
+
+              {/* Estado: COMPLETADO */}
               {plan.estado === "completado" && !plan.resena_completada && (
-                <button onClick={() => setModalResena(true)}>Reseñar</button>
+                <button onClick={() => setModalResena(true)}>
+                  Reseñar
+                </button>
               )}
+
               {plan.estado === "completado" && plan.resena_completada && (
-                <p style={{ color: "#22c55e", fontStyle: "italic", fontSize: "0.9rem" }}>✓ Reseña completada</p>
+                <p style={{ color: "#22c55e", fontStyle: "italic", fontSize: "0.9rem" }}>
+                  ✓ Reseña completada
+                </p>
               )}
             </div>
           </div>
         </div>
 
-        {/* GRÁFICO */}
+        {/* GRÁFICO DE GASTOS (solo si está confirmado) */}
         {plan.estado === "confirmado" && datosGrafico.length > 0 && (
           <div className="grafico-contenedor">
             <h3>Desglose de gastos</h3>
@@ -235,6 +264,7 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
                     cx="50%"
                     cy="50%"
                     labelLine={false}
+                    label={({ name, value }) => `${name}: S/${value}`}
                     outerRadius={80}
                     fill="#8884d8"
                     dataKey="value"
@@ -246,10 +276,14 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
                   <Tooltip />
                 </PieChart>
               </ResponsiveContainer>
+
               <ul className="leyenda">
                 {datosGrafico.map((g, i) => (
                   <li key={i}>
-                    <span className="color" style={{ backgroundColor: COLORS[i % COLORS.length] }}></span>
+                    <span
+                      className="color"
+                      style={{ backgroundColor: COLORS[i % COLORS.length] }}
+                    ></span>
                     {g.name} — S/ {g.value}
                   </li>
                 ))}
@@ -259,51 +293,285 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
         )}
       </div>
 
-      {/* MODALES (Fecha, Pago, Reseña) - Mantenidos igual que el original */}
+      {/* MODAL DE SELECCIÓN DE FECHA */}
       {modalFecha && (
         <div className="modal-overlay" onClick={() => setModalFecha(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h3>Selecciona fecha de partida</h3>
-            <input type="date" value={fechaSeleccionada} onChange={(e) => setFechaSeleccionada(e.target.value)} min={new Date().toISOString().split('T')[0]} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid #cbd5e1", marginBottom: "20px" }} />
+            <p style={{ color: "#64748b", marginBottom: "20px" }}>
+              Duración del plan: {plan.duracion}
+            </p>
+            <input
+              type="date"
+              value={fechaSeleccionada}
+              onChange={(e) => setFechaSeleccionada(e.target.value)}
+              min={new Date().toISOString().split('T')[0]}
+              style={{
+                width: "100%",
+                padding: "10px",
+                borderRadius: "8px",
+                border: "1px solid #cbd5e1",
+                marginBottom: "20px",
+                fontSize: "1rem"
+              }}
+            />
             <div style={{ display: "flex", gap: "10px" }}>
-              <button className="btn-confirmar" onClick={confirmarPlanConFecha} style={{ background: "#22c55e", color: "white", padding: "12px 24px", borderRadius: "8px", border: "none", cursor: "pointer" }}>Confirmar</button>
-              <button className="btn-cancelar" onClick={() => setModalFecha(false)} style={{ background: "#64748b", color: "white", padding: "12px 24px", borderRadius: "8px", border: "none", cursor: "pointer" }}>Cancelar</button>
+              <button 
+                className="btn-confirmar" 
+                onClick={confirmarPlanConFecha}
+                style={{
+                  background: "#22c55e",
+                  color: "white",
+                  border: "none",
+                  padding: "12px 24px",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontSize: "1rem"
+                }}
+              >
+                Confirmar
+              </button>
+              <button 
+                className="btn-cancelar" 
+                onClick={() => setModalFecha(false)}
+                style={{
+                  background: "#64748b",
+                  color: "white",
+                  border: "none",
+                  padding: "12px 24px",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontSize: "1rem"
+                }}
+              >
+                Cancelar
+              </button>
             </div>
           </div>
         </div>
       )}
 
+      {/* MODAL DE PAGO */}
       {modalPago && (
         <div className="modal-overlay" style={{ zIndex: 9999 }} onClick={() => !procesandoPago && setModalPago(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h3>Procesar pago</h3>
-            <p>Total: S/ {plan.precio}</p>
-            <button onClick={procesarPago} disabled={procesandoPago} style={{ width: "100%", background: procesandoPago ? "#94a3b8" : "#22c55e", color: "white", padding: "14px", borderRadius: "8px", border: "none", cursor: "pointer", marginTop: "20px" }}>{procesandoPago ? "Procesando..." : "Pagar"}</button>
+            
+            <div style={{ marginBottom: "20px" }}>
+              <h4 style={{ marginBottom: "10px" }}>Desglose de gastos:</h4>
+              <ul style={{ listStyle: "none", padding: 0 }}>
+                {plan.gastos && Object.entries(plan.gastos).map(([key, value]) => (
+                  <li key={key} style={{ padding: "8px 0", borderBottom: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between" }}>
+                    <span style={{ textTransform: "capitalize" }}>{key}</span>
+                    <span style={{ fontWeight: "600" }}>S/ {value}</span>
+                  </li>
+                ))}
+                <li style={{ padding: "12px 0", fontWeight: "700", fontSize: "1.1rem", display: "flex", justifyContent: "space-between" }}>
+                  <span>Total:</span>
+                  <span style={{ color: "#3b82f6" }}>S/ {plan.precio}</span>
+                </li>
+              </ul>
+            </div>
+
+            <div style={{ marginBottom: "15px" }}>
+              <label style={{ display: "block", marginBottom: "5px", color: "#475569" }}>
+                Número de tarjeta
+              </label>
+              <input
+                type="text"
+                placeholder="1234 5678 9012 3456"
+                disabled={procesandoPago}
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  border: "1px solid #cbd5e1"
+                }}
+              />
+            </div>
+
+            <div style={{ display: "flex", gap: "10px", marginBottom: "15px" }}>
+              <div style={{ flex: 1 }}>
+                <label style={{ display: "block", marginBottom: "5px", color: "#475569" }}>
+                  Fecha vencimiento
+                </label>
+                <input
+                  type="text"
+                  placeholder="MM/AA"
+                  disabled={procesandoPago}
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    borderRadius: "8px",
+                    border: "1px solid #cbd5e1"
+                  }}
+                />
+              </div>
+              <div style={{ flex: 1 }}>
+                <label style={{ display: "block", marginBottom: "5px", color: "#475569" }}>
+                  CVV
+                </label>
+                <input
+                  type="text"
+                  placeholder="123"
+                  maxLength="3"
+                  disabled={procesandoPago}
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    borderRadius: "8px",
+                    border: "1px solid #cbd5e1"
+                  }}
+                />
+              </div>
+            </div>
+
+            <button 
+              onClick={procesarPago}
+              disabled={procesandoPago}
+              style={{
+                width: "100%",
+                background: procesandoPago ? "#94a3b8" : "#22c55e",
+                color: "white",
+                border: "none",
+                padding: "14px",
+                borderRadius: "8px",
+                cursor: procesandoPago ? "not-allowed" : "pointer",
+                fontSize: "1rem",
+                fontWeight: "600"
+              }}
+            >
+              {procesandoPago ? "Procesando..." : "Pagar"}
+            </button>
           </div>
         </div>
       )}
 
+      {/* MODAL DE RESEÑA */}
       {modalResena && (
         <div className="modal-overlay" onClick={() => setModalResena(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h3>Deja tu reseña</h3>
-            <div style={{ marginBottom: "20px", textAlign: "center", fontSize: "2rem" }}>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <span key={star} onClick={() => setEstrellas(star)} style={{ cursor: "pointer", color: star <= estrellas ? "#fbbf24" : "#cbd5e1", margin: "0 5px" }}>★</span>
-              ))}
+            <p style={{ color: "#64748b", marginBottom: "20px" }}>
+              ¿Cómo fue tu experiencia en {destino.nombre}?
+            </p>
+
+            <div style={{ marginBottom: "20px", textAlign: "center" }}>
+              <div style={{ fontSize: "2rem" }}>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    onClick={() => setEstrellas(star)}
+                    style={{
+                      cursor: "pointer",
+                      color: star <= estrellas ? "#fbbf24" : "#cbd5e1",
+                      margin: "0 5px"
+                    }}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
             </div>
-            <textarea value={comentario} onChange={(e) => setComentario(e.target.value)} placeholder="Comparte tu experiencia..." rows="5" style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid #cbd5e1", marginBottom: "20px" }} />
+
+            <textarea
+              value={comentario}
+              onChange={(e) => setComentario(e.target.value)}
+              placeholder="Comparte tu experiencia..."
+              rows="5"
+              style={{
+                width: "100%",
+                padding: "10px",
+                borderRadius: "8px",
+                border: "1px solid #cbd5e1",
+                marginBottom: "20px",
+                resize: "vertical",
+                fontSize: "1rem"
+              }}
+            />
+
             <div style={{ display: "flex", gap: "10px" }}>
-              <button onClick={guardarResena} style={{ background: "#22c55e", color: "white", padding: "12px 24px", borderRadius: "8px", border: "none", cursor: "pointer" }}>Enviar</button>
-              <button onClick={() => setModalResena(false)} style={{ background: "#64748b", color: "white", padding: "12px 24px", borderRadius: "8px", border: "none", cursor: "pointer" }}>Cancelar</button>
+              <button 
+                onClick={guardarResena}
+                style={{
+                  background: "#22c55e",
+                  color: "white",
+                  border: "none",
+                  padding: "12px 24px",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontSize: "1rem"
+                }}
+              >
+                Enviar reseña
+              </button>
+              <button 
+                onClick={() => setModalResena(false)}
+                style={{
+                  background: "#64748b",
+                  color: "white",
+                  border: "none",
+                  padding: "12px 24px",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontSize: "1rem"
+                }}
+              >
+                Cancelar
+              </button>
             </div>
           </div>
         </div>
       )}
 
       <style jsx>{`
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(4px); }
-        .modal-content { background: white; padding: 30px; border-radius: 16px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); }
+        .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.6);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+          backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+          background: white;
+          padding: 30px;
+          border-radius: 16px;
+          max-width: 500px;
+          width: 90%;
+          max-height: 90vh;
+          overflow-y: auto;
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+          animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        .modal-content h3 {
+          margin: 0 0 15px 0;
+          color: #1e293b;
+          font-size: 1.5rem;
+        }
+
+        .modal-content h4 {
+          color: #475569;
+          font-size: 1.1rem;
+        }
       `}</style>
     </section>
   );
