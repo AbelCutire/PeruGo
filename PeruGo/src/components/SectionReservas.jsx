@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import "./SectionReservas.css";
 import { destinos } from "@/data/destinos";
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
 const COLORS = ["#3b82f6", "#8b5cf6", "#ec4899", "#f59e0b", "#22c55e", "#9ca3af"];
 
@@ -14,8 +14,11 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
   const [modalResena, setModalResena] = useState(false);
   const [fechaSeleccionada, setFechaSeleccionada] = useState("");
   const [procesandoPago, setProcesandoPago] = useState(false);
+  
+  // Estados para la reseña
   const [estrellas, setEstrellas] = useState(5);
   const [comentario, setComentario] = useState("");
+  const [reviewGuardada, setReviewGuardada] = useState(null);
 
   // Validar que plan existe
   if (!plan || !plan.destino_id) {
@@ -27,6 +30,18 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
     const encontrado = destinos.find((d) => d.id === plan.destino_id);
     setDestino(encontrado);
   }, [plan.destino_id]);
+
+  // Cargar reseña guardada si el plan está completado
+  useEffect(() => {
+    if (plan.resena_completada) {
+      const resenas = JSON.parse(localStorage.getItem("resenas_planes") || "[]");
+      // Buscamos por ID del plan para asegurar consistencia
+      const review = resenas.find(r => r.plan_id === plan.id);
+      if (review) {
+        setReviewGuardada(review);
+      }
+    }
+  }, [plan.resena_completada, plan.id]);
 
   if (!destino) return <p>Cargando destino...</p>;
 
@@ -113,25 +128,30 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
 
     const resenas = JSON.parse(localStorage.getItem("resenas_planes") || "[]");
 
-    // Verificar si ya dejó reseña
-    const yaReseno = resenas.some(r => r.plan_id === plan.plan_id && r.usuario_id === usuario.id);
+    // Verificar si ya dejó reseña (por si acaso)
+    const yaReseno = resenas.some(r => r.plan_id === plan.id && r.usuario_id === usuario.id);
     if (yaReseno) {
       alert("Ya has dejado una reseña para este plan");
       return;
     }
 
-    resenas.push({
+    const nuevaResena = {
       id: Date.now(),
-      plan_id: plan.plan_id,
+      plan_id: plan.id, // Usamos plan.id consistentemente
       usuario_id: usuario.id,
       usuario_nombre: usuario.nombre,
       estrellas,
       comentario,
       fecha: new Date().toISOString()
-    });
+    };
 
+    resenas.push(nuevaResena);
     localStorage.setItem("resenas_planes", JSON.stringify(resenas));
+    
+    // Actualizamos estado local y global
+    setReviewGuardada(nuevaResena);
     onActualizar(plan.id, { resena_completada: true });
+    
     setModalResena(false);
     setComentario("");
     alert("✅ ¡Gracias por tu reseña!");
@@ -194,6 +214,19 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
               </div>
             </div>
 
+            {/* --- MAPA DEL DESTINO --- */}
+            <div className="mapa-wrapper">
+              <iframe
+                title={`Mapa de ${destino.nombre}`}
+                width="100%"
+                height="200"
+                style={{ border: 0, borderRadius: "8px", marginTop: "15px" }}
+                loading="lazy"
+                allowFullScreen
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(destino.nombre + " " + destino.ubicacion)}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+              ></iframe>
+            </div>
+
             {/* BOTONES SEGÚN ESTADO */}
             <div className="acciones">
               {/* Estado: BORRADOR */}
@@ -239,12 +272,29 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
                 </button>
               )}
 
-              {plan.estado === "completado" && plan.resena_completada && (
-                <p style={{ color: "#22c55e", fontStyle: "italic", fontSize: "0.9rem" }}>
-                  ✓ Reseña completada
-                </p>
+              {plan.estado === "completado" && plan.resena_completada && !reviewGuardada && (
+                 <p style={{ color: "#22c55e", fontStyle: "italic", fontSize: "0.9rem", marginTop: "10px" }}>
+                   ✓ Reseña registrada
+                 </p>
               )}
             </div>
+
+            {/* --- VISUALIZACIÓN DE RESEÑA GUARDADA --- */}
+            {plan.estado === "completado" && reviewGuardada && (
+              <div className="resena-visualizacion">
+                <div className="estrellas-display">
+                  {"★".repeat(reviewGuardada.estrellas)}
+                  <span style={{color: "#cbd5e1"}}>{"★".repeat(5 - reviewGuardada.estrellas)}</span>
+                </div>
+                <p className="comentario-texto">
+                  "{reviewGuardada.comentario}"
+                </p>
+                <span className="fecha-resena">
+                  {new Date(reviewGuardada.fecha).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </span>
+              </div>
+            )}
+
           </div>
         </div>
 
@@ -576,4 +626,3 @@ export default function SectionReservas({ plan, onActualizar, onEliminar, valida
     </section>
   );
 }
-
