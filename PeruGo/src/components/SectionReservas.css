@@ -1,30 +1,25 @@
-/* 🎯 ESTILOS PRINCIPALES DE SECTIONRESERVAS */
-
 #section-reservas {
   padding: 2rem;
-  max-width: 1100px;
-  margin: 0 auto;
-  font-family: "Poppins", sans-serif;
   background: #f9fafb;
   border-radius: 16px;
+  font-family: "Poppins", sans-serif;
 }
 
 #section-reservas h2 {
-  text-align: center;
   font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 2rem;
-  color: #1e293b;
+  margin-bottom: 1.5rem;
+  color: #1f2937;
+  text-align: center;
 }
 
-/* Contenedor principal: tarjetas izquierda + gráfico derecha */
+/* Contenedor principal */
 .reservas-contenedor {
   display: flex;
   gap: 2rem;
   align-items: flex-start;
 }
 
-/* Responsive: en móviles poner columna */
+/* En móviles, columna */
 @media (max-width: 768px) {
   .reservas-contenedor {
     flex-direction: column;
@@ -36,29 +31,21 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  width: 100%;
 }
 
-/* 🧩 TARJETA DEL PLAN */
+/* Tarjeta */
 .tarjeta {
-  position: relative;
-  background: #ffffff;
+  background: white;
   border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   padding: 1.5rem 1.8rem;
-  transition: all 0.3s ease;
-  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
   border-left: 8px solid transparent;
 }
 
 .tarjeta.activa {
-  transform: scale(1.01);
-}
-
-.tarjeta.bloqueada {
-  opacity: 0.55;
-  filter: grayscale(0.8);
-  pointer-events: none;
+  transform: scale(1.02);
 }
 
 .tarjeta-info {
@@ -74,74 +61,70 @@
   border-radius: 8px;
 }
 
-/* 💬 BURBUJA "ESTÁS AQUÍ" */
+/* Burbuja */
 .burbuja {
   position: absolute;
-  top: 0px;
-  left: -5px;
+  top: 0;
+  left: 0;
   background: #06b6d4;
-  color: #ffffff;
-  padding: 4px 10px;
-  border-radius: 0 0 12px 0;
+  color: white;
+  padding: 4px 12px;
   font-size: 0.8rem;
-  font-weight: 500;
+  border-radius: 0 0 12px 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 10;
 }
 
-/* 🔘 BOTONES DE ACCION */
+/* Botones */
 .acciones {
+  margin-top: 1.2rem;
   display: flex;
   gap: 0.8rem;
   flex-wrap: wrap;
-  margin-top: 1.2rem;
 }
 
 .acciones button {
-  background-color: #06b6d4;
-  color: #fff;
+  background: #06b6d4;
+  color: white;
   border: none;
   padding: 0.5rem 1.1rem;
   border-radius: 10px;
-  font-size: 0.9rem;
   cursor: pointer;
+  font-size: 0.9rem;
   transition: all 0.2s ease;
 }
 
 .acciones button:hover {
-  background-color: #0891b2;
+  background: #0891b2;
   transform: translateY(-1px);
 }
 
-/* 🧭 GRAFICO DE GASTOS */
+/* Gráfico */
 .grafico-contenedor {
   flex: 1;
-  background: #ffffff;
+  background: white;
+  padding: 1.5rem;
   border-radius: 16px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
   text-align: center;
-  width: 100%;
+  min-width: 300px;
 }
 
 .grafico-contenedor h3 {
   font-size: 1.2rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: #0f172a;
 }
 
 .grafico {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  gap: 1rem;
 }
 
 .leyenda {
   list-style: none;
   padding: 0;
-  margin: 1rem 0 0 0;
+  margin-top: 1rem;
   text-align: left;
   width: 100%;
 }
@@ -149,70 +132,14 @@
 .leyenda li {
   display: flex;
   align-items: center;
-  margin-bottom: 6px;
+  gap: 0.5rem;
   font-size: 0.95rem;
   color: #374151;
+  margin-bottom: 6px;
 }
 
 .leyenda .color {
   width: 14px;
   height: 14px;
   border-radius: 3px;
-  margin-right: 8px;
-}
-
-/* =========================================
-   🌍 NUEVOS ESTILOS: MAPA Y RESEÑAS
-   ========================================= */
-
-/* Mapa incrustado en la tarjeta */
-.mapa-wrapper {
-  margin: 15px 0;
-  overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  border: 1px solid #e2e8f0;
-}
-
-/* Visualización de la reseña completada */
-.resena-visualizacion {
-  margin-top: 20px;
-  background-color: #f8fafc;
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.estrellas-display {
-  color: #fbbf24;
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-  letter-spacing: 2px;
-}
-
-/* Corrección para móviles: asegura que el texto se ajuste y respete saltos */
-.comentario-texto {
-  color: #334155;
-  font-style: italic;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  white-space: pre-wrap;      /* Respeta saltos de línea del usuario */
-  word-wrap: break-word;      /* Rompe palabras muy largas */
-  overflow-wrap: break-word;  /* Estándar moderno */
-  max-width: 100%;            /* Evita desbordes horizontales */
-}
-
-.fecha-resena {
-  display: block;
-  margin-top: 12px;
-  font-size: 0.8rem;
-  color: #94a3b8;
-  text-align: right;
-  font-weight: 500;
 }
