@@ -1,281 +1,143 @@
-/* === Estilos generales === */
-#ficha-destino {
-  padding: 20px;
-  background: #f5f7fa;
+.detalle-destino {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Poppins', sans-serif;
 }
 
-/* ---------- Encabezado ---------- */
-.destino-header {
+/* Hero Section */
+.destino-hero {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 18px;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-.destino-titulo {
-  font-weight: 800;
-  font-size: 20px;
-}
-
-.destino-info {
-  color: var(--muted);
-}
-
-/* ---------- Layout general ---------- */
-.destino-layout {
-  display: flex;
-  gap: 20px;
-}
-
-/* ---------- Aside izquierdo ---------- */
-.destino-aside {
-  width: 420px;
-  background: #fff;
-  padding: 16px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.destino-aside img {
-  width: 100%;
-  height: 240px;
+.imagen-wrapper img {
+  width: 400px;
+  height: 300px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 12px;
 }
 
-.destino-aside h3 {
-  margin: 12px 0 6px;
+.info-principal h1 {
+  font-size: 2.5rem;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
 }
 
-.subinfo {
-  color: var(--muted);
-  font-size: 0.95em;
-}
-
-.botones-aside {
+.badges {
   display: flex;
-  gap: 8px;
-  margin-top: 8px;
+  gap: 10px;
+  margin-top: 15px;
 }
 
-.resumen ul {
-  padding-left: 18px;
-  margin: 8px 0 0;
-  color: var(--muted);
-}
-
-.btn-volver {
-  margin-top: 12px;
-  padding: 8px 12px;
-  border: none;
-  background: #e2e8f0;
-  border-radius: 6px;
-  cursor: pointer;
+.badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
   font-weight: 600;
-  transition: background 0.3s;
+}
+.badge.tipo { background: #e0f2fe; color: #0284c7; }
+.badge.precio { background: #dcfce7; color: #16a34a; }
+
+/* Grid Layout */
+.contenido-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Izquierda más ancha */
+  gap: 2rem;
 }
 
-.btn-volver:hover {
-  background: #cbd5e1;
+.seccion-bloque {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-/* ---------- Main ---------- */
-.destino-main {
-  flex: 1;
-  background: #fff;
-  padding: 18px;
-  border-radius: 10px;
+.seccion-bloque h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.2rem;
+  color: #334155;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 0.5rem;
 }
 
-.intro {
-  color: var(--muted);
+/* MAPA */
+.mapa-container {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.mapa-contenedor {
-  display: flex;
-  gap: 12px;
-  margin-top: 12px;
+/* RESEÑAS */
+.reseñas-bloque {
+  max-height: 800px;
+  overflow-y: auto;
 }
 
-.mapa-placeholder {
-  flex: 1;
-  min-height: 180px;
-  border-radius: 6px;
-  border: 1px solid #eef6fb;
+.review-card {
+  border-bottom: 1px solid #f1f5f9;
+  padding: 1rem 0;
+}
+.review-card:last-child { border-bottom: none; }
+
+.review-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: var(--muted);
-}
-
-.recomendaciones {
-  width: 300px;
-  background: #fafafa;
-  padding: 12px;
-  border-radius: 6px;
-}
-
-.recomendaciones h4 {
+  gap: 10px;
   margin-bottom: 8px;
 }
 
-.recomendaciones ol {
-  margin: 0;
-  color: var(--muted);
-}
-
-/* ---------- Experiencias ---------- */
-.experiencias-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.experiencias-grid .card {
-  background: #fdfdfd;
-  border-radius: 8px;
-  padding: 12px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.experiencias-grid .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-}
-
-.card-footer {
+.avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  background: #3b82f6;
+  color: white;
+  border-radius: 50%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
-}
-
-.card-footer span {
-  font-weight: 600;
-}
-/* === Botón Regresar (naranja) === */
-.btn-volver-naranja {
-  background: #f97316; /* naranja */
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.3s, transform 0.2s;
-  margin-top: 14px;
-  align-self: flex-start;
-}
-
-.btn-volver-naranja:hover {
-  background: #ea580c;
-  transform: translateY(-2px);
-}
-/* === TOURS Y EXPERIENCIAS === */
-.experiencias-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-  gap: 1.2rem;
-  margin-top: 1.5rem;
-}
-
-.card {
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  padding: 1rem;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.card-footer {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.tour-botones {
-  display: flex;
-  gap: 0.4rem;
-}
-
-.card.seleccionado {
-  border: 2px solid #f97316;
-  background: #fffaf4;
-}
-
-.tour-seleccionado {
-  background: #fff3e0;
-  border-left: 4px solid #f97316;
-  padding: 0.8rem;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.tour-seleccionado .precio {
-  font-weight: bold;
-  color: #d25a00;
-}
-
-/* === MODAL DETALLE TOUR === */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  display: flex;
   justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-.modal-tour {
-  background: #fff;
-  border-radius: 1rem;
-  max-width: 480px;
-  width: 90%;
-  padding: 2rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.3s ease;
-}
-
-.modal-tour h3 {
-  margin-bottom: 0.5rem;
-  color: #222;
-}
-
-.modal-tour h4 {
-  margin-top: 1rem;
-  font-size: 1rem;
-  color: #333;
-}
-
-.modal-tour ul {
-  list-style: disc;
-  margin: 0.5rem 0 1rem 1.5rem;
-}
-
-.modal-tour .precio {
-  margin: 1rem 0;
   font-weight: bold;
-  color: #f97316;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.review-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.usuario-nombre {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.95rem;
+}
+
+.fecha {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.estrellas {
+  color: #fbbf24;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+}
+.estrellas-vacías { color: #e2e8f0; }
+
+.review-comentario {
+  color: #475569;
+  font-size: 0.9rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .destino-hero { flex-direction: column; }
+  .contenido-grid { grid-template-columns: 1fr; }
+  .imagen-wrapper img { width: 100%; }
 }
