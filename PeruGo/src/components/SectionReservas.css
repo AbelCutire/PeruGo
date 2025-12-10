@@ -214,6 +214,12 @@
   animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+.modal-content {
+  background: var(--color-aux-bg);
+  padding: 3rem;
+  border-radius: 1.5rem;
+}
+
 @keyframes popIn {
   from { transform: scale(0.9); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
@@ -269,3 +275,4 @@
   margin: 10px 0;
   cursor: pointer;
 }
+
