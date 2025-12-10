@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { getCurrentUser, logout, isAuthenticated } from "@/services/auth";
+import { getCurrentUser, logout, isAuthenticated, getToken } from "@/services/auth";
 import "./Header.css";
 import useVoiceSearch from "./funciones/VoiceSearch";
 
@@ -15,6 +15,10 @@ export default function Header({
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [effectiveLogged, setEffectiveLogged] = useState(false);
   const [user, setUser] = useState(null);
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profileError, setProfileError] = useState("");
   const menuRef = useRef(null);
   const router = useRouter();
   const pathname = usePathname();
@@ -89,6 +93,63 @@ export default function Header({
 
   const toggleMode = () => setIsDarkMode((prev) => !prev);
 
+  const handleVerRDFGeneral = () => {
+    const url = "https://perugo-backend-production.up.railway.app/rdf";
+    if (typeof window !== "undefined") {
+      window.open(url, "_blank");
+    }
+  };
+
+  const handleSaveProfile = async () => {
+    const nombre = newUsername.trim();
+    if (!nombre) {
+      setProfileError("El nombre no puede estar vacío");
+      return;
+    }
+
+    const token = getToken();
+    if (!token) {
+      setProfileError("Sesión no válida. Vuelve a iniciar sesión.");
+      return;
+    }
+
+    try {
+      setProfileSaving(true);
+      setProfileError("");
+
+      const response = await fetch(
+        "https://perugo-backend-production.up.railway.app/auth/profile",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ username: nombre }),
+        }
+      );
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || data.message || "Error al actualizar perfil");
+      }
+
+      if (data.user) {
+        setUser(data.user);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("user", JSON.stringify(data.user));
+        }
+      }
+
+      setEditingProfile(false);
+    } catch (e) {
+      setProfileError(e.message || "Error al actualizar perfil");
+    } finally {
+      setProfileSaving(false);
+    }
+  };
+
   // Helper para saber si un enlace está activo
   const isActive = (path) => pathname === path;
 
@@ -122,6 +183,29 @@ export default function Header({
               <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
             </svg>
           </Link>
+
+          {/* 2. Ver RDF general */}
+          <button
+            className="btn-icono"
+            title="Ver RDF general"
+            type="button"
+            onClick={handleVerRDFGeneral}
+          >
+            <svg
+              width="22px"
+              height="22px"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="6" cy="6" r="2.2" stroke="currentColor" strokeWidth="1.8" />
+              <circle cx="18" cy="6" r="2.2" stroke="currentColor" strokeWidth="1.8" />
+              <circle cx="12" cy="18" r="2.2" stroke="currentColor" strokeWidth="1.8" />
+              <line x1="7.6" y1="7.6" x2="10.4" y2="15" stroke="currentColor" strokeWidth="1.5" />
+              <line x1="16.4" y1="7.6" x2="13.6" y2="15" stroke="currentColor" strokeWidth="1.5" />
+              <line x1="8.2" y1="6" x2="15.8" y2="6" stroke="currentColor" strokeWidth="1.2" />
+            </svg>
+          </button>
 
           {/* 3. Micrófono */}
           <button
@@ -163,7 +247,23 @@ export default function Header({
               <button
                 className="btn-icono"
                 title="Perfil"
-                onClick={() => setMenuOpen((s) => !s)}
+                onClick={() => {
+                  setMenuOpen((s) => {
+                    const next = !s;
+                    if (next) {
+                      setEditingProfile(false);
+                      setProfileError("");
+                      setNewUsername(
+                        user?.username ||
+                          user?.name ||
+                          (user?.email
+                            ? user.email.split("@")[0]
+                            : "")
+                      );
+                    }
+                    return next;
+                  });
+                }}
               >
                 <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M5 21C5 17.134 8.13401 14 12 14C15.866 14 19 17.134 19 21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -178,18 +278,57 @@ export default function Header({
                   </div>
                   <div className="profile-actions">
                     <button
-                        className="btn-opcion"
-                        onClick={() => {
-                            setMenuOpen(false); // Cierra el menú
-                            router.push("/mis-planes"); // Navega usando el hook de Next.js
-                        }}
+                      className="btn-opcion btn-opcion-strong"
+                      type="button"
+                      onClick={() => {
+                        setEditingProfile((v) => !v);
+                        setProfileError("");
+                        setNewUsername(userData.nombre || "");
+                      }}
                     >
-                        Mis Planes
+                      Editar perfil
                     </button>
+                    <Link href="/mis-planes" onClick={() => setMenuOpen(false)}>
+                      <button className="btn-opcion">Mis Planes</button>
+                    </Link>
                     <button className="btn-opcion-cerrar" onClick={handleLogout}>
                       Cerrar sesión
                     </button>
                   </div>
+                  {editingProfile && (
+                    <div className="profile-edit">
+                      <div className="profile-edit-label">Cambiar nombre de usuario</div>
+                      <input
+                        type="text"
+                        className="profile-edit-input"
+                        value={newUsername}
+                        onChange={(e) => setNewUsername(e.target.value)}
+                      />
+                      {profileError && (
+                        <div className="profile-edit-error">{profileError}</div>
+                      )}
+                      <div className="profile-edit-actions">
+                        <button
+                          type="button"
+                          className="btn-opcion profile-edit-btn"
+                          onClick={handleSaveProfile}
+                          disabled={profileSaving}
+                        >
+                          {profileSaving ? "Guardando..." : "Guardar"}
+                        </button>
+                        <button
+                          type="button"
+                          className="btn-opcion profile-edit-btn profile-edit-btn-cancel"
+                          onClick={() => {
+                            setEditingProfile(false);
+                            setProfileError("");
+                          }}
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -227,4 +366,3 @@ export default function Header({
     </header>
   );
 }
-
