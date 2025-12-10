@@ -116,18 +116,21 @@
   top: 150%;
   right: -50%;
   background: var(--color-profile-btn);
-  border-radius: 1rem;
-  box-shadow: 0 4px 16px var(--color-shadow);
+  border-radius: 1.2rem;
+  box-shadow: 0 14px 40px var(--color-shadow);
+  border: 1px solid rgba(148, 163, 184, 0.35);
   width: auto;
   min-width: 18rem;
+  max-width: 22rem;
   z-index: 100;
-  padding: 1rem 0;
+  padding: 0.75rem 0 0.75rem;
   animation: fadeIn 0.2s ease;
 }
 
 .profile-info {
-  padding: 0.8rem 1rem;
+  padding: 0.9rem 1.1rem 0.85rem;
   text-align: center;
+  border-bottom: 1px solid var(--color-profile-btn-hover);
 }
 
 .profile-icon {
@@ -143,19 +146,21 @@
 
 .profile-name {
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   color: var(--color-texto);
 }
 
 .profile-email {
   font-size: 0.8rem;
   color: var(--color-subtexto);
-  margin-top: 0.1rem;
+  margin-top: 0.25rem;
 }
 
 .profile-actions {
   display: flex;
   flex-direction: column;
+  margin-top: 0.15rem;
+  border-top: .08rem solid var(--color-profile-btn-hover);
 }
 
 
@@ -164,10 +169,10 @@
   color: var(--color-texto);
   border: none;
   text-align: left;
-  padding: 0.75rem 1rem;
+  padding: 0.7rem 1.1rem;
   font-size: 0.9rem;
   cursor: pointer;
-  border-top: .1rem solid var(--color-profile-btn-hover);
+  border-top: none;
 }
 
 .btn-opcion-cerrar {
@@ -175,10 +180,11 @@
   color: rgb(255,0,0);
   border: none;
   text-align: left;
-  padding: 0.75rem 1.5rem;
+  padding: 0.7rem 1.1rem;
   font-size: 0.9rem;
   cursor: pointer;
-  border-top: .1rem solid var(--color-profile-btn-hover);
+  border-top: .08rem solid var(--color-profile-btn-hover);
+  margin-top: 0.1rem;
 }
 
 .btn-opcion:hover {
@@ -191,6 +197,61 @@
 .fa-arrow-right-from-bracket {
   position: relative;
   right: .5rem;
+}
+
+/* Variante destacada para 'Editar perfil' */
+.btn-opcion-strong {
+  font-weight: 600;
+  padding-left: 1.5rem; /* un poco más de sangría hacia la derecha */
+}
+
+/* --- Edición de perfil dentro del menú --- */
+.profile-edit {
+  padding: 0.8rem 1.1rem 1rem;
+  border-top: 0.1rem solid var(--color-profile-btn-hover);
+  background: var(--color-profile-btn);
+}
+
+.profile-edit-label {
+  font-size: 0.85rem;
+  color: var(--color-subtexto);
+  margin-bottom: 0.35rem;
+}
+
+.profile-edit-input {
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-profile-btn-hover);
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+  background: var(--color-header);
+  color: var(--color-texto);
+}
+
+.profile-edit-input::placeholder {
+  color: var(--color-subtexto);
+}
+
+.profile-edit-error {
+  color: #f97373;
+  font-size: 0.8rem;
+  margin-bottom: 0.4rem;
+}
+
+.profile-edit-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.profile-edit-btn {
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.6rem;
+}
+
+.profile-edit-btn-cancel {
+  opacity: 0.85;
 }
 
 
