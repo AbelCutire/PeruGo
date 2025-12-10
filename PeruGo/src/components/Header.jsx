@@ -157,7 +157,7 @@ export default function Header({
       <div className="header-contenido header-contenido-amplio">
         
         {/* LOGO (Enlace al inicio) */}
-        <<div 
+        <div 
           className="logo-header" 
           onClick={() => router.push("/")}
           style={{ cursor: "pointer", textDecoration: "none" }}
@@ -395,4 +395,5 @@ export default function Header({
     </header>
   );
 }
+
 
