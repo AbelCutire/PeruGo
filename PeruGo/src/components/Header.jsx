@@ -298,6 +298,7 @@ export default function Header({
                     >
                       Editar perfil
                     </button>
+                    
                     <button 
                       className="btn-opcion" 
                       onClick={() => { 
@@ -306,6 +307,10 @@ export default function Header({
                       }}
                     >
                       Mis Planes
+                    </button>
+                    
+                    <button className="btn-opcion-cerrar" onClick={handleLogout}>
+                      Cerrar sesión
                     </button>
                   </div>
                   {editingProfile && (
@@ -395,5 +400,6 @@ export default function Header({
     </header>
   );
 }
+
 
 
