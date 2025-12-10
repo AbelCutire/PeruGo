@@ -117,6 +117,19 @@ export default function SectionExplorar() {
     }));
   };
 
+  const handleVolverInicio = () => {
+    try {
+      if (router && typeof router.push === "function") {
+        router.push("/");
+        return;
+      }
+    } catch (e) {}
+
+    if (typeof window !== "undefined") {
+      window.location.href = "/";
+    }
+  };
+
   const handleVer = (id) => {
     if (typeof window !== "undefined") {
       sessionStorage.setItem("scrollPos", window.scrollY.toString());
@@ -236,6 +249,14 @@ export default function SectionExplorar() {
               ))}
             </div>
           </div>
+
+          <button
+            type="button"
+            className="btn-volver-inicio"
+            onClick={handleVolverInicio}
+          >
+            Regresar a inicio
+          </button>
         </aside>
       </div>
     </section>
