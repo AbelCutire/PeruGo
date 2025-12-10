@@ -26,11 +26,19 @@ model Destino {
   actualizadoEn DateTime @updatedAt
 }
 
-model User {
-  id       String  @id @default(uuid())
-  email    String  @unique
-  username String?
-  password String?
+model users {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  username      String?
+  password_hash String?  // Puede ser opcional si usan Google Auth
+  is_verified   Boolean  @default(false)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  // Relaciones con los datos de la app
+  planes    Plan[]
+  reviews   Review[]
+  chats     ChatSession[]
 }
 
 model Profile {
