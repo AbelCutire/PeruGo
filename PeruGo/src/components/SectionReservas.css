@@ -1,17 +1,18 @@
 /* TARJETAS (Izquierda) */
 .card-plan {
-  background: white;
+  background: var(--bg-card); /* Adaptable */
   border-radius: 12px;
   padding: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  transition: transform 0.2s;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border); /* Borde sutil para modo oscuro */
+  transition: transform 0.2s, background-color 0.3s;
   display: flex;
   flex-direction: column;
 }
 
 .card-plan:hover {
   transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Podrías usar una variable de sombra hover si quisieras */
 }
 
 .card-header {
@@ -27,10 +28,10 @@
   font-size: 1.4rem;
   line-height: 1;
   cursor: pointer;
-  color: #94a3b8;
+  color: var(--text-muted); /* Gris adaptativo */
   padding: 0 4px;
 }
-.btn-close:hover { color: #ef4444; }
+.btn-close:hover { color: var(--primary); }
 
 .card-body {
   display: flex;
@@ -48,24 +49,24 @@
 .info-plan h3 {
   margin: 0;
   font-size: 1.05rem;
-  color: #1e293b;
+  color: var(--text-main); /* Negro/Blanco */
 }
 
 .subinfo {
   font-size: 0.85rem;
-  color: #64748b;
+  color: var(--text-muted); /* Gris adaptativo */
   margin: 2px 0;
 }
 
 .precio {
   font-weight: 700;
-  color: #334155;
+  color: var(--text-main); /* O puedes usar var(--primary) si quieres destacar el precio en rojo */
   margin: 4px 0;
 }
 
 .fechas {
   font-size: 0.8rem;
-  color: #10b981;
+  color: #10b981; /* Verde (Semantic) se mantiene para fechas válidas */
   font-weight: 500;
 }
 
@@ -73,7 +74,7 @@
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-top: auto; /* Empujar botones al fondo */
+  margin-top: auto;
 }
 
 .btn-action {
@@ -87,14 +88,34 @@
   font-weight: 500;
 }
 
-.btn-action.primary { background: #3b82f6; color: white; }
-.btn-action.primary:hover { background: #2563eb; }
+/* Primario: ROJO */
+.btn-action.primary { 
+  background: var(--primary); 
+  color: var(--text-inverse); 
+}
+.btn-action.primary:hover { 
+  background: var(--primary-hover); 
+}
 
-.btn-action.secondary { background: #f1f5f9; color: #475569; }
-.btn-action.secondary:hover { background: #e2e8f0; }
+/* Secundario: Gris */
+.btn-action.secondary { 
+  background: var(--bg-hover); 
+  color: var(--text-main); 
+  border: 1px solid var(--border);
+}
+.btn-action.secondary:hover { 
+  background: var(--border); 
+}
 
-.btn-action.danger { background: #fee2e2; color: #ef4444; }
-.btn-action.danger:hover { background: #fecaca; }
+/* Peligro: Rojo borde */
+.btn-action.danger { 
+  background: transparent; 
+  color: #ef4444; 
+  border: 1px solid #ef4444;
+}
+.btn-action.danger:hover { 
+  background: #fee2e2; 
+}
 
 /* BADGES DE ESTADO */
 .badge-estado {
@@ -105,19 +126,21 @@
   color: white;
   letter-spacing: 0.5px;
 }
+/* Mantenemos colores semánticos para los estados, excepto completado */
 .badge-estado.borrador { background: #9ca3af; }
 .badge-estado.pendiente { background: #f59e0b; }
 .badge-estado.confirmado { background: #10b981; }
 .badge-estado.cancelado { background: #ef4444; }
-.badge-estado.completado { background: #3b82f6; }
+.badge-estado.completado { background: var(--primary); } /* Ahora es Rojo marca */
 
 
 /* GRAFICOS (Derecha) */
 .card-grafico {
-  background: white;
+  background: var(--bg-card);
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
 }
 
 .header-grafico {
@@ -125,23 +148,23 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--border);
   padding-bottom: 8px;
 }
 
 .header-grafico strong {
   font-size: 1rem;
-  color: #334155;
+  color: var(--text-main);
 }
 
 .badge-total {
-  background: #f8fafc;
-  color: #334155;
+  background: var(--bg-hover);
+  color: var(--text-main);
   padding: 4px 8px;
   border-radius: 6px;
   font-size: 0.85rem;
   font-weight: 600;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border);
 }
 
 .leyenda-grafico {
@@ -157,7 +180,7 @@
   align-items: center;
   gap: 6px;
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .dot {
@@ -171,7 +194,7 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -180,12 +203,14 @@
 }
 
 .modal-box {
-  background: white;
+  background: var(--bg-card);
   padding: 25px;
   border-radius: 12px;
   width: 90%;
   max-width: 400px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  border: 1px solid var(--border);
+  color: var(--text-main);
   animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -194,13 +219,18 @@
   to { transform: scale(1); opacity: 1; }
 }
 
-.modal-box h3 { margin-top: 0; color: #1e293b; }
+.modal-box h3 { 
+  margin-top: 0; 
+  color: var(--text-main); 
+}
 
 .input-modal {
   width: 100%;
   padding: 10px;
   margin: 8px 0;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--border);
+  background-color: var(--bg-page);
+  color: var(--text-main);
   border-radius: 8px;
   font-size: 0.95rem;
 }
@@ -213,8 +243,8 @@
 
 .btn-confirm {
   flex: 1;
-  background: #10b981;
-  color: white;
+  background: var(--primary); /* ROJO */
+  color: var(--text-inverse);
   border: none;
   padding: 10px;
   border-radius: 8px;
@@ -224,9 +254,9 @@
 
 .btn-cancel {
   flex: 1;
-  background: #e2e8f0;
-  color: #475569;
-  border: none;
+  background: var(--bg-hover);
+  color: var(--text-main);
+  border: 1px solid var(--border);
   padding: 10px;
   border-radius: 8px;
   cursor: pointer;
