@@ -180,6 +180,13 @@ export default function PageDestino() {
     return (suma / resenasPlan.length).toFixed(1);
   };
 
+  const handleVerRDF = () => {
+    if (!destino) return;
+    const slug = destino.id;
+    const url = `https://perugo-backend-production.up.railway.app/rdf/destino/${encodeURIComponent(slug)}`;
+    window.open(url, "_blank");
+  };
+
   if (!destino) {
     return (
       <section id="ficha-destino">
@@ -229,6 +236,13 @@ export default function PageDestino() {
               }}
             >
               {tourSeleccionado ? "Agregar a mis planes" : "Selecciona un plan"}
+            </button>
+            <button
+              className="btn-rdf-destino"
+              type="button"
+              onClick={handleVerRDF}
+            >
+              Ver RDF de este destino
             </button>
           </div>
 
