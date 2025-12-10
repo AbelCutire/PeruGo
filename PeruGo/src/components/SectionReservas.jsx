@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import "./SectionReservas.css";
 import { destinos } from "@/data/destinos";
+import { createReview } from "@/services/planes"; // ✅ Importar servicio
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
 const COLORS = ["#3b82f6", "#8b5cf6", "#ec4899", "#f59e0b", "#22c55e", "#9ca3af"];
@@ -12,7 +13,7 @@ export default function SectionReservas({
   onActualizar, 
   onEliminar, 
   validarSolapamiento,
-  modo = "tarjeta" // 'tarjeta' | 'grafico'
+  modo = "tarjeta"
 }) {
   const [destino, setDestino] = useState(null);
   
@@ -27,20 +28,23 @@ export default function SectionReservas({
   const [estrellas, setEstrellas] = useState(5);
   const [comentario, setComentario] = useState("");
 
-  // Validar plan
   if (!plan || !plan.destino_id) return null;
 
   useEffect(() => {
+    // Aquí podrías incluso hacer un fetch al backend si 'destinos' estuviera en DB
+    // Por ahora seguimos usando el catálogo local para imágenes y descripciones estáticas
     const encontrado = destinos.find((d) => d.id === plan.destino_id);
     setDestino(encontrado);
   }, [plan.destino_id]);
 
   if (!destino) return null;
 
-  // --- LÓGICA DE ACCIONES ---
+  // --- LÓGICA ---
 
   const calcularFechaFin = (fechaInicio) => {
-    const dias = plan.duracion_dias || parseInt(plan.duracion?.match(/\d+/)?.[0] || "1");
+    // Si la duración viene del backend como string "4 días", parseamos.
+    // Si viene como número, usamos directo.
+    const dias = typeof plan.duracion === 'number' ? plan.duracion : parseInt(plan.duracion?.match(/\d+/)?.[0] || "1");
     const fecha = new Date(fechaInicio);
     fecha.setDate(fecha.getDate() + dias);
     return fecha.toISOString().split('T')[0];
@@ -58,6 +62,8 @@ export default function SectionReservas({
       alert(`⚠️ Conflicto con: ${validacion.planConflictivo.destino}`);
       return;
     }
+    
+    // Llamamos a la función del padre que conecta con el API
     onActualizar(plan.id, {
       estado: "pendiente",
       fecha_inicio: fechaSeleccionada,
@@ -68,7 +74,10 @@ export default function SectionReservas({
 
   const procesarPago = async () => {
     setProcesandoPago(true);
-    await new Promise(resolve => setTimeout(resolve, 1500)); // Simulación
+    // Simulación de pasarela
+    await new Promise(resolve => setTimeout(resolve, 1500)); 
+    
+    // Actualizamos en backend vía padre
     onActualizar(plan.id, { estado: "confirmado" });
     setProcesandoPago(false);
     setModalPago(false);
@@ -76,52 +85,37 @@ export default function SectionReservas({
   };
 
   const abrirModalResena = () => {
-    // Si ya existe una reseña, la cargamos para editar
-    if (plan.resena_completada) {
-       const resenas = JSON.parse(localStorage.getItem("resenas_planes") || "[]");
-       // Buscamos la reseña asociada a este plan específico
-       const miResena = resenas.find(r => r.plan_id === plan.plan_id); 
-       if (miResena) {
-         setEstrellas(miResena.estrellas);
-         setComentario(miResena.comentario);
-       }
-    } else {
-      // Limpiar si es nueva
-      setEstrellas(5);
-      setComentario("");
-    }
+    // Nota: Como el backend actual no devuelve el texto de la reseña, 
+    // siempre abrimos el modal limpio o permitimos crear una nueva.
+    setEstrellas(5);
+    setComentario("");
     setModalResena(true);
   };
 
-  const guardarResena = () => {
+  const guardarResena = async () => {
     if (!comentario.trim()) {
       alert("Escribe un comentario.");
       return;
     }
-    // Recuperar usuario
-    const userEmail = sessionStorage.getItem("lastEmail");
-    const usuario = JSON.parse(localStorage.getItem(`usuario_${userEmail}`));
-    if (!usuario) return;
 
-    let resenas = JSON.parse(localStorage.getItem("resenas_planes") || "[]");
+    try {
+      // 1. Enviar al Backend
+      await createReview({
+        plan_id: plan.id,
+        destino_id: plan.destino_id,
+        estrellas: estrellas,
+        comentario: comentario
+      });
 
-    // Eliminar reseña anterior de este plan si existe (para reemplazarla)
-    resenas = resenas.filter(r => r.plan_id !== plan.plan_id);
-
-    resenas.push({
-      id: Date.now(),
-      plan_id: plan.plan_id,
-      usuario_id: usuario.id,
-      usuario_nombre: usuario.nombre,
-      estrellas,
-      comentario,
-      fecha: new Date().toISOString()
-    });
-
-    localStorage.setItem("resenas_planes", JSON.stringify(resenas));
-    onActualizar(plan.id, { resena_completada: true });
-    setModalResena(false);
-    alert("✅ Reseña guardada.");
+      // 2. Actualizar estado del plan en Backend (marcar review_completed)
+      onActualizar(plan.id, { resena_completada: true });
+      
+      setModalResena(false);
+      alert("✅ Reseña guardada en la nube.");
+    } catch (error) {
+      console.error(error);
+      alert("Hubo un error al guardar tu reseña.");
+    }
   };
 
   const cancelarPlan = () => {
@@ -144,17 +138,15 @@ export default function SectionReservas({
     ? Object.entries(plan.gastos).map(([cat, val]) => ({ name: cat, value: val }))
     : [];
 
-  // === MODO GRÁFICO (Columna Derecha) ===
+  // MODO GRÁFICO
   if (modo === "grafico") {
-    // Si no hay datos o no está confirmado, no renderizamos nada en la columna derecha
     if (datosGrafico.length === 0) return null;
-
     const total = datosGrafico.reduce((acc, el) => acc + el.value, 0);
 
     return (
       <div className="card-grafico">
         <div className="header-grafico">
-          <strong>{plan.destino}</strong>
+          <strong>{plan.destino}</strong> {/* Usamos plan.destino si el backend lo guarda, o destino.nombre local */}
           <span className="badge-total">Total: S/ {total}</span>
         </div>
         <div style={{ width: "100%", height: 200 }}>
@@ -189,7 +181,7 @@ export default function SectionReservas({
     );
   }
 
-  // === MODO TARJETA (Columna Izquierda) ===
+  // MODO TARJETA
   return (
     <>
       <div 
@@ -198,7 +190,7 @@ export default function SectionReservas({
       >
         <div className="card-header">
            <span className={`badge-estado ${plan.estado}`}>
-             {plan.estado.toUpperCase()}
+             {plan.estado?.toUpperCase()}
            </span>
            <button className="btn-close" onClick={() => onEliminar(plan.id)} title="Eliminar Plan">
              ×
@@ -225,7 +217,6 @@ export default function SectionReservas({
               Planificar Fechas
             </button>
           )}
-          
           {plan.estado === "pendiente" && (
             <>
               <button className="btn-action primary" onClick={() => setModalPago(true)}>
@@ -236,35 +227,32 @@ export default function SectionReservas({
               </button>
             </>
           )}
-          
           {plan.estado === "confirmado" && (
             <button className="btn-action secondary" onClick={() => window.location.href=`/destino/${plan.destino_id}`}>
               Ver Detalles
             </button>
           )}
-          
           {plan.estado === "cancelado" && (
             <button className="btn-action secondary" onClick={() => setModalFecha(true)}>
               Reagendar
             </button>
           )}
-          
           {plan.estado === "completado" && (
             <button className="btn-action primary" onClick={abrirModalResena}>
-              {plan.resena_completada ? "Editar Reseña" : "Dejar Reseña"}
+              {plan.resena_completada ? "Enviar otra reseña" : "Dejar Reseña"}
             </button>
           )}
         </div>
       </div>
 
-      {/* --- MODALES (Solo se renderizan si estamos en modo tarjeta) --- */}
+      {/* --- MODALES --- */}
       
       {/* Modal FECHA */}
       {modalFecha && (
         <div className="modal-overlay" onClick={() => setModalFecha(false)}>
           <div className="modal-box" onClick={e => e.stopPropagation()}>
             <h3>Planificar Viaje</h3>
-            <p>Duración: {plan.duracion}</p>
+            <p>Duración estimada: {plan.duracion || "Varios días"}</p>
             <label style={{display:'block', marginTop:'10px'}}>Fecha de inicio:</label>
             <input 
               type="date" 
@@ -286,7 +274,7 @@ export default function SectionReservas({
           <div className="modal-box" onClick={e => e.stopPropagation()}>
             <h3>Realizar Pago</h3>
             <p style={{marginBottom: '15px'}}>Total a pagar: <strong>S/ {plan.precio}</strong></p>
-            <input type="text" placeholder="Número de Tarjeta" className="input-modal" disabled />
+            <input type="text" placeholder="Tarjeta (Demo)" className="input-modal" disabled />
             <div style={{display:'flex', gap:'10px'}}>
                <input type="text" placeholder="MM/AA" className="input-modal" disabled />
                <input type="text" placeholder="CVC" className="input-modal" disabled />
@@ -302,7 +290,7 @@ export default function SectionReservas({
       {modalResena && (
         <div className="modal-overlay" onClick={() => setModalResena(false)}>
           <div className="modal-box" onClick={e => e.stopPropagation()}>
-            <h3>{plan.resena_completada ? "Editar Reseña" : "Tu Experiencia"}</h3>
+            <h3>{plan.resena_completada ? "Nueva Reseña" : "Tu Experiencia"}</h3>
             <div className="estrellas-selector">
               {[1,2,3,4,5].map(s => (
                 <span key={s} onClick={() => setEstrellas(s)} style={{color: s <= estrellas ? "#fbbf24" : "#ccc"}}>★</span>
