@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import SectionReservas from "./SectionReservas";
+import { getPlanes, updatePlan as apiUpdatePlan, deletePlan as apiDeletePlan } from "@/services/planes";
+import { getCurrentUser } from "@/services/auth";
 import "./MisPlanes.css";
 
 export default function MisPlanes() {
@@ -10,71 +12,69 @@ export default function MisPlanes() {
   const [cargando, setCargando] = useState(true);
   const [filtro, setFiltro] = useState("fecha"); // 'fecha' | 'prioridad'
 
-  // 🔐 Verificar sesión
+  // 🔐 Verificar sesión y cargar datos
   useEffect(() => {
-    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
-    const userEmail = sessionStorage.getItem("lastEmail");
+    const user = getCurrentUser();
     
-    if (!isLoggedIn || !userEmail) {
+    if (!user) {
       window.location.href = "/login";
       return;
     }
-
-    let usuarioData = localStorage.getItem(`usuario_${userEmail}`);
-    let usuarioObj;
     
-    if (!usuarioData) {
-      usuarioObj = {
-        id: `user_${Date.now()}`,
-        email: userEmail,
-        nombre: userEmail.split('@')[0]
-      };
-      localStorage.setItem(`usuario_${userEmail}`, JSON.stringify(usuarioObj));
-    } else {
-      usuarioObj = JSON.parse(usuarioData);
-    }
-    
-    setUsuario(usuarioObj);
-    setCargando(false);
+    setUsuario(user);
+    cargarPlanesBackend();
   }, []);
 
-  // 📥 Cargar planes del usuario
-  useEffect(() => {
-    if (!usuario) return;
-    
-    const planesGuardados = localStorage.getItem(`planes_${usuario.id}`);
-    if (planesGuardados) {
-      const planesCargados = JSON.parse(planesGuardados);
-      setPlanes(planesCargados);
-      verificarPlanesCompletados(planesCargados);
-    }
-  }, [usuario]);
-
-  // 📝 Guardar cambios
-  const guardarPlanes = (nuevosPlanes) => {
-    setPlanes(nuevosPlanes);
-    if (usuario) {
-      localStorage.setItem(`planes_${usuario.id}`, JSON.stringify(nuevosPlanes));
+  // 📥 Función para cargar planes desde el API
+  const cargarPlanesBackend = async () => {
+    try {
+      setCargando(true);
+      const data = await getPlanes();
+      setPlanes(data);
+      // Verificar completados una vez cargados
+      verificarPlanesCompletados(data);
+    } catch (error) {
+      console.error("Error cargando planes:", error);
+    } finally {
+      setCargando(false);
     }
   };
 
-  // 🔄 Actualizar estado
-  const actualizarPlan = (planId, cambios) => {
-    const nuevosPlanes = planes.map(plan => 
-      plan.id === planId ? { ...plan, ...cambios } : plan
-    );
-    guardarPlanes(nuevosPlanes);
+  // 🔄 Actualizar estado de un plan (Conexión API)
+  const actualizarPlan = async (planId, cambios) => {
+    try {
+      // 1. Actualización optimista en UI (opcional, para que se sienta rápido)
+      setPlanes(prev => prev.map(p => p.id === planId ? { ...p, ...cambios } : p));
+
+      // 2. Llamada al Backend
+      await apiUpdatePlan(planId, cambios);
+      
+      // Opcional: Recargar datos reales para asegurar sincronía
+      // cargarPlanesBackend(); 
+    } catch (error) {
+      alert("Error al actualizar el plan. Intenta nuevamente.");
+      // Revertir cambios si falla (aquí podrías volver a cargar del backend)
+      cargarPlanesBackend();
+    }
   };
 
-  // ❌ Eliminar plan
-  const eliminarPlan = (planId) => {
+  // ❌ Eliminar plan (Conexión API)
+  const eliminarPlan = async (planId) => {
     if (confirm("¿Estás seguro de eliminar este plan?")) {
-      const nuevosPlanes = planes.filter(p => p.id !== planId);
-      guardarPlanes(nuevosPlanes);
+      try {
+        // UI Optimista
+        setPlanes(prev => prev.filter(p => p.id !== planId));
+        
+        // Backend
+        await apiDeletePlan(planId);
+      } catch (error) {
+        alert("No se pudo eliminar el plan");
+        cargarPlanesBackend();
+      }
     }
   };
 
-  // 📅 Validar solapamiento
+  // 📅 Validar solapamiento (Usa el estado local 'planes' que ya viene del backend)
   const validarSolapamiento = (fechaInicio, fechaFin, planActualId = null) => {
     const planesActivos = planes.filter(p => 
       p.id !== planActualId && 
@@ -102,43 +102,36 @@ export default function MisPlanes() {
     return { conflicto: false };
   };
 
-  // ⏰ Verificar completados
-  const verificarPlanesCompletados = (listaPLanes) => {
+  // ⏰ Verificar completados (Lógica de negocio en cliente para actualizar estado)
+  const verificarPlanesCompletados = (listaPlanes) => {
     const ahora = new Date();
     ahora.setHours(0, 0, 0, 0);
 
-    let cambios = false;
-    const nuevosPlanes = listaPLanes.map(plan => {
+    listaPlanes.forEach(async (plan) => {
       if (plan.estado === "confirmado" && plan.fecha_fin) {
         const fechaFin = new Date(plan.fecha_fin);
         fechaFin.setHours(0, 0, 0, 0);
         
+        // Si ya pasó la fecha y sigue "confirmado", lo pasamos a "completado" en el backend
         if (fechaFin < ahora) {
-          cambios = true;
-          return { ...plan, estado: "completado" };
+          await apiUpdatePlan(plan.id, { estado: "completado" });
+          // Actualizamos localmente también
+          setPlanes(prev => prev.map(p => p.id === plan.id ? { ...p, estado: "completado" } : p));
         }
       }
-      return plan;
     });
-
-    if (cambios) {
-      guardarPlanes(nuevosPlanes);
-    }
   };
 
-  // 📊 Lógica de Ordenamiento y Filtrado
+  // 📊 Lógica de Ordenamiento (Igual que antes)
   const getPlanesOrdenados = () => {
-    // Creamos una copia para no mutar el estado directamente al ordenar
     const copia = [...planes];
 
     if (filtro === "fecha") {
-      // Orden por defecto (asumimos que el ID o el orden del array es cronológico)
-      // Si quieres lo más nuevo primero, invertimos.
-      return copia.reverse();
+      // El backend ya suele devolver ordenado por fecha, pero aseguramos
+      return copia; // O copia.reverse() si el backend los manda antiguos primero
     }
 
     if (filtro === "prioridad") {
-      // Orden personalizado por estado
       const prioridad = {
         borrador: 1,
         pendiente: 2,
@@ -161,7 +154,9 @@ export default function MisPlanes() {
   if (cargando) {
     return (
       <section id="mis-planes">
-        <p>Cargando...</p>
+        <div className="loading-container">
+          <p>Cargando tus aventuras...</p>
+        </div>
       </section>
     );
   }
@@ -171,7 +166,6 @@ export default function MisPlanes() {
       <div className="header-planes">
         <h1>Mis Planes</h1>
         
-        {/* FILTROS */}
         <div className="filtros">
           <span>Ordenar por:</span>
           <button 
@@ -195,7 +189,7 @@ export default function MisPlanes() {
 
       {planes.length === 0 ? (
         <div className="empty-state">
-          <p className="titulo-empty">Aún no has agregado ningún plan.</p>
+          <p className="titulo-empty">Aún no tienes planes guardados en la nube.</p>
           <p style={{ color: "#94a3b8", marginBottom: "30px" }}>
             Explora destinos y comienza a planificar tu próxima aventura.
           </p>
@@ -230,7 +224,6 @@ export default function MisPlanes() {
           <div className="section-contenedor">
             <h3 className="titulo-seccion">Resumen de Gastos</h3>
             <div className="graficos-grid">
-              {/* Filtramos solo los que tienen sentido mostrar gráfico */}
               {planesVisibles.filter(p => p.estado === "confirmado" || p.estado === "completado").length === 0 && (
                 <div className="placeholder-graficos">
                   <p>Confirma un plan para ver aquí el desglose de tus gastos.</p>
