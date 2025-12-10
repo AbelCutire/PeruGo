@@ -1,13 +1,17 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { destinos } from "@/data/destinos";
 import "@/components/SectionDestino.css";
+// ✅ IMPORTAR SERVICIOS
+import { createPlan, createReview } from "@/services/planes";
+import { getCurrentUser } from "@/services/auth";
 
 export default function PageDestino() {
   const { id } = useParams();
   const searchParams = useSearchParams();
+  const router = useRouter(); // ✅ Usar router de Next.js
   const destino = destinos.find((d) => d.id === id);
   
   const [tourSeleccionado, setTourSeleccionado] = useState(null);
@@ -16,10 +20,13 @@ export default function PageDestino() {
   const [modalResena, setModalResena] = useState(false);
   const [estrellas, setEstrellas] = useState(5);
   const [comentario, setComentario] = useState("");
+  const [guardando, setGuardando] = useState(false); // Estado para feedback visual
 
-  // Cargar reseñas del plan seleccionado
+  // Cargar reseñas locales (Idealmente esto vendría de una API GET /reviews/destino/:id)
   useEffect(() => {
     if (tourSeleccionado) {
+      // Por ahora mantenemos la lectura local de reseñas para no romper la vista
+      // hasta que tengas el endpoint de "obtener reseñas por destino"
       const todasResenas = JSON.parse(localStorage.getItem("resenas_planes") || "[]");
       const resenasPlan = todasResenas.filter(r => r.plan_id === tourSeleccionado.id);
       setResenas(resenasPlan);
@@ -37,138 +44,89 @@ export default function PageDestino() {
   }, [searchParams]);
 
   const handleVolver = () => {
-    sessionStorage.setItem("returnFromFicha", "true");
-    window.location.href = "/";
+    router.push("/");
   };
 
-  const handleAgregarPlan = () => {
+  // ✅ NUEVA LÓGICA: Guardar Plan en Base de Datos
+  const handleAgregarPlan = async () => {
     if (!tourSeleccionado) {
       alert("❌ Debes seleccionar un plan primero");
       return;
     }
 
-    // Verificar si hay sesión iniciada usando tu sistema
-    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
-    const userEmail = sessionStorage.getItem("lastEmail");
-    
-    if (!isLoggedIn || !userEmail) {
-      // No hay sesión, redirigir a login y guardar destino para volver
+    // 1. Verificar Sesión
+    const user = getCurrentUser();
+    if (!user) {
+      // Guardar url para volver después del login
       sessionStorage.setItem("redirectAfterLogin", window.location.pathname);
-      window.location.href = "/login";
+      router.push("/login");
       return;
     }
 
-    // Crear o recuperar usuario desde tu sistema
-    let usuario = localStorage.getItem(`usuario_${userEmail}`);
-    let usuarioObj;
-    
-    if (!usuario) {
-      // Primera vez que agrega un plan, crear estructura de usuario
-      usuarioObj = {
-        id: `user_${Date.now()}`,
-        email: userEmail,
-        nombre: userEmail.split('@')[0] // Usar parte del email como nombre por defecto
+    setGuardando(true);
+
+    try {
+      // 2. Preparar datos para el Backend
+      const nuevoPlan = {
+        destino_id: destino.id,
+        tour: tourSeleccionado.nombre,
+        precio: tourSeleccionado.precio,
+        gastos: tourSeleccionado.gastos,
+        estado: "borrador"
+        // No enviamos ID, el backend lo genera (UUID)
       };
-      localStorage.setItem(`usuario_${userEmail}`, JSON.stringify(usuarioObj));
-    } else {
-      usuarioObj = JSON.parse(usuario);
+
+      // 3. Enviar a la API
+      await createPlan(nuevoPlan);
+
+      // 4. Redirigir
+      router.push("/mis-planes");
+
+    } catch (error) {
+      console.error("Error al guardar plan:", error);
+      alert("❌ Hubo un error al conectar con el servidor. Intenta nuevamente.");
+    } finally {
+      setGuardando(false);
     }
-
-    const planesExistentes = JSON.parse(localStorage.getItem(`planes_${usuarioObj.id}`)) || [];
-
-    // Extraer duración en días
-    const duracionMatch = tourSeleccionado.duracion?.match(/(\d+)\s*día/i);
-    const duracionDias = duracionMatch ? parseInt(duracionMatch[1]) : 1;
-
-    const nuevoPlan = {
-      id: `${destino.id}-${tourSeleccionado.nombre.replace(/\s+/g, '-')}-${Date.now()}`,
-      destino_id: destino.id,
-      destino: destino.nombre,
-      ubicacion: destino.ubicacion,
-      imagen: destino.imagen,
-      plan_id: tourSeleccionado.id,
-      tour: tourSeleccionado.nombre,
-      precio: tourSeleccionado.precio,
-      duracion: tourSeleccionado.duracion || destino.duracion,
-      duracion_dias: duracionDias,
-      gastos: tourSeleccionado.gastos,
-      estado: "borrador",
-      fecha_inicio: null,
-      fecha_fin: null,
-      resena_completada: false
-    };
-
-    // Verificar si ya existe el mismo plan en borrador
-    const existe = planesExistentes.some(
-      p => p.destino_id === nuevoPlan.destino_id && 
-           p.tour === nuevoPlan.tour && 
-           p.estado === "borrador"
-    );
-
-    if (!existe) {
-      planesExistentes.push(nuevoPlan);
-      localStorage.setItem(`planes_${usuarioObj.id}`, JSON.stringify(planesExistentes));
-    }
-    
-    // Redirigir directamente sin alert
-    window.location.href = "/mis-planes";
   };
 
-  const guardarResena = () => {
+  // ✅ NUEVA LÓGICA: Guardar Reseña en Base de Datos
+  const guardarResena = async () => {
     if (!comentario.trim()) {
       alert("❌ Debes escribir un comentario");
       return;
     }
 
-    // Usar tu sistema de autenticación
-    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
-    const userEmail = sessionStorage.getItem("lastEmail");
-    
-    if (!isLoggedIn || !userEmail) {
+    const user = getCurrentUser();
+    if (!user) {
       alert("❌ Debes iniciar sesión");
-      window.location.href = "/login";
+      router.push("/login");
       return;
     }
 
-    // Recuperar datos del usuario
-    const usuario = JSON.parse(localStorage.getItem(`usuario_${userEmail}`) || '{}');
-    if (!usuario.id) {
-      alert("❌ Error al obtener datos de usuario");
-      return;
+    try {
+      const planId = searchParams.get("plan"); // Si venimos de "Mis Planes"
+
+      await createReview({
+        plan_id: planId, // Puede ser null si es una reseña general del destino
+        destino_id: destino.id,
+        estrellas: estrellas,
+        comentario: comentario
+      });
+
+      setModalResena(false);
+      setComentario("");
+      alert("✅ ¡Gracias por tu reseña! Se ha guardado en la nube.");
+      
+      // Si venimos de un plan específico, volver a mis planes
+      if (planId) {
+        router.push("/mis-planes");
+      }
+
+    } catch (error) {
+      console.error("Error al guardar reseña:", error);
+      alert("❌ No se pudo guardar la reseña.");
     }
-
-    const resenas = JSON.parse(localStorage.getItem("resenas_planes") || "[]");
-    const planId = searchParams.get("plan");
-
-    // Verificar si ya dejó reseña
-    const yaReseno = resenas.some(r => r.plan_id === planId && r.usuario_id === usuario.id);
-    if (yaReseno) {
-      alert("⚠️ Ya has dejado una reseña para este plan");
-      return;
-    }
-
-    resenas.push({
-      id: Date.now(),
-      plan_id: planId,
-      usuario_id: usuario.id,
-      usuario_nombre: usuario.nombre,
-      estrellas,
-      comentario,
-      fecha: new Date().toISOString()
-    });
-
-    localStorage.setItem("resenas_planes", JSON.stringify(resenas));
-    setModalResena(false);
-    alert("✅ ¡Gracias por tu reseña!");
-    
-    // Actualizar el plan como reseñado
-    const planes = JSON.parse(localStorage.getItem(`planes_${usuario.id}`)) || [];
-    const planActualizado = planes.map(p => 
-      p.plan_id === planId ? { ...p, resena_completada: true } : p
-    );
-    localStorage.setItem(`planes_${usuario.id}`, JSON.stringify(planActualizado));
-
-    window.location.href = "/mis-planes";
   };
 
   const calcularPromedioEstrellas = (planId) => {
@@ -183,6 +141,7 @@ export default function PageDestino() {
   const handleVerRDF = () => {
     if (!destino) return;
     const slug = destino.id;
+    // Asegúrate de que esta URL coincida con tu backend desplegado
     const url = `https://perugo-backend-production.up.railway.app/rdf/destino/${encodeURIComponent(slug)}`;
     window.open(url, "_blank");
   };
@@ -229,13 +188,15 @@ export default function PageDestino() {
             <button 
               className="primary" 
               onClick={handleAgregarPlan}
-              disabled={!tourSeleccionado}
+              disabled={!tourSeleccionado || guardando}
               style={{
-                opacity: tourSeleccionado ? 1 : 0.5,
-                cursor: tourSeleccionado ? "pointer" : "not-allowed"
+                opacity: tourSeleccionado && !guardando ? 1 : 0.5,
+                cursor: tourSeleccionado && !guardando ? "pointer" : "not-allowed"
               }}
             >
-              {tourSeleccionado ? "Agregar a mis planes" : "Selecciona un plan"}
+              {guardando 
+                ? "Guardando..." 
+                : (tourSeleccionado ? "Agregar a mis planes" : "Selecciona un plan")}
             </button>
             <button
               className="btn-rdf-destino"
@@ -346,7 +307,7 @@ export default function PageDestino() {
                 })}
               </div>
 
-              {/* Sección de reseñas */}
+              {/* Sección de reseñas (Visualización local temporal) */}
               {tourSeleccionado && resenas.length > 0 && (
                 <div style={{ marginTop: "40px" }}>
                   <h3>Reseñas: {tourSeleccionado.nombre}</h3>
