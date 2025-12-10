@@ -156,3 +156,23 @@
 .presupuesto-botones .ghost:hover {
   border-color: var(--color-btn);
 }
+
+.btn-volver-inicio {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  border: none;
+  background: var(--color-btn);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.15s ease;
+}
+
+.btn-volver-inicio:hover {
+  background: var(--color-btn-hover);
+  transform: translateY(-1px);
+}
+
+
