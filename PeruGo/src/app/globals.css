@@ -1,26 +1,63 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ☀️ MODO CLARO (Tus colores originales) */
+  
+  /* Fondos */
+  --bg-page: rgb(235, 235, 235);      /* Fondo gris claro */
+  --bg-card: #ffffff;                 /* Tarjetas blancas */
+  --bg-hover: rgb(243, 243, 243);     /* Hover sutil */
+
+  /* Textos */
+  --text-main: rgb(0, 0, 0);          /* Negro puro */
+  --text-muted: rgb(82, 82, 82);      /* Gris oscuro para subtítulos */
+  --text-inverse: #ffffff;            /* Texto sobre botones rojos */
+
+  /* MARCA PRINCIPAL (Rojo PeruGo) */
+  --primary: rgb(255, 0, 0);          
+  --primary-hover: rgb(215, 0, 0);    
+
+  /* Bordes y utilidades */
+  --border: #e6eef3;
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark-mode {
+  /* 🌙 MODO OSCURO (Adaptado de tu index.css) */
+  
+  /* Fondos */
+  --bg-page: rgb(20, 20, 20);         /* Fondo casi negro */
+  --bg-card: rgb(28, 28, 28);         /* Tarjetas gris oscuro (mejor que negro puro) */
+  --bg-hover: rgb(40, 40, 40);
+
+  /* Textos */
+  --text-main: rgb(255, 255, 255);    /* Blanco */
+  --text-muted: rgb(203, 203, 203);   /* Gris claro */
+  --text-inverse: #ffffff;
+
+  /* MARCA PRINCIPAL (Rojo oscuro para no lastimar la vista) */
+  --primary: rgb(220, 0, 0);          /* Un poco menos brillante que el día */
+  --primary-hover: rgb(255, 50, 50);
+
+  /* Bordes y utilidades */
+  --border: #333333;
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Aplicar al body */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 0;
+  font-family: "Poppins", system-ui, sans-serif;
+}
+
+/* Inputs y Selects globales */
+input, select, textarea {
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border);
 }
