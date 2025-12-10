@@ -60,6 +60,23 @@
   margin-top: 8px;
 }
 
+.btn-rdf-destino {
+  background: var(--color-header);
+  color: var(--color-texto);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  width: 100%;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn-rdf-destino:hover {
+  background: var(--color-header-hover);
+  transform: translateY(-1px);
+}
+
 .resumen ul {
   padding-left: 18px;
   margin: 8px 0 0;
