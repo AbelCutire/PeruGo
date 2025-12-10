@@ -176,9 +176,15 @@ export default function Header({
                     <div className="profile-email">{userData.correo}</div>
                   </div>
                   <div className="profile-actions">
-                    <Link href="/mis-planes" onClick={() => setMenuOpen(false)}>
-                      <button className="btn-opcion">Mis Planes</button>
-                    </Link>
+                    <button
+                        className="btn-opcion"
+                        onClick={() => {
+                            setMenuOpen(false); // Cierra el menú
+                            router.push("/mis-planes"); // Navega usando el hook de Next.js
+                        }}
+                    >
+                        Mis Planes
+                    </button>
                     <button className="btn-opcion-cerrar" onClick={handleLogout}>
                       Cerrar sesión
                     </button>
@@ -220,4 +226,5 @@ export default function Header({
     </header>
   );
 }
+
 
