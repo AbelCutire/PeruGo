@@ -9,23 +9,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Destino {
-  id           String   @id // ya no tiene @default(autoincrement())
-  slug         String   @unique
-  nombre       String
-  ubicacion    String
-  tipo         String
-  precio       Float
-  duracion     String
-  presupuesto  String
-  imagen       String
-  descripcion  String
-  gastos       Json
-  tours        Json
-  creadoEn     DateTime @default(now())
-  actualizadoEn DateTime @updatedAt
-}
-
+// ✅ Tu tabla de usuarios corregida
 model users {
   id            String   @id @default(uuid())
   email         String   @unique
@@ -41,18 +25,79 @@ model users {
   chats     ChatSession[]
 }
 
-model Profile {
-  id       String  @id @default(uuid())
-  name     String?
-  surname  String?
-  city     String?
-  phone    String?
+// Modelo para los Planes de viaje
+model Plan {
+  id          String   @id @default(uuid())
+  
+  // Relación con tu tabla users
+  userId      String
+  user        users    @relation(fields: [userId], references: [id])
+  
+  destinoId   String   // ID del destino (ej: "cusco")
+  tourNombre  String
+  precio      Float
+  estado      String   // "borrador", "pendiente", "confirmado", etc.
+  
+  fechaInicio DateTime?
+  fechaFin    DateTime?
+  
+  gastos      Json?    // Guardamos el objeto de gastos aquí
+  resena_completada Boolean @default(false)
+  
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 }
 
-model Preferences {
-  id        String  @id @default(uuid())
-  budget    Int?
-  travType  String?
-  allergies String?
-  foodRest  String?
+// Modelo para Reseñas
+model Review {
+  id          String   @id @default(uuid())
+  
+  // Relación con tu tabla users
+  userId      String
+  user        users    @relation(fields: [userId], references: [id])
+  
+  planId      String?  // Opcional, para saber de qué plan vino
+  destinoId   String
+  estrellas   Int
+  comentario  String   @db.Text
+  
+  created_at  DateTime @default(now())
+}
+
+// Modelo para Historial de Chat
+model ChatSession {
+  id          String    @id @default(uuid())
+  userId      String
+  user        users     @relation(fields: [userId], references: [id])
+  
+  mensajes    Message[]
+  created_at  DateTime  @default(now())
+}
+
+model Message {
+  id        String      @id @default(uuid())
+  chatId    String
+  chat      ChatSession @relation(fields: [chatId], references: [id])
+  
+  rol       String      // "user" o "assistant"
+  texto     String      @db.Text
+  timestamp DateTime    @default(now())
+}
+
+// Modelo Destino (si lo usas en BD, si no, puedes ignorarlo)
+model Destino {
+  id           String   @id
+  slug         String   @unique
+  nombre       String
+  ubicacion    String
+  tipo         String
+  precio       Float
+  duracion     String
+  presupuesto  String
+  imagen       String
+  descripcion  String   @db.Text
+  gastos       Json
+  tours        Json
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
 }
