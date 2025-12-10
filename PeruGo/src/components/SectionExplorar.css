@@ -139,6 +139,7 @@
 }
 
 .presupuesto-botones .ghost {
+  color: var(--color-texto);
   border: 1px solid #ccc;
   border-radius: 8px;
   background: transparent;
@@ -174,5 +175,6 @@
   background: var(--color-btn-hover);
   transform: translateY(-1px);
 }
+
 
 
