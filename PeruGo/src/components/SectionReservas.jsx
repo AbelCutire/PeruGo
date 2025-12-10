@@ -268,19 +268,97 @@ export default function SectionReservas({
         </div>
       )}
 
-      {/* Modal PAGO */}
+      {/* MODAL DE PAGO */}
       {modalPago && (
-        <div className="modal-overlay" onClick={() => !procesandoPago && setModalPago(false)}>
-          <div className="modal-box" onClick={e => e.stopPropagation()}>
-            <h3>Realizar Pago</h3>
-            <p style={{marginBottom: '15px'}}>Total a pagar: <strong>S/ {plan.precio}</strong></p>
-            <input type="text" placeholder="Tarjeta (Demo)" className="input-modal" disabled />
-            <div style={{display:'flex', gap:'10px'}}>
-               <input type="text" placeholder="MM/AA" className="input-modal" disabled />
-               <input type="text" placeholder="CVC" className="input-modal" disabled />
+        <div className="modal-overlay" style={{ zIndex: 9999 }} onClick={() => !procesandoPago && setModalPago(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>Procesar pago</h3>
+            
+            <div style={{ marginBottom: "20px" }}>
+              <h4 style={{ marginBottom: "10px" }}>Desglose de gastos:</h4>
+              <ul style={{ listStyle: "none", padding: 0 }}>
+                {plan.gastos && Object.entries(plan.gastos).map(([key, value]) => (
+                  <li key={key} style={{ padding: "8px 0", borderBottom: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between" }}>
+                    <span style={{ textTransform: "capitalize" }}>{key}</span>
+                    <span style={{ fontWeight: "600" }}>S/ {value}</span>
+                  </li>
+                ))}
+                <li style={{ padding: "12px 0", fontWeight: "700", fontSize: "1.1rem", display: "flex", justifyContent: "space-between" }}>
+                  <span>Total:</span>
+                  <span style={{ color: "#3b82f6" }}>S/ {plan.precio}</span>
+                </li>
+              </ul>
             </div>
-            <button className="btn-confirm" onClick={procesarPago} disabled={procesandoPago} style={{marginTop:'10px'}}>
-              {procesandoPago ? "Procesando..." : "Pagar S/ " + plan.precio}
+
+            <div style={{ marginBottom: "15px" }}>
+              <label style={{ display: "block", marginBottom: "5px", color: "#475569" }}>
+                Número de tarjeta
+              </label>
+              <input
+                type="text"
+                placeholder="1234 5678 9012 3456"
+                disabled={procesandoPago}
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  border: "1px solid #cbd5e1"
+                }}
+              />
+            </div>
+
+            <div style={{ display: "flex", gap: "10px", marginBottom: "15px" }}>
+              <div style={{ flex: 1 }}>
+                <label style={{ display: "block", marginBottom: "5px", color: "#475569" }}>
+                  Fecha vencimiento
+                </label>
+                <input
+                  type="text"
+                  placeholder="MM/AA"
+                  disabled={procesandoPago}
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    borderRadius: "8px",
+                    border: "1px solid #cbd5e1"
+                  }}
+                />
+              </div>
+              <div style={{ flex: 1 }}>
+                <label style={{ display: "block", marginBottom: "5px", color: "#475569" }}>
+                  CVV
+                </label>
+                <input
+                  type="text"
+                  placeholder="123"
+                  maxLength="3"
+                  disabled={procesandoPago}
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    borderRadius: "8px",
+                    border: "1px solid #cbd5e1"
+                  }}
+                />
+              </div>
+            </div>
+
+            <button 
+              onClick={procesarPago}
+              disabled={procesandoPago}
+              style={{
+                width: "100%",
+                background: procesandoPago ? "#94a3b8" : "#22c55e",
+                color: "white",
+                border: "none",
+                padding: "14px",
+                borderRadius: "8px",
+                cursor: procesandoPago ? "not-allowed" : "pointer",
+                fontSize: "1rem",
+                fontWeight: "600"
+              }}
+            >
+              {procesandoPago ? "Procesando..." : "Pagar"}
             </button>
           </div>
         </div>
@@ -313,3 +391,4 @@ export default function SectionReservas({
     </>
   );
 }
+
