@@ -112,15 +112,17 @@ export default function Header({
         <nav className="nav-header" aria-label="Navegación principal">
           
           {/* 1. Botón EXPLORAR (Brújula) */}
-          <button
-            className={`btn-icono ${isActive("/explorar") ? "activo" : ""}`}
-            title="Explorar Destinos"
-          >
-            <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
-            </svg>
-          </button>
+          <Link href="/explorar">
+            <button
+              className={`btn-icono ${isActive("/explorar") ? "activo" : ""}`}
+              title="Explorar Destinos"
+            >
+              <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+              </svg>
+            </button>
+          </Link>
 
           {/* 3. Micrófono */}
           <button
@@ -176,15 +178,9 @@ export default function Header({
                     <div className="profile-email">{userData.correo}</div>
                   </div>
                   <div className="profile-actions">
-                    <button
-                        className="btn-opcion"
-                        onClick={() => {
-                            setMenuOpen(false); // Cierra el menú
-                            router.push("/mis-planes"); // Navega usando el hook de Next.js
-                        }}
-                    >
-                        Mis Planes
-                    </button>
+                    <Link href="/mis-planes" onClick={() => setMenuOpen(false)}>
+                      <button className="btn-opcion">Mis Planes</button>
+                    </Link>
                     <button className="btn-opcion-cerrar" onClick={handleLogout}>
                       Cerrar sesión
                     </button>
@@ -226,5 +222,3 @@ export default function Header({
     </header>
   );
 }
-
-
