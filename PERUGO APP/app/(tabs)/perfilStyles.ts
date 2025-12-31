@@ -1,0 +1,136 @@
+import { StyleSheet } from 'react-native';
+
+export const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+    paddingTop: 32,
+    gap: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#0f172a',
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#64748b',
+    marginBottom: 12,
+  },
+  card: {
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    marginTop: 8,
+  },
+  avatarContainer: {
+    flexDirection: 'row',
+    marginBottom: 16,
+    gap: 12,
+    alignItems: 'center',
+  },
+  avatarCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: '#0f766e',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarText: {
+    fontSize: 28,
+    fontWeight: '800',
+    color: '#fff',
+  },
+  nameBlock: { flex: 1 },
+  name: { fontSize: 18, fontWeight: '700', color: '#0f172a' },
+  email: { fontSize: 13, color: '#64748b' },
+  editBlock: {
+    marginTop: 8,
+  },
+  editLabel: {
+    fontSize: 13,
+    color: '#64748b',
+    marginBottom: 4,
+  },
+  editInput: {
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#cbd5e1',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    backgroundColor: '#f9fafb',
+    fontSize: 14,
+  },
+  editButtonsRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 8,
+    gap: 8,
+  },
+  smallButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 999,
+  },
+  cancelButton: {
+    borderWidth: 1,
+    borderColor: '#cbd5e1',
+    backgroundColor: '#ffffff',
+  },
+  cancelButtonText: {
+    fontSize: 13,
+    fontWeight: '500',
+    color: '#0f172a',
+  },
+  saveButton: {
+    backgroundColor: '#0f766e',
+  },
+  saveButtonText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#ffffff',
+  },
+  infoRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 },
+  infoLabel: { fontSize: 13, color: '#64748b' },
+  infoValue: { fontSize: 13, fontWeight: '600', color: '#0f172a' },
+  sectionTitle: { fontSize: 16, fontWeight: '700', marginBottom: 6 },
+  sectionText: { fontSize: 13, lineHeight: 18, color: '#334155' },
+  primaryButton: {
+    backgroundColor: '#0f766e',
+    paddingVertical: 12,
+    borderRadius: 999,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  primaryButtonText: {
+    color: '#fff',
+    fontWeight: '700',
+    fontSize: 15,
+  },
+  secondaryButton: {
+    borderWidth: 1,
+    paddingVertical: 11,
+    marginTop: 10,
+    borderRadius: 999,
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  secondaryButtonText: { fontSize: 14, fontWeight: '600', color: '#0f172a' },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  themeSwitchRow: {
+    alignItems: 'flex-end',
+    gap: 4,
+  },
+  themeLabel: {
+    fontSize: 11,
+    fontWeight: '500',
+  },
+});
